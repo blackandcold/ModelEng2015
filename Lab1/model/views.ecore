@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="views" nsURI="http://www.example.org/views" nsPrefix="views">
   <eAnnotations source="http://www.eclipse.org/OCL/Import">
-    <details key="ecore" value="http://www.eclipse.org/emf/2002/Ecore"/>
+    <details key="ecore" value="http://www.eclipse.org/emf/2002/Ecore#/"/>
   </eAnnotations>
   <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
     <details key="invocationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
@@ -21,7 +21,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Property">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="multiplicity" eType="#//Multiplicity"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Multiplicity">
@@ -30,23 +30,31 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Class" eSuperTypes="#//Type">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="lowerConstr upperConstr correctType idMandatory noSelfSubclass noSelfSuperclass"/>
+      <details key="constraints" value="lowerConstr upperConstr idMandatory correctType correctIdType noSelfSubclass noSelfSuperclass superNotSubclass"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="lowerConstr" value="self.properties &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;-> forAll (p: Property | p.multiplicity.lowerBound = 0 or p.multiplicity.lowerBound = 1)"/>
       <details key="upperConstr" value="self.properties &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;-> forAll (p: Property | p.multiplicity.upperBound = 1)"/>
+      <details key="idMandatory" value="if self.superclass->isEmpty() then self.isId->notEmpty() else self.isId->isEmpty() endif"/>
       <details key="correctType" value=" self.properties &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;-> forAll (p: Property | p.type.oclIsTypeOf(DataType) or p.type.oclIsTypeOf(Enumeration))"/>
-      <details key="idMandatory" value="self.isId.multiplicity.lowerBound = 1"/>
+      <details key="correctIdType" value=" self.isId &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;-> forAll (p: Property | p.type.oclIsTypeOf(DataType) or p.type.oclIsTypeOf(Enumeration))"/>
       <details key="noSelfSubclass" value="self.subclass->excludes(self)"/>
       <details key="noSelfSuperclass" value="self.superclass->excludes(self)"/>
+      <details key="superNotSubclass" value="self.superclass &lt;> self.subclass"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="superclass" eType="#//Class"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="subclass" ordered="false"
-        upperBound="-1" eType="#//Class"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" ordered="false"
-        upperBound="-1" eType="#//Property" containment="true"/>
+        upperBound="-1" eType="#//Class" changeable="false" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+        <details key="derivation" value="Class.allInstances() -> select(superclass = self)"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
+        eType="#//Property" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="isId" eType="#//Property"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="associations" upperBound="-1"
+        eType="#//Association" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EnumLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -74,11 +82,22 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="end" lowerBound="1" eType="#//Property"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DomainModel">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="classes" ordered="false"
-        upperBound="-1" eType="#//Class"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="dataTypes" ordered="false"
-        upperBound="-1" eType="#//DataType"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="enumerations" ordered="false"
-        upperBound="-1" eType="#//Enumeration"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="uniqueClassNames uniquedataTypeNames uniqueEnumerationNames uniqueAssociationNames"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="uniqueClassNames" value="self.classes->forAll(c1, c2 | c1 &lt;> c2 implies c1.name &lt;> c2.name)"/>
+      <details key="uniquedataTypeNames" value="self.dataTypes->forAll(c1, c2 | c1 &lt;> c2 implies c1.name &lt;> c2.name)"/>
+      <details key="uniqueEnumerationNames" value="Enumeration.allInstances()->isUnique(name)"/>
+      <details key="uniqueAssociationNames" value="Association.allInstances()->isUnique(name)"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classes" upperBound="-1"
+        eType="#//Class" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataTypes" upperBound="-1"
+        eType="#//DataType" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enumerations" upperBound="-1"
+        eType="#//Enumeration" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="associations" upperBound="-1"
+        eType="#//Association" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>
