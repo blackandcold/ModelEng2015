@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="views" nsURI="http://www.example.org/views" nsPrefix="views">
   <eAnnotations source="http://www.eclipse.org/OCL/Import">
-    <details key="ecore" value="http://www.eclipse.org/emf/2002/Ecore"/>
+    <details key="ecore" value="http://www.eclipse.org/emf/2002/Ecore#/"/>
   </eAnnotations>
   <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
     <details key="invocationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
@@ -21,8 +21,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Property">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="multiplicity" eType="#//Multiplicity"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="multiplicity" eType="#//Multiplicity"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Multiplicity">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lowerBound" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigInteger"/>
@@ -33,9 +34,9 @@
       <details key="constraints" value="lowerConstr upperConstr correctType idMandatory noSelfSubclass noSelfSuperclass"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="lowerConstr" value="self.properties &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;-> forAll (p: Property | p.multiplicity.lowerBound = 0 or p.multiplicity.lowerBound = 1)"/>
-      <details key="upperConstr" value="self.properties &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;-> forAll (p: Property | p.multiplicity.upperBound = 1)"/>
-      <details key="correctType" value=" self.properties &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;-> forAll (p: Property | p.type.oclIsTypeOf(DataType) or p.type.oclIsTypeOf(Enumeration))"/>
+      <details key="lowerConstr" value="self.properties->forAll(p : Property |&#xA;&#x9;&#x9;&#x9;&#x9;p.multiplicity.lowerBound = 0 or p.multiplicity.lowerBound = 1)"/>
+      <details key="upperConstr" value="self.properties->forAll(p : Property | p.multiplicity.upperBound = 1)"/>
+      <details key="correctType" value="self.properties->forAll(p : Property |&#xA;&#x9;&#x9;&#x9;&#x9;p.type.oclIsTypeOf(DataType) or p.type.oclIsTypeOf(Enumeration))"/>
       <details key="idMandatory" value="self.isId.multiplicity.lowerBound = 1"/>
       <details key="noSelfSubclass" value="self.subclass->excludes(self)"/>
       <details key="noSelfSuperclass" value="self.superclass->excludes(self)"/>
@@ -43,8 +44,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="superclass" eType="#//Class"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="subclass" ordered="false"
         upperBound="-1" eType="#//Class"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" ordered="false"
-        upperBound="-1" eType="#//Property" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
+        eType="#//Property" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="isId" eType="#//Property"
         containment="true"/>
   </eClassifiers>
@@ -62,9 +63,9 @@
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="lowerConstrBegin" value="self.begin.multiplicity.lowerBound >= 0"/>
-      <details key="upperConstrBegin" value="self.begin.multiplicity.upperBound = -1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;or (self.begin.multiplicity.lowerBound &lt;= self.begin.multiplicity.upperBound &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and self.begin.multiplicity.upperBound > 0 )"/>
+      <details key="upperConstrBegin" value="self.begin.multiplicity.upperBound = -&#xA;&#x9;&#x9;&#x9;1 or (self.begin.multiplicity.lowerBound &lt;= self.begin.multiplicity.upperBound and self.begin.multiplicity.upperBound > 0)"/>
       <details key="lowerConstrEnd" value="self.end.multiplicity.lowerBound >= 0"/>
-      <details key="upperConstrEnd" value="self.end.multiplicity.upperBound = -1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;or (self.end.multiplicity.lowerBound &lt;= self.end.multiplicity.upperBound &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and self.end.multiplicity.upperBound > 0 )"/>
+      <details key="upperConstrEnd" value="self.end.multiplicity.upperBound = -&#xA;&#x9;&#x9;&#x9;1 or (self.end.multiplicity.lowerBound &lt;= self.end.multiplicity.upperBound and self.end.multiplicity.upperBound > 0)"/>
       <details key="correctTypeBegin" value="self.begin.type.oclIsTypeOf(Class)"/>
       <details key="correctTypeEnd" value="self.end.type.oclIsTypeOf(Class)"/>
     </eAnnotations>
@@ -75,10 +76,152 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DomainModel">
     <eStructuralFeatures xsi:type="ecore:EReference" name="classes" ordered="false"
-        upperBound="-1" eType="#//Class"/>
+        upperBound="-1" eType="#//Class" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dataTypes" ordered="false"
-        upperBound="-1" eType="#//DataType"/>
+        upperBound="-1" eType="#//DataType" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="enumerations" ordered="false"
-        upperBound="-1" eType="#//Enumeration"/>
+        upperBound="-1" eType="#//Enumeration" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ViewModel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="viewGroups" upperBound="-1"
+        eType="#//ViewGroup" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="welcomeViewGroup" eType="#//ViewGroup"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ViewGroup">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="views" upperBound="-1"
+        eType="#//View" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="startView" eType="#//View"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="View" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="header" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassIndexView" eSuperTypes="#//View">
+    <eTypeParameters name="T">
+      <eBounds eClassifier="#//Class"/>
+    </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instances" ordered="false"
+        upperBound="-1">
+      <eGenericType eTypeParameter="#//ClassIndexView/T"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassOperationView" eSuperTypes="#//View">
+    <eTypeParameters name="T">
+      <eBounds eClassifier="#//Class"/>
+    </eTypeParameters>
+    <eOperations name="create">
+      <eGenericType eTypeParameter="#//ClassOperationView/T"/>
+    </eOperations>
+    <eOperations name="read">
+      <eGenericType eTypeParameter="#//ClassOperationView/T"/>
+    </eOperations>
+    <eOperations name="update">
+      <eGenericType eTypeParameter="#//ClassOperationView/T"/>
+    </eOperations>
+    <eOperations name="delete">
+      <eGenericType eTypeParameter="#//ClassOperationView/T"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instance">
+      <eGenericType eTypeParameter="#//ClassOperationView/T"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="viewElements" upperBound="-1"
+        eType="#//ViewElement" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="layout" eType="#//Layout"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ViewElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ViewElementGroup" eSuperTypes="#//ViewElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="header" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="layout" eType="#//Layout"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//ViewElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ViewPropertyElement" abstract="true"
+      eSuperTypes="#//ViewElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="propertyRef" lowerBound="1"
+        eType="#//Property"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ViewAssociationElement" abstract="true"
+      eSuperTypes="#//ViewElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classRef" lowerBound="1"
+        eType="#//Class"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="TextLength">
+    <eLiterals name="SHORT"/>
+    <eLiterals name="LONG"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TextViewElement" eSuperTypes="#//ViewPropertyElement">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="correctType"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="correctType" value="self.propertyRef.oclIsTypeOf(DataType) or self.propertyRef.oclIsTypeOf(Enumeration)"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="#//TextLength"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DateTimePickerViewElement" eSuperTypes="#//ViewPropertyElement">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="isDateThing"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="isDateThing" value="self.propertyRef.type.name = 'Date' or self.propertyRef.type.name = 'Time' or self.propertyRef.type.name = 'DateTime'"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SelectionViewElement" eSuperTypes="#//ViewPropertyElement">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="correctType"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="correctType" value="self.propertyRef.oclIsTypeOf(DataType) or self.propertyRef.oclIsTypeOf(Enumeration)"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="values" lowerBound="1"
+        eType="#//Enumeration"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ListViewElement" eSuperTypes="#//ViewAssociationElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TableViewElement" eSuperTypes="#//ViewAssociationElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Condition" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="conditionID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="result" eType="#//Visibility"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ComparisonCondition" eSuperTypes="#//Condition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//ViewElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CompositeCondigion" eSuperTypes="#//Condition">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="diffConditions"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="diffConditions" value="self.cond1 &lt;> self.cond2"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operatorType" eType="#//Operator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cond1" eType="#//Condition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cond2" eType="#//Condition"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Link">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instance" eType="#//Class"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="view" eType="#//ClassOperationView"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Operator">
+    <eLiterals name="AND"/>
+    <eLiterals name="OR"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Visibility">
+    <eLiterals name="HIDDEN"/>
+    <eLiterals name="SHOWN"/>
+    <eLiterals name="ENABLED"/>
+    <eLiterals name="DISABLED"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Layout">
+    <eLiterals name="HORIZONTAL"/>
+    <eLiterals name="VERTICAL"/>
   </eClassifiers>
 </ecore:EPackage>
