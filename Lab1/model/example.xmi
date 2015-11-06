@@ -7,7 +7,8 @@
     xsi:schemaLocation="http://www.example.org/views views.ecore">
   <domainModel>
     <classes
-        name="Staff">
+        name="Staff"
+        isId="//@domainModel/@classes.0/@properties.2">
       <properties
           name="firstname"
           type="//@domainModel/@dataTypes.2"
@@ -18,7 +19,7 @@
           type="//@domainModel/@dataTypes.2"
           multiplicityLowerBound="1"
           multiplicityUpperBound="1"/>
-      <isId
+      <properties
           name="email"
           type="//@domainModel/@dataTypes.2"
           multiplicityLowerBound="1"
@@ -39,20 +40,22 @@
           multiplicityUpperBound="1"/>
     </classes>
     <classes
-        name="Institute">
+        name="Institute"
+        isId="//@domainModel/@classes.2/@properties.1">
       <properties
           name="name"
           type="//@domainModel/@dataTypes.2"
           multiplicityLowerBound="1"
           multiplicityUpperBound="1"/>
-      <isId
+      <properties
           name="number"
           type="//@domainModel/@dataTypes.0"
           multiplicityLowerBound="1"
           multiplicityUpperBound="1"/>
     </classes>
     <classes
-        name="Course">
+        name="Course"
+        isId="//@domainModel/@classes.3/@properties.7">
       <properties
           name="type"
           type="//@domainModel/@enumerations.0"
@@ -88,7 +91,7 @@
           type="//@domainModel/@dataTypes.2"
           multiplicityLowerBound="0"
           multiplicityUpperBound="1"/>
-      <isId
+      <properties
           name="title"
           type="//@domainModel/@dataTypes.2"
           multiplicityLowerBound="1"
