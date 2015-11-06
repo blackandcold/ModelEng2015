@@ -11,8 +11,11 @@ One of the contained or inherited properties (cf. inheritance concept described 
 
 ### View Model
 - [Bernd] Not sure if Gernics work with EMF  (ClassIndexView, ClassOperationView)
-- [Bernd] (ClassIndexView, ClassOperationView, ListViewElement, TableViewElement) ... There should be a lot of specific
+- 
+- [Bernd] *ClassIndexView, ClassOperationView, ListViewElement, TableViewElement* ... There should be a lot of specific
 stuff about associated class instances/instance, no idea if that thing is correct :-)
+
+ > List: A list shows associated class instances in the form of a list that displays the instances’ id property.
 
 - [Bernd] SelectionViewElement, the text confuses me 
 
