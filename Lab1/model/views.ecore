@@ -118,6 +118,12 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="associations" upperBound="-1"
         eType="#//Association" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Model">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="domainModel" lowerBound="1"
+        eType="#//DomainModel" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="viewModel" eType="#//ViewModel"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ViewModel">
     <eStructuralFeatures xsi:type="ecore:EReference" name="viewGroups" upperBound="-1"
         eType="#//ViewGroup" containment="true"/>
@@ -196,7 +202,7 @@
       <details key="constraints" value="correctType"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="correctType" value="self.propertyRef.oclIsTypeOf(DataType) or self.propertyRef.oclIsTypeOf(Enumeration)"/>
+      <details key="correctType" value="self.propertyRef.type.oclIsTypeOf(DataType) or self.propertyRef.type.oclIsTypeOf(Enumeration)"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="#//TextLength"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -206,7 +212,7 @@
       <details key="constraints" value="isDateThing"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="isDateThing" value="self.propertyRef.type.name = 'Date' or self.propertyRef.type.name = 'Time' or self.propertyRef.type.name = 'DateTime'"/>
+      <details key="isDateThing" value="self.propertyRef.type.oclIsTypeOf(DataType) and &#xA;&#x9;&#x9;&#x9;(self.propertyRef.type.name = 'Date' or self.propertyRef.type.name = 'Time' or self.propertyRef.type.name = 'DateTime')"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -215,7 +221,7 @@
       <details key="constraints" value="correctType"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="correctType" value="self.propertyRef.oclIsTypeOf(DataType) or self.propertyRef.oclIsTypeOf(Enumeration)"/>
+      <details key="correctType" value="self.propertyRef.type.oclIsTypeOf(DataType) or self.propertyRef.type.oclIsTypeOf(Enumeration)"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="values" lowerBound="1"
         eType="#//Enumeration"/>
