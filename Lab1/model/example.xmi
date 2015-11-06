@@ -147,5 +147,73 @@
           multiplicityUpperBound="-1"/>
     </associations>
   </domainModel>
-  <viewModel/>
+  <viewModel
+      welcomeViewGroup="//@viewModel/@viewGroups.0">
+    <viewGroups
+        name="Institute"
+        startView="//@viewModel/@viewGroups.0/@views.0">
+      <views
+          xsi:type="views:ClassOperationView"
+          name="Create Institute"
+          header="Institute"
+          description="This is a form for creating institutes."
+          layout="VERTICAL"
+          instance="//@domainModel/@classes.2">
+        <viewElements
+            xsi:type="views:ViewElementGroup"
+            label=""
+            elementID="grpInstitute"
+            header="Institute Details"
+            layout="VERTICAL">
+          <viewElements
+              xsi:type="views:TextViewElement"
+              label="Number"
+              elementID="txtNumber"
+              propertyRef="//@domainModel/@classes.2/@properties.1"
+              format="^[0-9]+$"/>
+          <viewElements
+              xsi:type="views:TextViewElement"
+              label="Name"
+              elementID="txtName"
+              propertyRef="//@domainModel/@classes.2/@properties.0"
+              format="^[a-zA-Z -]+$"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:ListViewElement"
+            label="Professors"
+            elementID="lstProfessors"
+            classRef="//@domainModel/@classes.1">
+          <links
+              label="Add"
+              elementID="lnkCreateProf"
+              instance="//@domainModel/@classes.1"
+              view="//@viewModel/@viewGroups.0/@views.1"/>
+        </viewElements>
+      </views>
+      <views
+          xsi:type="views:ClassOperationView"
+          name="Create Professor"
+          header="Professor"
+          description=""
+          instance="//@domainModel/@classes.1">
+        <viewElements
+            xsi:type="views:ViewElementGroup"
+            label="Personal Details"
+            elementID=""
+            header="Personal Details"
+            layout="VERTICAL">
+          <viewElements
+              xsi:type="views:TextViewElement"
+              label="First name"
+              elementID="txtFirstName"
+              propertyRef="//@domainModel/@classes.0/@properties.0"
+              format=""/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:ViewElementGroup"
+            label="Status"
+            header="Status"/>
+      </views>
+    </viewGroups>
+  </viewModel>
 </views:Model>

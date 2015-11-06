@@ -218,8 +218,14 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="values" lowerBound="1"
         eType="#//Enumeration"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ListViewElement" eSuperTypes="#//ViewAssociationElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="TableViewElement" eSuperTypes="#//ViewAssociationElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ListViewElement" eSuperTypes="#//ViewAssociationElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="links" upperBound="-1"
+        eType="#//Link" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TableViewElement" eSuperTypes="#//ViewAssociationElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="links" upperBound="-1"
+        eType="#//Link" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Condition" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="conditionID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         iD="true"/>
@@ -242,8 +248,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="cond2" lowerBound="1" eType="#//Condition"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Link">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//ViewElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="instance" eType="#//Class"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="view" eType="#//ClassOperationView"/>
   </eClassifiers>
