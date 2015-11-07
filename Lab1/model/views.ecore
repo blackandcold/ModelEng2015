@@ -156,9 +156,10 @@
         eType="#//ViewElement" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ViewElement" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditions" upperBound="-1"
+        eType="#//Condition" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ViewElementGroup" eSuperTypes="#//ViewElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="header" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -174,11 +175,13 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="isPropertyMemberOfClass" value="&#xA;&#x9;&#x9;(self -> closure(o: ViewElement | o.oclContainer()) -> select(oclIsTypeOf(ClassOperationView)))&#xA;&#x9;&#x9; -> forAll(cov: ClassOperationView | (cov.instance->closure(superclass)).properties->includes(self.propertyRef))"/>
     </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="propertyRef" lowerBound="1"
         eType="#//Property"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ViewAssociationElement" abstract="true"
       eSuperTypes="#//ViewElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="header" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="classRef" lowerBound="1"
         eType="#//Class"/>
   </eClassifiers>
@@ -276,6 +279,7 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//ViewElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="instance" eType="#//Class"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="view" eType="#//ClassOperationView"/>
   </eClassifiers>

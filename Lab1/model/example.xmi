@@ -162,7 +162,6 @@
         <viewElements
             xsi:type="views:ViewElementGroup"
             elementID="grpInstitute"
-            label=""
             header="Institute Details"
             layout="VERTICAL">
           <viewElements
@@ -181,7 +180,7 @@
         <viewElements
             xsi:type="views:ListViewElement"
             elementID="lstProfessors"
-            label="Professors"
+            header="Professors"
             classRef="//@domainModel/@classes.1">
           <links
               elementID="lnkCreateProf"
@@ -197,7 +196,7 @@
         <viewElements
             xsi:type="views:TableViewElement"
             elementID="tblCourses"
-            label="Courses"
+            header="Courses"
             classRef="//@domainModel/@classes.3">
           <links
               elementID="lnkCreateCourse"
@@ -231,7 +230,6 @@
         <viewElements
             xsi:type="views:ViewElementGroup"
             elementID=""
-            label="Personal Details"
             header="Personal Details"
             layout="VERTICAL">
           <viewElements
@@ -254,7 +252,6 @@
         </viewElements>
         <viewElements
             xsi:type="views:ViewElementGroup"
-            label="Status"
             header="Status">
           <viewElements
               xsi:type="views:TextViewElement"
@@ -279,7 +276,6 @@
         <viewElements
             xsi:type="views:ViewElementGroup"
             elementID="grpUpdateEmail"
-            label="Update E-Mail Address"
             header="Update E-Mail Address"
             layout="VERTICAL">
           <viewElements
@@ -299,7 +295,6 @@
         <viewElements
             xsi:type="views:ViewElementGroup"
             elementID="grpDelCourse"
-            label="Delete Course"
             header="Delete Course"
             layout="VERTICAL">
           <viewElements
@@ -319,7 +314,6 @@
         <viewElements
             xsi:type="views:ViewElementGroup"
             elementID="grpCreateCourseDetails"
-            label=""
             header="Course Details"
             layout="VERTICAL">
           <viewElements
@@ -367,7 +361,6 @@
         <viewElements
             xsi:type="views:ViewElementGroup"
             elementID="grpLecture"
-            label=""
             header="Lecture"
             layout="VERTICAL">
           <viewElements
@@ -397,7 +390,7 @@
           classRef="//@domainModel/@classes.3">
         <list
             elementID="lstCourseIndex"
-            label=""
+            header=""
             classRef="//@domainModel/@classes.3">
           <buttons
               elementID="btnShow"
@@ -416,7 +409,6 @@
         <viewElements
             xsi:type="views:ViewElementGroup"
             elementID="grpCourseDetails"
-            label="Course Details"
             header="Course Details"
             layout="VERTICAL">
           <viewElements
