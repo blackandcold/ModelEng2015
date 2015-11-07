@@ -117,7 +117,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="associations" upperBound="-1"
         eType="#//Association" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Model">
+  <eClassifiers xsi:type="ecore:EClass" name="DVML">
     <eStructuralFeatures xsi:type="ecore:EReference" name="domainModel" lowerBound="1"
         eType="#//DomainModel" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="viewModel" eType="#//ViewModel"
@@ -215,29 +215,29 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="correctType" value="self.propertyRef.type.oclIsTypeOf(DataType) or self.propertyRef.type.oclIsTypeOf(Enumeration)"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="values" lowerBound="1"
-        eType="#//Enumeration"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="values" upperBound="-1"
+        eType="#//SelectionValue" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enumItems" ordered="false"
+        upperBound="-1" eType="#//EnumLiteral" changeable="false" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+        <details key="derivation" value="if self.propertyRef.type.oclIsTypeOf(Enumeration) then &#xA;&#x9;&#x9;&#x9;&#x9;self.propertyRef -> forAll(en: Enumeration | en.literals) else null endif"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SelectionValue">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ListViewElement" eSuperTypes="#//ViewAssociationElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="links" upperBound="-1"
         eType="#//Link" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="entrySet" lowerBound="1"
-        eType="#//ListEntrySet"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ListEntrySet">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="entries" upperBound="-1"
-        eType="#//ListEntry" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="buttons" upperBound="-1"
         eType="#//Link" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ListEntry">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="propertyRef" eType="#//Property"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TableViewElement" eSuperTypes="#//ViewAssociationElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="links" upperBound="-1"
         eType="#//Link" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="columnSet" lowerBound="1"
-        eType="#//ColumnSet"/>
+        eType="#//ColumnSet" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ColumnSet">
     <eStructuralFeatures xsi:type="ecore:EReference" name="columns" upperBound="-1"
@@ -252,6 +252,8 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="isPropertyMemberOfClass" value="&#xA;&#x9;&#x9;(self -> closure(o: ViewElement | o.oclContainer()) -> select(oclIsTypeOf(ViewAssociationElement)))&#xA;&#x9;&#x9; -> forAll(cov: ViewAssociationElement | (cov.classRef->closure(superclass)).properties->includes(self.propertyRef))"/>
     </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="header" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="propertyRef" eType="#//Property"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Condition" abstract="true">

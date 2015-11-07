@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<views:Model
+<views:DVML
     xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -188,6 +188,38 @@
               elementID="lnkCreateProf"
               instance="//@domainModel/@classes.1"
               view="//@viewModel/@viewGroups.0/@views.1"/>
+          <buttons
+              label="Update"
+              elementID="lnkUpdateProf"
+              instance="//@domainModel/@classes.1"
+              view="//@viewModel/@viewGroups.0/@views.2"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:TableViewElement"
+            label="Courses"
+            elementID="tblCourses"
+            classRef="//@domainModel/@classes.3">
+          <links
+              label="Add"
+              elementID="lnkCreateCourse"
+              instance="//@domainModel/@classes.3"
+              view="//@viewModel/@viewGroups.0/@views.3"/>
+          <columnSet>
+            <columns
+                header="Type"
+                propertyRef="//@domainModel/@classes.3/@properties.0"/>
+            <columns
+                header="Title"
+                propertyRef="//@domainModel/@classes.3/@properties.7"/>
+            <columns
+                header="Credits"
+                propertyRef="//@domainModel/@classes.3/@properties.1"/>
+            <buttons
+                label="Delete"
+                elementID="lnkDeleteCourse"
+                instance="//@domainModel/@classes.3"
+                view="//@viewModel/@viewGroups.0/@views.4"/>
+          </columnSet>
         </viewElements>
       </views>
       <views
@@ -208,12 +240,52 @@
               elementID="txtFirstName"
               propertyRef="//@domainModel/@classes.0/@properties.0"
               format=""/>
+          <viewElements
+              xsi:type="views:TextViewElement"
+              label="Last name"
+              elementID="txtLastName"
+              propertyRef="//@domainModel/@classes.0/@properties.1"
+              format=""/>
+          <viewElements
+              xsi:type="views:TextViewElement"
+              label="E-Mail"
+              elementID="txtEmail"
+              propertyRef="//@domainModel/@classes.0/@properties.2"/>
         </viewElements>
         <viewElements
             xsi:type="views:ViewElementGroup"
             label="Status"
-            header="Status"/>
+            header="Status">
+          <viewElements
+              xsi:type="views:TextViewElement"
+              label="HomeUni"
+              elementID="txtHomeUni"
+              propertyRef="//@domainModel/@classes.1/@properties.1"
+              format=""/>
+          <viewElements
+              xsi:type="views:SelectionViewElement"
+              label="VisitingProf"
+              elementID="selVisitingProf"
+              propertyRef="//@domainModel/@classes.1/@properties.0"/>
+        </viewElements>
       </views>
+      <views
+          xsi:type="views:ClassOperationView"
+          name="Update Professor"
+          header="Update Professor"
+          description=""
+          instance="//@domainModel/@classes.1"/>
+      <views
+          xsi:type="views:ClassOperationView"
+          name="Create Course"
+          header="Course"
+          instance="//@domainModel/@classes.3"/>
+      <views
+          xsi:type="views:ClassOperationView"
+          name="Delete Course"
+          header="Delete Course"
+          description=""
+          instance="//@domainModel/@classes.3"/>
     </viewGroups>
   </viewModel>
-</views:Model>
+</views:DVML>
