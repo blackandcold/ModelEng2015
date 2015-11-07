@@ -63,6 +63,7 @@ public class ListViewElementItemProvider extends ViewAssociationElementItemProvi
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ViewsPackage.Literals.LIST_VIEW_ELEMENT__LINKS);
+			childrenFeatures.add(ViewsPackage.Literals.LIST_VIEW_ELEMENT__ENTRY_SET);
 		}
 		return childrenFeatures;
 	}
@@ -119,6 +120,7 @@ public class ListViewElementItemProvider extends ViewAssociationElementItemProvi
 
 		switch (notification.getFeatureID(ListViewElement.class)) {
 			case ViewsPackage.LIST_VIEW_ELEMENT__LINKS:
+			case ViewsPackage.LIST_VIEW_ELEMENT__ENTRY_SET:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -140,6 +142,11 @@ public class ListViewElementItemProvider extends ViewAssociationElementItemProvi
 			(createChildParameter
 				(ViewsPackage.Literals.LIST_VIEW_ELEMENT__LINKS,
 				 ViewsFactory.eINSTANCE.createLink()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(ViewsPackage.Literals.LIST_VIEW_ELEMENT__ENTRY_SET,
+				 ViewsFactory.eINSTANCE.createListEntrySet()));
 	}
 
 }

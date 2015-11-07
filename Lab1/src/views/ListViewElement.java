@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link views.ListViewElement#getLinks <em>Links</em>}</li>
+ *   <li>{@link views.ListViewElement#getEntrySet <em>Entry Set</em>}</li>
  * </ul>
  *
  * @see views.ViewsPackage#getListViewElement()
@@ -36,5 +37,31 @@ public interface ListViewElement extends ViewAssociationElement {
 	 * @generated
 	 */
 	EList<Link> getLinks();
+
+	/**
+	 * Returns the value of the '<em><b>Entry Set</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Entry Set</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Entry Set</em>' reference.
+	 * @see #setEntrySet(ListEntrySet)
+	 * @see views.ViewsPackage#getListViewElement_EntrySet()
+	 * @model required="true"
+	 * @generated
+	 */
+	ListEntrySet getEntrySet();
+
+	/**
+	 * Sets the value of the '{@link views.ListViewElement#getEntrySet <em>Entry Set</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Entry Set</em>' reference.
+	 * @see #getEntrySet()
+	 * @generated
+	 */
+	void setEntrySet(ListEntrySet value);
 
 } // ListViewElement

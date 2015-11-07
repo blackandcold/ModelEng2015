@@ -103,9 +103,25 @@ Package views <http://www.example.org/views>
 
   Class ListViewElement -> ViewAssociationElement
     Reference links : Link<<0..*>>
+    Reference entrySet : ListEntrySet<<1..1>>
+
+  Class ListEntrySet
+    Reference entries : ListEntry<<0..*>>
+    Reference buttons : Link<<0..*>>
+
+  Class ListEntry
+    Reference propertyRef : Property
 
   Class TableViewElement -> ViewAssociationElement
     Reference links : Link<<0..*>>
+    Reference columnSet : ColumnSet<<1..1>>
+
+  Class ColumnSet
+    Reference columns : Column<<0..*>>
+    Reference buttons : Link<<0..*>>
+
+  Class Column
+    Reference propertyRef : Property
 
   Class Condition
     Attribute conditionID : EString

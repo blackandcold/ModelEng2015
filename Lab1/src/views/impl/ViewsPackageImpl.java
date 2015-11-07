@@ -17,6 +17,8 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import views.Association;
 import views.ClassIndexView;
 import views.ClassOperationView;
+import views.Column;
+import views.ColumnSet;
 import views.ComparisonCondition;
 import views.CompositeCondition;
 import views.Condition;
@@ -27,6 +29,8 @@ import views.EnumLiteral;
 import views.Enumeration;
 import views.Layout;
 import views.Link;
+import views.ListEntry;
+import views.ListEntrySet;
 import views.ListViewElement;
 import views.Model;
 import views.Operator;
@@ -215,7 +219,35 @@ public class ViewsPackageImpl extends EPackageImpl implements ViewsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass listEntrySetEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass listEntryEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass tableViewElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass columnSetEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass columnEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1023,6 +1055,60 @@ public class ViewsPackageImpl extends EPackageImpl implements ViewsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getListViewElement_EntrySet() {
+		return (EReference)listViewElementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getListEntrySet() {
+		return listEntrySetEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getListEntrySet_Entries() {
+		return (EReference)listEntrySetEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getListEntrySet_Buttons() {
+		return (EReference)listEntrySetEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getListEntry() {
+		return listEntryEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getListEntry_PropertyRef() {
+		return (EReference)listEntryEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getTableViewElement() {
 		return tableViewElementEClass;
 	}
@@ -1034,6 +1120,60 @@ public class ViewsPackageImpl extends EPackageImpl implements ViewsPackage {
 	 */
 	public EReference getTableViewElement_Links() {
 		return (EReference)tableViewElementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTableViewElement_ColumnSet() {
+		return (EReference)tableViewElementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getColumnSet() {
+		return columnSetEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getColumnSet_Columns() {
+		return (EReference)columnSetEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getColumnSet_Buttons() {
+		return (EReference)columnSetEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getColumn() {
+		return columnEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getColumn_PropertyRef() {
+		return (EReference)columnEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1313,9 +1453,25 @@ public class ViewsPackageImpl extends EPackageImpl implements ViewsPackage {
 
 		listViewElementEClass = createEClass(LIST_VIEW_ELEMENT);
 		createEReference(listViewElementEClass, LIST_VIEW_ELEMENT__LINKS);
+		createEReference(listViewElementEClass, LIST_VIEW_ELEMENT__ENTRY_SET);
+
+		listEntrySetEClass = createEClass(LIST_ENTRY_SET);
+		createEReference(listEntrySetEClass, LIST_ENTRY_SET__ENTRIES);
+		createEReference(listEntrySetEClass, LIST_ENTRY_SET__BUTTONS);
+
+		listEntryEClass = createEClass(LIST_ENTRY);
+		createEReference(listEntryEClass, LIST_ENTRY__PROPERTY_REF);
 
 		tableViewElementEClass = createEClass(TABLE_VIEW_ELEMENT);
 		createEReference(tableViewElementEClass, TABLE_VIEW_ELEMENT__LINKS);
+		createEReference(tableViewElementEClass, TABLE_VIEW_ELEMENT__COLUMN_SET);
+
+		columnSetEClass = createEClass(COLUMN_SET);
+		createEReference(columnSetEClass, COLUMN_SET__COLUMNS);
+		createEReference(columnSetEClass, COLUMN_SET__BUTTONS);
+
+		columnEClass = createEClass(COLUMN);
+		createEReference(columnEClass, COLUMN__PROPERTY_REF);
 
 		conditionEClass = createEClass(CONDITION);
 		createEAttribute(conditionEClass, CONDITION__CONDITION_ID);
@@ -1494,9 +1650,25 @@ public class ViewsPackageImpl extends EPackageImpl implements ViewsPackage {
 
 		initEClass(listViewElementEClass, ListViewElement.class, "ListViewElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getListViewElement_Links(), this.getLink(), null, "links", null, 0, -1, ListViewElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getListViewElement_EntrySet(), this.getListEntrySet(), null, "entrySet", null, 1, 1, ListViewElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(listEntrySetEClass, ListEntrySet.class, "ListEntrySet", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getListEntrySet_Entries(), this.getListEntry(), null, "entries", null, 0, -1, ListEntrySet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getListEntrySet_Buttons(), this.getLink(), null, "buttons", null, 0, -1, ListEntrySet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(listEntryEClass, ListEntry.class, "ListEntry", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getListEntry_PropertyRef(), this.getProperty(), null, "propertyRef", null, 0, 1, ListEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(tableViewElementEClass, TableViewElement.class, "TableViewElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTableViewElement_Links(), this.getLink(), null, "links", null, 0, -1, TableViewElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTableViewElement_ColumnSet(), this.getColumnSet(), null, "columnSet", null, 1, 1, TableViewElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(columnSetEClass, ColumnSet.class, "ColumnSet", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getColumnSet_Columns(), this.getColumn(), null, "columns", null, 0, -1, ColumnSet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getColumnSet_Buttons(), this.getLink(), null, "buttons", null, 0, -1, ColumnSet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(columnEClass, Column.class, "Column", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getColumn_PropertyRef(), this.getProperty(), null, "propertyRef", null, 0, 1, Column.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(conditionEClass, Condition.class, "Condition", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getCondition_ConditionID(), ecorePackage.getEString(), "conditionID", null, 0, 1, Condition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

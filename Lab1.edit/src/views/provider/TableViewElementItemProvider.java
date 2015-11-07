@@ -63,6 +63,7 @@ public class TableViewElementItemProvider extends ViewAssociationElementItemProv
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ViewsPackage.Literals.TABLE_VIEW_ELEMENT__LINKS);
+			childrenFeatures.add(ViewsPackage.Literals.TABLE_VIEW_ELEMENT__COLUMN_SET);
 		}
 		return childrenFeatures;
 	}
@@ -119,6 +120,7 @@ public class TableViewElementItemProvider extends ViewAssociationElementItemProv
 
 		switch (notification.getFeatureID(TableViewElement.class)) {
 			case ViewsPackage.TABLE_VIEW_ELEMENT__LINKS:
+			case ViewsPackage.TABLE_VIEW_ELEMENT__COLUMN_SET:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -140,6 +142,11 @@ public class TableViewElementItemProvider extends ViewAssociationElementItemProv
 			(createChildParameter
 				(ViewsPackage.Literals.TABLE_VIEW_ELEMENT__LINKS,
 				 ViewsFactory.eINSTANCE.createLink()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(ViewsPackage.Literals.TABLE_VIEW_ELEMENT__COLUMN_SET,
+				 ViewsFactory.eINSTANCE.createColumnSet()));
 	}
 
 }

@@ -14,6 +14,8 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import views.Association;
 import views.ClassIndexView;
 import views.ClassOperationView;
+import views.Column;
+import views.ColumnSet;
 import views.ComparisonCondition;
 import views.CompositeCondition;
 import views.DataType;
@@ -23,6 +25,8 @@ import views.EnumLiteral;
 import views.Enumeration;
 import views.Layout;
 import views.Link;
+import views.ListEntry;
+import views.ListEntrySet;
 import views.ListViewElement;
 import views.Model;
 import views.Operator;
@@ -101,7 +105,11 @@ public class ViewsFactoryImpl extends EFactoryImpl implements ViewsFactory {
 			case ViewsPackage.DATE_TIME_PICKER_VIEW_ELEMENT: return createDateTimePickerViewElement();
 			case ViewsPackage.SELECTION_VIEW_ELEMENT: return createSelectionViewElement();
 			case ViewsPackage.LIST_VIEW_ELEMENT: return createListViewElement();
+			case ViewsPackage.LIST_ENTRY_SET: return createListEntrySet();
+			case ViewsPackage.LIST_ENTRY: return createListEntry();
 			case ViewsPackage.TABLE_VIEW_ELEMENT: return createTableViewElement();
+			case ViewsPackage.COLUMN_SET: return createColumnSet();
+			case ViewsPackage.COLUMN: return createColumn();
 			case ViewsPackage.COMPARISON_CONDITION: return createComparisonCondition();
 			case ViewsPackage.COMPOSITE_CONDITION: return createCompositeCondition();
 			case ViewsPackage.LINK: return createLink();
@@ -337,9 +345,49 @@ public class ViewsFactoryImpl extends EFactoryImpl implements ViewsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ListEntrySet createListEntrySet() {
+		ListEntrySetImpl listEntrySet = new ListEntrySetImpl();
+		return listEntrySet;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ListEntry createListEntry() {
+		ListEntryImpl listEntry = new ListEntryImpl();
+		return listEntry;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public TableViewElement createTableViewElement() {
 		TableViewElementImpl tableViewElement = new TableViewElementImpl();
 		return tableViewElement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ColumnSet createColumnSet() {
+		ColumnSetImpl columnSet = new ColumnSetImpl();
+		return columnSet;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Column createColumn() {
+		ColumnImpl column = new ColumnImpl();
+		return column;
 	}
 
 	/**

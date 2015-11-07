@@ -486,6 +486,52 @@ public class ViewsItemProviderAdapterFactory extends ViewsAdapterFactory impleme
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link views.ListEntrySet} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ListEntrySetItemProvider listEntrySetItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link views.ListEntrySet}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createListEntrySetAdapter() {
+		if (listEntrySetItemProvider == null) {
+			listEntrySetItemProvider = new ListEntrySetItemProvider(this);
+		}
+
+		return listEntrySetItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link views.ListEntry} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ListEntryItemProvider listEntryItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link views.ListEntry}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createListEntryAdapter() {
+		if (listEntryItemProvider == null) {
+			listEntryItemProvider = new ListEntryItemProvider(this);
+		}
+
+		return listEntryItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link views.TableViewElement} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -506,6 +552,52 @@ public class ViewsItemProviderAdapterFactory extends ViewsAdapterFactory impleme
 		}
 
 		return tableViewElementItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link views.ColumnSet} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ColumnSetItemProvider columnSetItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link views.ColumnSet}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createColumnSetAdapter() {
+		if (columnSetItemProvider == null) {
+			columnSetItemProvider = new ColumnSetItemProvider(this);
+		}
+
+		return columnSetItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link views.Column} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ColumnItemProvider columnItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link views.Column}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createColumnAdapter() {
+		if (columnItemProvider == null) {
+			columnItemProvider = new ColumnItemProvider(this);
+		}
+
+		return columnItemProvider;
 	}
 
 	/**
@@ -694,7 +786,11 @@ public class ViewsItemProviderAdapterFactory extends ViewsAdapterFactory impleme
 		if (dateTimePickerViewElementItemProvider != null) dateTimePickerViewElementItemProvider.dispose();
 		if (selectionViewElementItemProvider != null) selectionViewElementItemProvider.dispose();
 		if (listViewElementItemProvider != null) listViewElementItemProvider.dispose();
+		if (listEntrySetItemProvider != null) listEntrySetItemProvider.dispose();
+		if (listEntryItemProvider != null) listEntryItemProvider.dispose();
 		if (tableViewElementItemProvider != null) tableViewElementItemProvider.dispose();
+		if (columnSetItemProvider != null) columnSetItemProvider.dispose();
+		if (columnItemProvider != null) columnItemProvider.dispose();
 		if (comparisonConditionItemProvider != null) comparisonConditionItemProvider.dispose();
 		if (compositeConditionItemProvider != null) compositeConditionItemProvider.dispose();
 		if (linkItemProvider != null) linkItemProvider.dispose();

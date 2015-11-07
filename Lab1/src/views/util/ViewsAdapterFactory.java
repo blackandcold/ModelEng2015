@@ -12,6 +12,8 @@ import org.eclipse.emf.ecore.EObject;
 import views.Association;
 import views.ClassIndexView;
 import views.ClassOperationView;
+import views.Column;
+import views.ColumnSet;
 import views.ComparisonCondition;
 import views.CompositeCondition;
 import views.Condition;
@@ -21,6 +23,8 @@ import views.DomainModel;
 import views.EnumLiteral;
 import views.Enumeration;
 import views.Link;
+import views.ListEntry;
+import views.ListEntrySet;
 import views.ListViewElement;
 import views.Model;
 import views.Property;
@@ -182,8 +186,24 @@ public class ViewsAdapterFactory extends AdapterFactoryImpl {
 				return createListViewElementAdapter();
 			}
 			@Override
+			public Adapter caseListEntrySet(ListEntrySet object) {
+				return createListEntrySetAdapter();
+			}
+			@Override
+			public Adapter caseListEntry(ListEntry object) {
+				return createListEntryAdapter();
+			}
+			@Override
 			public Adapter caseTableViewElement(TableViewElement object) {
 				return createTableViewElementAdapter();
+			}
+			@Override
+			public Adapter caseColumnSet(ColumnSet object) {
+				return createColumnSetAdapter();
+			}
+			@Override
+			public Adapter caseColumn(Column object) {
+				return createColumnAdapter();
 			}
 			@Override
 			public Adapter caseCondition(Condition object) {
@@ -530,6 +550,34 @@ public class ViewsAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link views.ListEntrySet <em>List Entry Set</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see views.ListEntrySet
+	 * @generated
+	 */
+	public Adapter createListEntrySetAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link views.ListEntry <em>List Entry</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see views.ListEntry
+	 * @generated
+	 */
+	public Adapter createListEntryAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link views.TableViewElement <em>Table View Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -540,6 +588,34 @@ public class ViewsAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createTableViewElementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link views.ColumnSet <em>Column Set</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see views.ColumnSet
+	 * @generated
+	 */
+	public Adapter createColumnSetAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link views.Column <em>Column</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see views.Column
+	 * @generated
+	 */
+	public Adapter createColumnAdapter() {
 		return null;
 	}
 

@@ -10,6 +10,8 @@ import org.eclipse.emf.ecore.util.Switch;
 import views.Association;
 import views.ClassIndexView;
 import views.ClassOperationView;
+import views.Column;
+import views.ColumnSet;
 import views.ComparisonCondition;
 import views.CompositeCondition;
 import views.Condition;
@@ -19,6 +21,8 @@ import views.DomainModel;
 import views.EnumLiteral;
 import views.Enumeration;
 import views.Link;
+import views.ListEntry;
+import views.ListEntrySet;
 import views.ListViewElement;
 import views.Model;
 import views.Property;
@@ -240,11 +244,35 @@ public class ViewsSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case ViewsPackage.LIST_ENTRY_SET: {
+				ListEntrySet listEntrySet = (ListEntrySet)theEObject;
+				T1 result = caseListEntrySet(listEntrySet);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ViewsPackage.LIST_ENTRY: {
+				ListEntry listEntry = (ListEntry)theEObject;
+				T1 result = caseListEntry(listEntry);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case ViewsPackage.TABLE_VIEW_ELEMENT: {
 				TableViewElement tableViewElement = (TableViewElement)theEObject;
 				T1 result = caseTableViewElement(tableViewElement);
 				if (result == null) result = caseViewAssociationElement(tableViewElement);
 				if (result == null) result = caseViewElement(tableViewElement);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ViewsPackage.COLUMN_SET: {
+				ColumnSet columnSet = (ColumnSet)theEObject;
+				T1 result = caseColumnSet(columnSet);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ViewsPackage.COLUMN: {
+				Column column = (Column)theEObject;
+				T1 result = caseColumn(column);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -610,6 +638,36 @@ public class ViewsSwitch<T1> extends Switch<T1> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>List Entry Set</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>List Entry Set</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseListEntrySet(ListEntrySet object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>List Entry</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>List Entry</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseListEntry(ListEntry object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Table View Element</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -621,6 +679,36 @@ public class ViewsSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseTableViewElement(TableViewElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Column Set</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Column Set</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseColumnSet(ColumnSet object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Column</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Column</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseColumn(Column object) {
 		return null;
 	}
 

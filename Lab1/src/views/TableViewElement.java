@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link views.TableViewElement#getLinks <em>Links</em>}</li>
+ *   <li>{@link views.TableViewElement#getColumnSet <em>Column Set</em>}</li>
  * </ul>
  *
  * @see views.ViewsPackage#getTableViewElement()
@@ -36,5 +37,31 @@ public interface TableViewElement extends ViewAssociationElement {
 	 * @generated
 	 */
 	EList<Link> getLinks();
+
+	/**
+	 * Returns the value of the '<em><b>Column Set</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Column Set</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Column Set</em>' reference.
+	 * @see #setColumnSet(ColumnSet)
+	 * @see views.ViewsPackage#getTableViewElement_ColumnSet()
+	 * @model required="true"
+	 * @generated
+	 */
+	ColumnSet getColumnSet();
+
+	/**
+	 * Sets the value of the '{@link views.TableViewElement#getColumnSet <em>Column Set</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Column Set</em>' reference.
+	 * @see #getColumnSet()
+	 * @generated
+	 */
+	void setColumnSet(ColumnSet value);
 
 } // TableViewElement

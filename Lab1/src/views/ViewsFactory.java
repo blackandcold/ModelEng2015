@@ -184,6 +184,24 @@ public interface ViewsFactory extends EFactory {
 	ListViewElement createListViewElement();
 
 	/**
+	 * Returns a new object of class '<em>List Entry Set</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>List Entry Set</em>'.
+	 * @generated
+	 */
+	ListEntrySet createListEntrySet();
+
+	/**
+	 * Returns a new object of class '<em>List Entry</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>List Entry</em>'.
+	 * @generated
+	 */
+	ListEntry createListEntry();
+
+	/**
 	 * Returns a new object of class '<em>Table View Element</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -191,6 +209,24 @@ public interface ViewsFactory extends EFactory {
 	 * @generated
 	 */
 	TableViewElement createTableViewElement();
+
+	/**
+	 * Returns a new object of class '<em>Column Set</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Column Set</em>'.
+	 * @generated
+	 */
+	ColumnSet createColumnSet();
+
+	/**
+	 * Returns a new object of class '<em>Column</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Column</em>'.
+	 * @generated
+	 */
+	Column createColumn();
 
 	/**
 	 * Returns a new object of class '<em>Comparison Condition</em>'.

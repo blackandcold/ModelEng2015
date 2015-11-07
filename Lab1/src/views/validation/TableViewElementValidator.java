@@ -6,6 +6,7 @@ package views.validation;
 
 import org.eclipse.emf.common.util.EList;
 
+import views.ColumnSet;
 import views.Link;
 
 /**
@@ -18,4 +19,6 @@ public interface TableViewElementValidator {
 	boolean validate();
 
 	boolean validateLinks(EList<Link> value);
+
+	boolean validateColumnSet(ColumnSet value);
 }

@@ -1397,13 +1397,22 @@ public interface ViewsPackage extends EPackage {
 	int LIST_VIEW_ELEMENT__LINKS = VIEW_ASSOCIATION_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Entry Set</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_VIEW_ELEMENT__ENTRY_SET = VIEW_ASSOCIATION_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>List View Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LIST_VIEW_ELEMENT_FEATURE_COUNT = VIEW_ASSOCIATION_ELEMENT_FEATURE_COUNT + 1;
+	int LIST_VIEW_ELEMENT_FEATURE_COUNT = VIEW_ASSOCIATION_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>List View Element</em>' class.
@@ -1415,6 +1424,89 @@ public interface ViewsPackage extends EPackage {
 	int LIST_VIEW_ELEMENT_OPERATION_COUNT = VIEW_ASSOCIATION_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link views.impl.ListEntrySetImpl <em>List Entry Set</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see views.impl.ListEntrySetImpl
+	 * @see views.impl.ViewsPackageImpl#getListEntrySet()
+	 * @generated
+	 */
+	int LIST_ENTRY_SET = 22;
+
+	/**
+	 * The feature id for the '<em><b>Entries</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_ENTRY_SET__ENTRIES = 0;
+
+	/**
+	 * The feature id for the '<em><b>Buttons</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_ENTRY_SET__BUTTONS = 1;
+
+	/**
+	 * The number of structural features of the '<em>List Entry Set</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_ENTRY_SET_FEATURE_COUNT = 2;
+
+	/**
+	 * The number of operations of the '<em>List Entry Set</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_ENTRY_SET_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link views.impl.ListEntryImpl <em>List Entry</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see views.impl.ListEntryImpl
+	 * @see views.impl.ViewsPackageImpl#getListEntry()
+	 * @generated
+	 */
+	int LIST_ENTRY = 23;
+
+	/**
+	 * The feature id for the '<em><b>Property Ref</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_ENTRY__PROPERTY_REF = 0;
+
+	/**
+	 * The number of structural features of the '<em>List Entry</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_ENTRY_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>List Entry</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_ENTRY_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link views.impl.TableViewElementImpl <em>Table View Element</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1422,7 +1514,7 @@ public interface ViewsPackage extends EPackage {
 	 * @see views.impl.ViewsPackageImpl#getTableViewElement()
 	 * @generated
 	 */
-	int TABLE_VIEW_ELEMENT = 22;
+	int TABLE_VIEW_ELEMENT = 24;
 
 	/**
 	 * The feature id for the '<em><b>Label</b></em>' attribute.
@@ -1461,13 +1553,22 @@ public interface ViewsPackage extends EPackage {
 	int TABLE_VIEW_ELEMENT__LINKS = VIEW_ASSOCIATION_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Column Set</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_VIEW_ELEMENT__COLUMN_SET = VIEW_ASSOCIATION_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Table View Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_VIEW_ELEMENT_FEATURE_COUNT = VIEW_ASSOCIATION_ELEMENT_FEATURE_COUNT + 1;
+	int TABLE_VIEW_ELEMENT_FEATURE_COUNT = VIEW_ASSOCIATION_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Table View Element</em>' class.
@@ -1479,6 +1580,89 @@ public interface ViewsPackage extends EPackage {
 	int TABLE_VIEW_ELEMENT_OPERATION_COUNT = VIEW_ASSOCIATION_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link views.impl.ColumnSetImpl <em>Column Set</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see views.impl.ColumnSetImpl
+	 * @see views.impl.ViewsPackageImpl#getColumnSet()
+	 * @generated
+	 */
+	int COLUMN_SET = 25;
+
+	/**
+	 * The feature id for the '<em><b>Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COLUMN_SET__COLUMNS = 0;
+
+	/**
+	 * The feature id for the '<em><b>Buttons</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COLUMN_SET__BUTTONS = 1;
+
+	/**
+	 * The number of structural features of the '<em>Column Set</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COLUMN_SET_FEATURE_COUNT = 2;
+
+	/**
+	 * The number of operations of the '<em>Column Set</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COLUMN_SET_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link views.impl.ColumnImpl <em>Column</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see views.impl.ColumnImpl
+	 * @see views.impl.ViewsPackageImpl#getColumn()
+	 * @generated
+	 */
+	int COLUMN = 26;
+
+	/**
+	 * The feature id for the '<em><b>Property Ref</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COLUMN__PROPERTY_REF = 0;
+
+	/**
+	 * The number of structural features of the '<em>Column</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COLUMN_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>Column</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COLUMN_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link views.impl.ConditionImpl <em>Condition</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1486,7 +1670,7 @@ public interface ViewsPackage extends EPackage {
 	 * @see views.impl.ViewsPackageImpl#getCondition()
 	 * @generated
 	 */
-	int CONDITION = 23;
+	int CONDITION = 27;
 
 	/**
 	 * The feature id for the '<em><b>Condition ID</b></em>' attribute.
@@ -1532,7 +1716,7 @@ public interface ViewsPackage extends EPackage {
 	 * @see views.impl.ViewsPackageImpl#getComparisonCondition()
 	 * @generated
 	 */
-	int COMPARISON_CONDITION = 24;
+	int COMPARISON_CONDITION = 28;
 
 	/**
 	 * The feature id for the '<em><b>Condition ID</b></em>' attribute.
@@ -1596,7 +1780,7 @@ public interface ViewsPackage extends EPackage {
 	 * @see views.impl.ViewsPackageImpl#getCompositeCondition()
 	 * @generated
 	 */
-	int COMPOSITE_CONDITION = 25;
+	int COMPOSITE_CONDITION = 29;
 
 	/**
 	 * The feature id for the '<em><b>Condition ID</b></em>' attribute.
@@ -1669,7 +1853,7 @@ public interface ViewsPackage extends EPackage {
 	 * @see views.impl.ViewsPackageImpl#getLink()
 	 * @generated
 	 */
-	int LINK = 26;
+	int LINK = 30;
 
 	/**
 	 * The feature id for the '<em><b>Label</b></em>' attribute.
@@ -1733,7 +1917,7 @@ public interface ViewsPackage extends EPackage {
 	 * @see views.impl.ViewsPackageImpl#getTextLength()
 	 * @generated
 	 */
-	int TEXT_LENGTH = 27;
+	int TEXT_LENGTH = 31;
 
 	/**
 	 * The meta object id for the '{@link views.Operator <em>Operator</em>}' enum.
@@ -1743,7 +1927,7 @@ public interface ViewsPackage extends EPackage {
 	 * @see views.impl.ViewsPackageImpl#getOperator()
 	 * @generated
 	 */
-	int OPERATOR = 28;
+	int OPERATOR = 32;
 
 	/**
 	 * The meta object id for the '{@link views.Visibility <em>Visibility</em>}' enum.
@@ -1753,7 +1937,7 @@ public interface ViewsPackage extends EPackage {
 	 * @see views.impl.ViewsPackageImpl#getVisibility()
 	 * @generated
 	 */
-	int VISIBILITY = 29;
+	int VISIBILITY = 33;
 
 	/**
 	 * The meta object id for the '{@link views.Layout <em>Layout</em>}' enum.
@@ -1763,7 +1947,7 @@ public interface ViewsPackage extends EPackage {
 	 * @see views.impl.ViewsPackageImpl#getLayout()
 	 * @generated
 	 */
-	int LAYOUT = 30;
+	int LAYOUT = 34;
 
 
 	/**
@@ -2566,6 +2750,70 @@ public interface ViewsPackage extends EPackage {
 	EReference getListViewElement_Links();
 
 	/**
+	 * Returns the meta object for the reference '{@link views.ListViewElement#getEntrySet <em>Entry Set</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Entry Set</em>'.
+	 * @see views.ListViewElement#getEntrySet()
+	 * @see #getListViewElement()
+	 * @generated
+	 */
+	EReference getListViewElement_EntrySet();
+
+	/**
+	 * Returns the meta object for class '{@link views.ListEntrySet <em>List Entry Set</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>List Entry Set</em>'.
+	 * @see views.ListEntrySet
+	 * @generated
+	 */
+	EClass getListEntrySet();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link views.ListEntrySet#getEntries <em>Entries</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Entries</em>'.
+	 * @see views.ListEntrySet#getEntries()
+	 * @see #getListEntrySet()
+	 * @generated
+	 */
+	EReference getListEntrySet_Entries();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link views.ListEntrySet#getButtons <em>Buttons</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Buttons</em>'.
+	 * @see views.ListEntrySet#getButtons()
+	 * @see #getListEntrySet()
+	 * @generated
+	 */
+	EReference getListEntrySet_Buttons();
+
+	/**
+	 * Returns the meta object for class '{@link views.ListEntry <em>List Entry</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>List Entry</em>'.
+	 * @see views.ListEntry
+	 * @generated
+	 */
+	EClass getListEntry();
+
+	/**
+	 * Returns the meta object for the reference '{@link views.ListEntry#getPropertyRef <em>Property Ref</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Property Ref</em>'.
+	 * @see views.ListEntry#getPropertyRef()
+	 * @see #getListEntry()
+	 * @generated
+	 */
+	EReference getListEntry_PropertyRef();
+
+	/**
 	 * Returns the meta object for class '{@link views.TableViewElement <em>Table View Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2585,6 +2833,70 @@ public interface ViewsPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getTableViewElement_Links();
+
+	/**
+	 * Returns the meta object for the reference '{@link views.TableViewElement#getColumnSet <em>Column Set</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Column Set</em>'.
+	 * @see views.TableViewElement#getColumnSet()
+	 * @see #getTableViewElement()
+	 * @generated
+	 */
+	EReference getTableViewElement_ColumnSet();
+
+	/**
+	 * Returns the meta object for class '{@link views.ColumnSet <em>Column Set</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Column Set</em>'.
+	 * @see views.ColumnSet
+	 * @generated
+	 */
+	EClass getColumnSet();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link views.ColumnSet#getColumns <em>Columns</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Columns</em>'.
+	 * @see views.ColumnSet#getColumns()
+	 * @see #getColumnSet()
+	 * @generated
+	 */
+	EReference getColumnSet_Columns();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link views.ColumnSet#getButtons <em>Buttons</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Buttons</em>'.
+	 * @see views.ColumnSet#getButtons()
+	 * @see #getColumnSet()
+	 * @generated
+	 */
+	EReference getColumnSet_Buttons();
+
+	/**
+	 * Returns the meta object for class '{@link views.Column <em>Column</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Column</em>'.
+	 * @see views.Column
+	 * @generated
+	 */
+	EClass getColumn();
+
+	/**
+	 * Returns the meta object for the reference '{@link views.Column#getPropertyRef <em>Property Ref</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Property Ref</em>'.
+	 * @see views.Column#getPropertyRef()
+	 * @see #getColumn()
+	 * @generated
+	 */
+	EReference getColumn_PropertyRef();
 
 	/**
 	 * Returns the meta object for class '{@link views.Condition <em>Condition</em>}'.
@@ -3433,6 +3745,58 @@ public interface ViewsPackage extends EPackage {
 		EReference LIST_VIEW_ELEMENT__LINKS = eINSTANCE.getListViewElement_Links();
 
 		/**
+		 * The meta object literal for the '<em><b>Entry Set</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LIST_VIEW_ELEMENT__ENTRY_SET = eINSTANCE.getListViewElement_EntrySet();
+
+		/**
+		 * The meta object literal for the '{@link views.impl.ListEntrySetImpl <em>List Entry Set</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see views.impl.ListEntrySetImpl
+		 * @see views.impl.ViewsPackageImpl#getListEntrySet()
+		 * @generated
+		 */
+		EClass LIST_ENTRY_SET = eINSTANCE.getListEntrySet();
+
+		/**
+		 * The meta object literal for the '<em><b>Entries</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LIST_ENTRY_SET__ENTRIES = eINSTANCE.getListEntrySet_Entries();
+
+		/**
+		 * The meta object literal for the '<em><b>Buttons</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LIST_ENTRY_SET__BUTTONS = eINSTANCE.getListEntrySet_Buttons();
+
+		/**
+		 * The meta object literal for the '{@link views.impl.ListEntryImpl <em>List Entry</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see views.impl.ListEntryImpl
+		 * @see views.impl.ViewsPackageImpl#getListEntry()
+		 * @generated
+		 */
+		EClass LIST_ENTRY = eINSTANCE.getListEntry();
+
+		/**
+		 * The meta object literal for the '<em><b>Property Ref</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LIST_ENTRY__PROPERTY_REF = eINSTANCE.getListEntry_PropertyRef();
+
+		/**
 		 * The meta object literal for the '{@link views.impl.TableViewElementImpl <em>Table View Element</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3449,6 +3813,58 @@ public interface ViewsPackage extends EPackage {
 		 * @generated
 		 */
 		EReference TABLE_VIEW_ELEMENT__LINKS = eINSTANCE.getTableViewElement_Links();
+
+		/**
+		 * The meta object literal for the '<em><b>Column Set</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TABLE_VIEW_ELEMENT__COLUMN_SET = eINSTANCE.getTableViewElement_ColumnSet();
+
+		/**
+		 * The meta object literal for the '{@link views.impl.ColumnSetImpl <em>Column Set</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see views.impl.ColumnSetImpl
+		 * @see views.impl.ViewsPackageImpl#getColumnSet()
+		 * @generated
+		 */
+		EClass COLUMN_SET = eINSTANCE.getColumnSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Columns</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COLUMN_SET__COLUMNS = eINSTANCE.getColumnSet_Columns();
+
+		/**
+		 * The meta object literal for the '<em><b>Buttons</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COLUMN_SET__BUTTONS = eINSTANCE.getColumnSet_Buttons();
+
+		/**
+		 * The meta object literal for the '{@link views.impl.ColumnImpl <em>Column</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see views.impl.ColumnImpl
+		 * @see views.impl.ViewsPackageImpl#getColumn()
+		 * @generated
+		 */
+		EClass COLUMN = eINSTANCE.getColumn();
+
+		/**
+		 * The meta object literal for the '<em><b>Property Ref</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COLUMN__PROPERTY_REF = eINSTANCE.getColumn_PropertyRef();
 
 		/**
 		 * The meta object literal for the '{@link views.impl.ConditionImpl <em>Condition</em>}' class.

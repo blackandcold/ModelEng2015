@@ -15,6 +15,8 @@ import org.eclipse.emf.ecore.util.EObjectValidator;
 import views.Association;
 import views.ClassIndexView;
 import views.ClassOperationView;
+import views.Column;
+import views.ColumnSet;
 import views.ComparisonCondition;
 import views.CompositeCondition;
 import views.Condition;
@@ -25,6 +27,8 @@ import views.EnumLiteral;
 import views.Enumeration;
 import views.Layout;
 import views.Link;
+import views.ListEntry;
+import views.ListEntrySet;
 import views.ListViewElement;
 import views.Model;
 import views.Operator;
@@ -160,8 +164,16 @@ public class ViewsValidator extends EObjectValidator {
 				return validateSelectionViewElement((SelectionViewElement)value, diagnostics, context);
 			case ViewsPackage.LIST_VIEW_ELEMENT:
 				return validateListViewElement((ListViewElement)value, diagnostics, context);
+			case ViewsPackage.LIST_ENTRY_SET:
+				return validateListEntrySet((ListEntrySet)value, diagnostics, context);
+			case ViewsPackage.LIST_ENTRY:
+				return validateListEntry((ListEntry)value, diagnostics, context);
 			case ViewsPackage.TABLE_VIEW_ELEMENT:
 				return validateTableViewElement((TableViewElement)value, diagnostics, context);
+			case ViewsPackage.COLUMN_SET:
+				return validateColumnSet((ColumnSet)value, diagnostics, context);
+			case ViewsPackage.COLUMN:
+				return validateColumn((Column)value, diagnostics, context);
 			case ViewsPackage.CONDITION:
 				return validateCondition((Condition)value, diagnostics, context);
 			case ViewsPackage.COMPARISON_CONDITION:
@@ -1159,8 +1171,44 @@ public class ViewsValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean validateListEntrySet(ListEntrySet listEntrySet, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(listEntrySet, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateListEntry(ListEntry listEntry, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(listEntry, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean validateTableViewElement(TableViewElement tableViewElement, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(tableViewElement, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateColumnSet(ColumnSet columnSet, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(columnSet, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateColumn(Column column, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(column, diagnostics, context);
 	}
 
 	/**

@@ -4,6 +4,7 @@ package views.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -11,9 +12,11 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import views.ColumnSet;
 import views.Link;
 import views.TableViewElement;
 import views.ViewsPackage;
@@ -27,6 +30,7 @@ import views.ViewsPackage;
  * </p>
  * <ul>
  *   <li>{@link views.impl.TableViewElementImpl#getLinks <em>Links</em>}</li>
+ *   <li>{@link views.impl.TableViewElementImpl#getColumnSet <em>Column Set</em>}</li>
  * </ul>
  *
  * @generated
@@ -41,6 +45,16 @@ public class TableViewElementImpl extends ViewAssociationElementImpl implements 
 	 * @ordered
 	 */
 	protected EList<Link> links;
+
+	/**
+	 * The cached value of the '{@link #getColumnSet() <em>Column Set</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getColumnSet()
+	 * @generated
+	 * @ordered
+	 */
+	protected ColumnSet columnSet;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -78,6 +92,44 @@ public class TableViewElementImpl extends ViewAssociationElementImpl implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ColumnSet getColumnSet() {
+		if (columnSet != null && columnSet.eIsProxy()) {
+			InternalEObject oldColumnSet = (InternalEObject)columnSet;
+			columnSet = (ColumnSet)eResolveProxy(oldColumnSet);
+			if (columnSet != oldColumnSet) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViewsPackage.TABLE_VIEW_ELEMENT__COLUMN_SET, oldColumnSet, columnSet));
+			}
+		}
+		return columnSet;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ColumnSet basicGetColumnSet() {
+		return columnSet;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setColumnSet(ColumnSet newColumnSet) {
+		ColumnSet oldColumnSet = columnSet;
+		columnSet = newColumnSet;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ViewsPackage.TABLE_VIEW_ELEMENT__COLUMN_SET, oldColumnSet, columnSet));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -97,6 +149,9 @@ public class TableViewElementImpl extends ViewAssociationElementImpl implements 
 		switch (featureID) {
 			case ViewsPackage.TABLE_VIEW_ELEMENT__LINKS:
 				return getLinks();
+			case ViewsPackage.TABLE_VIEW_ELEMENT__COLUMN_SET:
+				if (resolve) return getColumnSet();
+				return basicGetColumnSet();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -114,6 +169,9 @@ public class TableViewElementImpl extends ViewAssociationElementImpl implements 
 				getLinks().clear();
 				getLinks().addAll((Collection<? extends Link>)newValue);
 				return;
+			case ViewsPackage.TABLE_VIEW_ELEMENT__COLUMN_SET:
+				setColumnSet((ColumnSet)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -129,6 +187,9 @@ public class TableViewElementImpl extends ViewAssociationElementImpl implements 
 			case ViewsPackage.TABLE_VIEW_ELEMENT__LINKS:
 				getLinks().clear();
 				return;
+			case ViewsPackage.TABLE_VIEW_ELEMENT__COLUMN_SET:
+				setColumnSet((ColumnSet)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -143,6 +204,8 @@ public class TableViewElementImpl extends ViewAssociationElementImpl implements 
 		switch (featureID) {
 			case ViewsPackage.TABLE_VIEW_ELEMENT__LINKS:
 				return links != null && !links.isEmpty();
+			case ViewsPackage.TABLE_VIEW_ELEMENT__COLUMN_SET:
+				return columnSet != null;
 		}
 		return super.eIsSet(featureID);
 	}

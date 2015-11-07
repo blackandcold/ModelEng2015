@@ -7,6 +7,7 @@ package views.validation;
 import org.eclipse.emf.common.util.EList;
 
 import views.Link;
+import views.ListEntrySet;
 
 /**
  * A sample validator interface for {@link views.ListViewElement}.
@@ -18,4 +19,6 @@ public interface ListViewElementValidator {
 	boolean validate();
 
 	boolean validateLinks(EList<Link> value);
+
+	boolean validateEntrySet(ListEntrySet value);
 }

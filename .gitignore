@@ -4,6 +4,12 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# EMF Generated
+src/
+Lab1.edit/
+Lab1.editor/
+Lab1.tests/
+
 # Package Files #
 *.jar
 *.war
