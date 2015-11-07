@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<views:DVML
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:views="http://www.example.org/views"
+    xsi:schemaLocation="http://www.example.org/views views.ecore">
+  <domainModel>
+    <classes
+        name="dog"
+        isId="//@domainModel/@classes.0/@properties.0">
+      <properties
+          name="name"
+          type="//@domainModel/@dataTypes.0"
+          multiplicityLowerBound="1"
+          multiplicityUpperBound="1"/>
+    </classes>
+    <dataTypes
+        name="String"
+        type="java.lang.String"/>
+  </domainModel>
+  <viewModel>
+    <viewGroups>
+      <views
+          xsi:type="views:ClassOperationView"
+          name="Show Class Details"
+          header="Headertext"
+          description="Short Description"
+          instance="//@domainModel/@classes.0">
+        <viewElements
+            xsi:type="views:TextViewElement"
+            elementID="eleid1"
+            label="Name"
+            propertyRef="//@domainModel/@classes.0/@properties.0"
+            format="">
+          <conditions
+              xsi:type="views:CompositeCondition"
+              conditionID="cond0">
+            <cond1
+                xsi:type="views:ComparisonCondition"
+                conditionID="cond1"
+                expression=""/>
+            <cond2
+                xsi:type="views:CompositeCondition"
+                conditionID="cond2">
+              <cond1
+                  xsi:type="views:ComparisonCondition"
+                  conditionID="cond3"/>
+              <cond2
+                  xsi:type="views:ComparisonCondition"
+                  conditionID="cond4"/>
+            </cond2>
+          </conditions>
+        </viewElements>
+      </views>
+    </viewGroups>
+  </viewModel>
+</views:DVML>
