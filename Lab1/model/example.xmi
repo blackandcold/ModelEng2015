@@ -254,16 +254,21 @@
             xsi:type="views:ViewElementGroup"
             header="Status">
           <viewElements
+              xsi:type="views:SelectionViewElement"
+              elementID="selVisitingProf"
+              label="VisitingProf"
+              propertyRef="//@domainModel/@classes.1/@properties.0">
+            <values
+                value="true"/>
+            <values
+                value="false"/>
+          </viewElements>
+          <viewElements
               xsi:type="views:TextViewElement"
               elementID="txtHomeUni"
               label="HomeUni"
               propertyRef="//@domainModel/@classes.1/@properties.1"
               format=""/>
-          <viewElements
-              xsi:type="views:SelectionViewElement"
-              elementID="selVisitingProf"
-              label="VisitingProf"
-              propertyRef="//@domainModel/@classes.1/@properties.0"/>
         </viewElements>
       </views>
       <views
