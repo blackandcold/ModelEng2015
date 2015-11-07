@@ -157,53 +157,53 @@
           name="Create Institute"
           header="Institute"
           description="This is a form for creating institutes."
-          layout="VERTICAL"
-          instance="//@domainModel/@classes.2">
+          instance="//@domainModel/@classes.2"
+          layout="VERTICAL">
         <viewElements
             xsi:type="views:ViewElementGroup"
-            label=""
             elementID="grpInstitute"
+            label=""
             header="Institute Details"
             layout="VERTICAL">
           <viewElements
               xsi:type="views:TextViewElement"
-              label="Number"
               elementID="txtNumber"
+              label="Number"
               propertyRef="//@domainModel/@classes.2/@properties.1"
               format="^[0-9]+$"/>
           <viewElements
               xsi:type="views:TextViewElement"
-              label="Name"
               elementID="txtName"
+              label="Name"
               propertyRef="//@domainModel/@classes.2/@properties.0"
               format="^[a-zA-Z -]+$"/>
         </viewElements>
         <viewElements
             xsi:type="views:ListViewElement"
-            label="Professors"
             elementID="lstProfessors"
+            label="Professors"
             classRef="//@domainModel/@classes.1">
           <links
-              label="Add"
               elementID="lnkCreateProf"
+              label="Add"
               instance="//@domainModel/@classes.1"
               view="//@viewModel/@viewGroups.0/@views.1"/>
           <buttons
-              label="Update"
               elementID="lnkUpdateProf"
+              label="Update"
               instance="//@domainModel/@classes.1"
               view="//@viewModel/@viewGroups.0/@views.2"/>
         </viewElements>
         <viewElements
             xsi:type="views:TableViewElement"
-            label="Courses"
             elementID="tblCourses"
+            label="Courses"
             classRef="//@domainModel/@classes.3">
           <links
-              label="Add"
               elementID="lnkCreateCourse"
+              label="Add"
               instance="//@domainModel/@classes.3"
-              view="//@viewModel/@viewGroups.0/@views.3"/>
+              view="//@viewModel/@viewGroups.0/@views.4"/>
           <columnSet>
             <columns
                 header="Type"
@@ -215,10 +215,10 @@
                 header="Credits"
                 propertyRef="//@domainModel/@classes.3/@properties.1"/>
             <buttons
-                label="Delete"
                 elementID="lnkDeleteCourse"
+                label="Delete"
                 instance="//@domainModel/@classes.3"
-                view="//@viewModel/@viewGroups.0/@views.4"/>
+                view="//@viewModel/@viewGroups.0/@views.3"/>
           </columnSet>
         </viewElements>
       </views>
@@ -230,26 +230,26 @@
           instance="//@domainModel/@classes.1">
         <viewElements
             xsi:type="views:ViewElementGroup"
-            label="Personal Details"
             elementID=""
+            label="Personal Details"
             header="Personal Details"
             layout="VERTICAL">
           <viewElements
               xsi:type="views:TextViewElement"
-              label="First name"
               elementID="txtFirstName"
+              label="First name"
               propertyRef="//@domainModel/@classes.0/@properties.0"
               format=""/>
           <viewElements
               xsi:type="views:TextViewElement"
-              label="Last name"
               elementID="txtLastName"
+              label="Last name"
               propertyRef="//@domainModel/@classes.0/@properties.1"
               format=""/>
           <viewElements
               xsi:type="views:TextViewElement"
-              label="E-Mail"
               elementID="txtEmail"
+              label="E-Mail"
               propertyRef="//@domainModel/@classes.0/@properties.2"/>
         </viewElements>
         <viewElements
@@ -258,14 +258,14 @@
             header="Status">
           <viewElements
               xsi:type="views:TextViewElement"
-              label="HomeUni"
               elementID="txtHomeUni"
+              label="HomeUni"
               propertyRef="//@domainModel/@classes.1/@properties.1"
               format=""/>
           <viewElements
               xsi:type="views:SelectionViewElement"
-              label="VisitingProf"
               elementID="selVisitingProf"
+              label="VisitingProf"
               propertyRef="//@domainModel/@classes.1/@properties.0"/>
         </viewElements>
       </views>
@@ -274,18 +274,168 @@
           name="Update Professor"
           header="Update Professor"
           description=""
-          instance="//@domainModel/@classes.1"/>
+          instance="//@domainModel/@classes.1"
+          layout="VERTICAL">
+        <viewElements
+            xsi:type="views:ViewElementGroup"
+            elementID="grpUpdateEmail"
+            label="Update E-Mail Address"
+            header="Update E-Mail Address"
+            layout="VERTICAL">
+          <viewElements
+              xsi:type="views:TextViewElement"
+              elementID="txtProfEmail"
+              label="E-Mail"
+              propertyRef="//@domainModel/@classes.0/@properties.2"/>
+        </viewElements>
+      </views>
+      <views
+          xsi:type="views:ClassOperationView"
+          name="Delete Course"
+          header="Course"
+          description="Do you really want to delete this course?"
+          instance="//@domainModel/@classes.3"
+          layout="VERTICAL">
+        <viewElements
+            xsi:type="views:ViewElementGroup"
+            elementID="grpDelCourse"
+            label="Delete Course"
+            header="Delete Course"
+            layout="VERTICAL">
+          <viewElements
+              xsi:type="views:TextViewElement"
+              elementID="txtDelCourseTitle"
+              label="Title"
+              propertyRef="//@domainModel/@classes.3/@properties.7"/>
+        </viewElements>
+      </views>
       <views
           xsi:type="views:ClassOperationView"
           name="Create Course"
           header="Course"
-          instance="//@domainModel/@classes.3"/>
+          description=""
+          instance="//@domainModel/@classes.3"
+          layout="VERTICAL">
+        <viewElements
+            xsi:type="views:ViewElementGroup"
+            elementID="grpCreateCourseDetails"
+            label=""
+            header="Course Details"
+            layout="VERTICAL">
+          <viewElements
+              xsi:type="views:SelectionViewElement"
+              elementID="selCourseType"
+              label="Type"
+              propertyRef="//@domainModel/@classes.3/@properties.0"/>
+          <viewElements
+              xsi:type="views:TextViewElement"
+              elementID="txtCourseTitle"
+              label="Title"
+              propertyRef="//@domainModel/@classes.3/@properties.7"
+              format="^[a-zA-Z -]+$"/>
+          <viewElements
+              xsi:type="views:TextViewElement"
+              elementID="txtCourseCredits"
+              label="Credits"
+              propertyRef="//@domainModel/@classes.3/@properties.1"
+              format="^[0-9]+\.[0-9]$"/>
+          <viewElements
+              xsi:type="views:TextViewElement"
+              elementID="txtDescription"
+              label="Description"
+              propertyRef="//@domainModel/@classes.3/@properties.2"
+              length="LONG"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:ViewElementGroup"
+            elementID="grpFirstMeeting"
+            header="First Meeting"
+            layout="VERTICAL">
+          <viewElements
+              xsi:type="views:DateTimePickerViewElement"
+              elementID="dapDate"
+              label="Date"
+              propertyRef="//@domainModel/@classes.3/@properties.3"
+              format="dddd, MMMM Do YYYY"/>
+          <viewElements
+              xsi:type="views:DateTimePickerViewElement"
+              elementID="dapTime"
+              label="Time"
+              propertyRef="//@domainModel/@classes.3/@properties.4"
+              format="h:mm A"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:ViewElementGroup"
+            elementID="grpLecture"
+            label=""
+            header="Lecture"
+            layout="VERTICAL">
+          <viewElements
+              xsi:type="views:TextViewElement"
+              elementID="txtTopic"
+              label="Topic"
+              propertyRef="//@domainModel/@classes.3/@properties.5"
+              length="LONG"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:ViewElementGroup"
+            elementID="grpThesis"
+            header="Thesis"
+            layout="VERTICAL">
+          <viewElements
+              xsi:type="views:TextViewElement"
+              elementID="txtKeywords"
+              label="Keywords"
+              propertyRef="//@domainModel/@classes.3/@properties.6"/>
+        </viewElements>
+      </views>
+      <views
+          xsi:type="views:ClassIndexView"
+          name="Course Index"
+          header="Courses"
+          description="List of all courses"
+          classRef="//@domainModel/@classes.3">
+        <list
+            elementID="lstCourseIndex"
+            label=""
+            classRef="//@domainModel/@classes.3">
+          <buttons
+              elementID="btnShow"
+              label="Show"
+              instance="//@domainModel/@classes.3"
+              view="//@viewModel/@viewGroups.0/@views.6"/>
+        </list>
+      </views>
       <views
           xsi:type="views:ClassOperationView"
-          name="Delete Course"
-          header="Delete Course"
+          name="Show Course"
+          header="Course"
           description=""
-          instance="//@domainModel/@classes.3"/>
+          instance="//@domainModel/@classes.3"
+          layout="VERTICAL">
+        <viewElements
+            xsi:type="views:ViewElementGroup"
+            elementID="grpCourseDetails"
+            label="Course Details"
+            header="Course Details"
+            layout="VERTICAL">
+          <viewElements
+              xsi:type="views:TextViewElement"
+              elementID="txtType"
+              label="Type"
+              propertyRef="//@domainModel/@classes.3/@properties.0"/>
+          <viewElements
+              xsi:type="views:TextViewElement"
+              elementID="txtTitle"
+              label="Title"
+              propertyRef="//@domainModel/@classes.3/@properties.7"/>
+          <viewElements
+              xsi:type="views:TextViewElement"
+              elementID="txtCredits"
+              label="Credits"
+              propertyRef="//@domainModel/@classes.3/@properties.1"/>
+        </viewElements>
+      </views>
     </viewGroups>
   </viewModel>
 </views:DVML>
