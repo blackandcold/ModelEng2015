@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<views:DVML
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:views="http://www.example.org/views"
+    xsi:schemaLocation="http://www.example.org/views views.ecore">
+  <domainModel>
+    <classes
+        name="Class1"
+        isId="//@domainModel/@classes.0/@properties.0">
+      <properties
+          name="IdNotMandatory"
+          type="//@domainModel/@dataTypes.0"
+          multiplicityLowerBound="1"
+          multiplicityUpperBound="1"/>
+      <properties
+          name="WrongBounds"
+          type="//@domainModel/@dataTypes.0"
+          multiplicityLowerBound="0"
+          multiplicityUpperBound="1"/>
+    </classes>
+    <dataTypes
+        name="String"
+        type="java.lang.String"/>
+  </domainModel>
+</views:DVML>
