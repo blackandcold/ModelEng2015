@@ -3,7 +3,6 @@
   <semanticResources>views.ecore</semanticResources>
   <semanticResources>views.genmodel</semanticResources>
   <semanticResources>DomainModelFigure1.xmi</semanticResources>
-  <semanticResources>ViewModelFigure2.xmi</semanticResources>
   <semanticResources>example.xmi</semanticResources>
   <semanticResources>constraint2invalidMissingId.xmi</semanticResources>
   <semanticResources>constraint2validMissingId.xmi</semanticResources>
