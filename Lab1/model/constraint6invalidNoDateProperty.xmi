@@ -35,9 +35,9 @@
           instance="//@domainModel/@classes.0">
         <viewElements
             xsi:type="views:DateTimePickerViewElement"
-            label="DateOfInvoice"
             elementID="eleId"
-            propertyRef="//@domainModel/@classes.0/@properties.1"
+            label="DateOfInvoice"
+            propertyRef="//@domainModel/@classes.0/@properties.0"
             format=""/>
       </views>
     </viewGroups>
