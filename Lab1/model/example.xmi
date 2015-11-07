@@ -254,16 +254,27 @@
             xsi:type="views:ViewElementGroup"
             header="Status">
           <viewElements
+              xsi:type="views:SelectionViewElement"
+              elementID="selVisitingProf"
+              label="VisitingProf"
+              propertyRef="//@domainModel/@classes.1/@properties.0">
+            <values
+                value="true"/>
+            <values
+                value="false"/>
+          </viewElements>
+          <viewElements
               xsi:type="views:TextViewElement"
               elementID="txtHomeUni"
               label="HomeUni"
               propertyRef="//@domainModel/@classes.1/@properties.1"
-              format=""/>
-          <viewElements
-              xsi:type="views:SelectionViewElement"
-              elementID="selVisitingProf"
-              label="VisitingProf"
-              propertyRef="//@domainModel/@classes.1/@properties.0"/>
+              format="">
+            <conditions
+                xsi:type="views:ComparisonCondition"
+                conditionID="conVisitingProfHomeUni"
+                expression="false"
+                element="selVisitingProf"/>
+          </viewElements>
         </viewElements>
       </views>
       <views
@@ -320,7 +331,26 @@
               xsi:type="views:SelectionViewElement"
               elementID="selCourseType"
               label="Type"
-              propertyRef="//@domainModel/@classes.3/@properties.0"/>
+              propertyRef="//@domainModel/@classes.3/@properties.0">
+            <conditions
+                xsi:type="views:CompositeCondition"
+                conditionID="conTypeCredits"
+                result="DISABLED"
+                operatorType="OR">
+              <cond1
+                  xsi:type="views:ComparisonCondition"
+                  conditionID="conCreditsLessThanOne"
+                  result="DISABLED"
+                  expression="&lt; 1"
+                  element="txtCourseCredits"/>
+              <cond2
+                  xsi:type="views:ComparisonCondition"
+                  conditionID="conCreditsGreaterThan30"
+                  result="DISABLED"
+                  expression="> 30"
+                  element="txtCourseCredits"/>
+            </conditions>
+          </viewElements>
           <viewElements
               xsi:type="views:TextViewElement"
               elementID="txtCourseTitle"
@@ -363,6 +393,12 @@
             elementID="grpLecture"
             header="Lecture"
             layout="VERTICAL">
+          <conditions
+              xsi:type="views:ComparisonCondition"
+              conditionID="conLecture"
+              result="SHOWN"
+              expression="LE"
+              element="selCourseType"/>
           <viewElements
               xsi:type="views:TextViewElement"
               elementID="txtTopic"
@@ -375,6 +411,12 @@
             elementID="grpThesis"
             header="Thesis"
             layout="VERTICAL">
+          <conditions
+              xsi:type="views:ComparisonCondition"
+              conditionID="conThesis"
+              result="SHOWN"
+              expression="TH"
+              element="selCourseType"/>
           <viewElements
               xsi:type="views:TextViewElement"
               elementID="txtKeywords"
