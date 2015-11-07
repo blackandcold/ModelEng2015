@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<views:DVML
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:views="http://www.example.org/views"
+    xsi:schemaLocation="http://www.example.org/views views.ecore">
+  <domainModel>
+    <classes
+        name="Class1"
+        isId="//@domainModel/@classes.0/@properties.1">
+      <properties
+          name="WrongType"
+          type="//@domainModel/@dataTypes.0"
+          multiplicityLowerBound="0"
+          multiplicityUpperBound="1"/>
+      <properties
+          name="id1"
+          type="//@domainModel/@dataTypes.0"
+          multiplicityLowerBound="1"
+          multiplicityUpperBound="1"/>
+    </classes>
+    <classes
+        name="isClassType"
+        isId="//@domainModel/@classes.1/@properties.0">
+      <properties
+          name="id"
+          type="//@domainModel/@dataTypes.0"
+          multiplicityLowerBound="1"
+          multiplicityUpperBound="1"/>
+    </classes>
+    <dataTypes
+        name="isDataType"
+        type="java.lang.String"/>
+    <associations
+        name="WrongDataType">
+      <begin
+          name="Beginn"
+          type="//@domainModel/@classes.1"
+          multiplicityLowerBound="1"
+          multiplicityUpperBound="1"/>
+      <end name="End"
+          type="//@domainModel/@classes.0"
+          multiplicityLowerBound="1"
+          multiplicityUpperBound="1"/>
+    </associations>
+  </domainModel>
+</views:DVML>
