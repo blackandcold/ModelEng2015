@@ -5,6 +5,10 @@
   <semanticResources>DomainModelFigure1.xmi</semanticResources>
   <semanticResources>ViewModelFigure2.xmi</semanticResources>
   <semanticResources>example.xmi</semanticResources>
+  <semanticResources>constraint2invalidMissingId.xmi</semanticResources>
+  <semanticResources>constraint2validMissingId.xmi</semanticResources>
+  <semanticResources>constraint3invalidWrongTypes.xmi</semanticResources>
+  <semanticResources>constraint3validWrongTypes.xmi</semanticResources>
   <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_N7oqEIGxEeWkx_cvmm5Qmg">
     <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_IOtOQIM3EeWgydtFf5Vq6w" name="views">
       <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_IOtOQYM3EeWgydtFf5Vq6w" source="DANNOTATION_CUSTOMIZATION_KEY">
