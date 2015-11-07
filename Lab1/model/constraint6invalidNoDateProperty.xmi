@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<views:DVML
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:views="http://www.example.org/views"
+    xsi:schemaLocation="http://www.example.org/views views.ecore">
+  <domainModel>
+    <classes
+        name="Class1"
+        isId="//@domainModel/@classes.0/@properties.0">
+      <properties
+          name="name"
+          type="//@domainModel/@dataTypes.1"
+          multiplicityLowerBound="1"
+          multiplicityUpperBound="1"/>
+      <properties
+          name="date"
+          type="//@domainModel/@dataTypes.0"
+          multiplicityLowerBound="1"
+          multiplicityUpperBound="1"/>
+    </classes>
+    <dataTypes
+        name="DateTime"
+        type="java.lang.String"/>
+    <dataTypes
+        name="Name"
+        type="java.lang.String"/>
+  </domainModel>
+  <viewModel>
+    <viewGroups>
+      <views
+          xsi:type="views:ClassOperationView"
+          name="Invoice"
+          instance="//@domainModel/@classes.0">
+        <viewElements
+            xsi:type="views:DateTimePickerViewElement"
+            label="DateOfInvoice"
+            elementID="eleId"
+            propertyRef="//@domainModel/@classes.0/@properties.1"
+            format=""/>
+      </views>
+    </viewGroups>
+  </viewModel>
+</views:DVML>
