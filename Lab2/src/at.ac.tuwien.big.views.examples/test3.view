@@ -1,0 +1,93 @@
+/**
+ * 188.923: Model Engineering Lab, Assignment 2
+ * View Model - VML Scoping
+ */
+welcome viewgroup Institute {
+    vertical start create-view CreateInstitute "Institute" handles Institute {
+       view-description "This is a form for creating institutes."
+	   vertical elementgroup "Institute Details" {
+		   text CreateNumber "Number" format "^[0-9]+$" handles number,
+		   text CreateName "Name" format "^[a-zA-Z -]+$" handles name,
+		   list CreateProfessors "Professors" handles professors {
+		      link "Update" handles UpdateProfessor,
+		      link "Add" handles CreateProfessor
+		   },
+		   table CreateCourses "Courses" handles courses {
+		      link "Delete" handles DeleteCourse,
+		      link "Add" handles CreateCourse,
+		      column TypeColumn "Type" handles email,
+		      column TitleColumn "Title" handles firstname, 
+		      column CreditsColumn "Credits" handles lastname
+		   }
+	}
+   },
+   horizontal create-view CreateProfessor "Professor" handles Professor {
+      vertical elementgroup "Personal Details" {
+          text CreateFirstname "First name" handles firstname,
+          text CreateLastname "Last name" handles lastname,
+	  	  text CreateEmail "E-Mail" handles email
+	},
+	vertical elementgroup "Status" {
+	      selection CreateVisitingProfessor "Visiting professor" handles visitingProfessor {
+	       selection-item "true",
+	       selection-item "false"
+	      },
+	      text CreateHomeUniversity "Home university" handles homeUniversity
+	        //with comparison-condition HideIfFalse : CreateVisitingProfessor == 'false' ? Hide
+	}
+    },
+    vertical update-view UpdateProfessor "Update Professor" handles Professor {
+       vertical elementgroup "Update E-Mail Address" {
+          text UpdateEmail "E-Mail" handles email
+      }
+   },
+   vertical create-view CreateCourse "Course" handles Course {
+      vertical elementgroup "Course Details" {
+          selection CreateType "Type" handles type {
+	        enum-literal "Lecture" handles Lecture,
+	        enum-literal "Thesis" handles Thesis
+	      },
+	      // with composite-condition CourseTypeCondition:
+	     //  (comparison-condition DisableIfLess: CreateCredits < '1' ? Disable ||
+	     //   comparison-condition DisableIfGreater: CreateCredits > '30' ? Disable) ? Disable,
+	      text CreateTitle "Title" format "^[a-zA-Z -]+$" handles title,
+	      text CreateCredits "Credits" format "^[0-9]+.[0-9]$" handles credits,
+	      text CreateDescription "Description" handles description
+      },
+      vertical elementgroup "First Meeting" {
+          date-time-picker CreateDate "Date" format "dddd, MMMM Do YYYY" handles date,
+	      date-time-picker CreateTime "Time" format "h:mm A" handles time
+      },
+      vertical elementgroup "Lecture" {
+	      long text CreateTopic "Topic" handles topic
+      } 
+     // with comparison-condition ShowIfLE : CreateType  == 'LE' ? Show
+      ,
+      
+      vertical elementgroup "Thesis" {
+         text CreateKeywords "Keywords" handles keywords
+	  } 
+	  //with comparison-condition ShowIFTH: CreateType  == 'TH' ? Show
+	  
+	},
+      vertical delete-view DeleteCourse "Course" handles Course {
+		view-description "Do you really want to delete this course?"
+		vertical elementgroup "Deleted Course" {
+			text DeleteTitle "Title" handles title
+		}
+	}
+}
+
+viewgroup Courses {
+   start index-view CourseIndex "Course" handles Course {
+      view-description "List of all current courses."
+      link "Show" handles ShowCourse
+   },
+   vertical read-view ShowCourse "Course" handles Course {
+      vertical elementgroup "Course Details" {
+         text ShowType 'Type' handles type,
+         text ShowTitle 'Title' handles title,
+         long text ShowDescription 'Description' handles description
+      }
+   } 
+}

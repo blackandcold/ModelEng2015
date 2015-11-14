@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<views:ViewModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:views="http://www.big.tuwien.ac.at/views"
+    xsi:schemaLocation="http://www.big.tuwien.ac.at/views ../../model/views.ecore">
+  <viewGroups
+      name="A"
+      welcomeViewGroup="true">
+    <views xsi:type="views:ClassIndexView"
+        name="A"
+        header="A"
+        startView="true">
+      <link
+          targetView="//@viewGroups.0/@views.1"
+          label="b"/>
+      <class
+          href="../domain_model/Constraint1ValidTest.xmi#//@domainModelElements.0"/>
+    </views>
+    <views xsi:type="views:CreateView"
+        name="B"
+        header="B"
+        description="">
+      <class
+          href="../domain_model/Constraint1ValidTest.xmi#//@domainModelElements.1"/>
+      <layout/>
+    </views>
+  </viewGroups>
+</views:ViewModel>

@@ -1,0 +1,33 @@
+A list of possible OCL Constraints defined in the specification and implemented in the .ecore file:
+
+------- /// DOMAIN MODEL /// -------
+
+* Constraint 1 - UniqueIdIsContainedOrInherited: One of the contained or inherited properties
+* Constraint 2 - ClassPropertyTypeIsValid: The properties have either a data type or an enumeration set as type
+* Constraint 3 - ClassPropertyBoundsAreValid: Only the lower bounds “0” and “1” and the upper bound “1” are allowed
+* Constraint 4 - IdBoundsAreValid: A property serving as id of a class has to be mandatory, i.e., it has to have a lower bound and upper bound of “1”
+* Constraint 5 - NoCyclicInheritance: A class cannot inherit from itself and cyclic inheritance relationships between classes are not allowed 
+* Constraint 6 - AssociationPropertyBoundsAreValid: The multiplicities of these properties are restricted as follows: 
+                 the upper bound has to be greater than or equal to the lower bound, the lower bound has to be greater than 
+                 or equal to “0”, and the upper bound has to be greater than “0”.
+         
+------- /// VIEWS MODEL /// -------
+
+* Constraint 7 - OneStartViewExistsWithinAViewGroup: A view group defines one of these contained views as start view that is the main view of the view group
+* Constraint 8 - OneWelcomeGroupExists: One view group of the view model serves as the so-called welcome view group
+* Constraint 9 - TargetViewOfClassIndexViewLinksIsValid: Class index views may define links to class operation views that are defined for the respective class
+* Constraint 10 - PropertyElementsReferToValidClassProperties: Property elements may only be defined for properties that are defined or inherited by this class 
+* Constraint 11 - AssociationElementsReferToValidClass: Association elements may only be defined for associations that are defined or inherited by this class 
+* Constraint 12 - PropertyElementOfComparisonConditionsIsValid: A comparison condition defines that an element group or 
+				  view element shall be shown, hidden, enabled, or disabled if a specific comparison value is equal to, 
+				  less than, or greater than the one entered via a specific property element that is contained by the same 
+				  class operation view as the element group or view element. 
+* Constraint 13 - ElementIdIsUnique: View elements have a unique element identifier	
+* Constraint 14	- TargetViewOfAssociationElementLinksIsValid: Association Elements define links to class operation views that are defined for the respective class
+* Constraint 15 - TableColumnRefersToTargetViewClassProperty: Note that the properties selected for columns have
+				  to be properties that are contained by the associated class.
+* Constraint 16 - PropertyTypeOfTextIsValid: Text view elements can be used for properties that  have as type either a user-defined data type or an enumeration
+* Constraint 17 - PropertyTypeOfDateTimePickerIsValid: Date time pickers can be used for properties that have as type a user-defined data type named “Date”, “Time”, or “DateTime”
+* Constraint 18 - PropertyTypeOfSelectionIsValid: Selection view elements can be used for properties that have as type either a user-defined data type or an enumeration
+* Constraint 19 - ConditionIdIsUnique: View elements have a unique element identifier
+* Constraint 20 - ComposedConditionTypesAreEqual: The types of all combined conditions must be the same as the one set for the containing composite condition

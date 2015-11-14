@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<views:DomainModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:views="http://www.big.tuwien.ac.at/views"
+    xsi:schemaLocation="http://www.big.tuwien.ac.at/views ../../model/views.ecore">
+  <domainModelElements
+      xsi:type="views:Class"
+      name="A"
+      id="//@domainModelElements.0/@properties.0">
+    <properties
+        lowerBound="1"
+        upperBound="1"
+        name="a"
+        type="//@domainModelElements.2"/>
+    <properties
+        upperBound="1"
+        name="c"
+        type="//@domainModelElements.2"/>
+  </domainModelElements>
+  <domainModelElements
+      xsi:type="views:Class"
+      name="B"
+      id="//@domainModelElements.1/@properties.0">
+    <properties
+        lowerBound="1"
+        upperBound="1"
+        name="b"
+        type="//@domainModelElements.2"/>
+  </domainModelElements>
+  <domainModelElements
+      xsi:type="views:DataType"
+      name="dt"/>
+</views:DomainModel>

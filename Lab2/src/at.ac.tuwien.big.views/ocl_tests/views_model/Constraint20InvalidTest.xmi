@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<views:ViewModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:views="http://www.big.tuwien.ac.at/views"
+    xsi:schemaLocation="http://www.big.tuwien.ac.at/views ../../model/views.ecore">
+  <viewGroups
+      name="A"
+      welcomeViewGroup="true">
+    <views xsi:type="views:CreateView"
+        name="B"
+        header="B"
+        description=""
+        startView="true">
+      <class
+          href="../domain_model/Constraint1ValidTest.xmi#//@domainModelElements.1"/>
+      <layout/>
+      <elementGroups
+          header="b">
+        <layout/>
+        <viewElements
+            xsi:type="views:Text"
+            label="b"
+            elementID="01"
+            format="">
+          <condition
+              xsi:type="views:CompositeCondition"
+              conditionID="c01">
+            <composedConditions
+                xsi:type="views:ComparisonCondition"
+                type="Show"
+                conditionID="c02"
+                comparisonValue="1"
+                property="//@viewGroups.0/@views.0/@elementGroups.0/@viewElements.0"
+                comparisonType="Greater"/>
+            <composedConditions
+                xsi:type="views:ComparisonCondition"
+                conditionID="c03"
+                comparisonValue="5"
+                property="//@viewGroups.0/@views.0/@elementGroups.0/@viewElements.0"
+                comparisonType="Less"/>
+          </condition>
+          <property
+              href="../domain_model/Constraint1ValidTest.xmi#//@domainModelElements.1/@properties.0"/>
+        </viewElements>
+      </elementGroups>
+    </views>
+  </viewGroups>
+</views:ViewModel>

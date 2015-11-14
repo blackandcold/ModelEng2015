@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<views:ViewModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:views="http://www.big.tuwien.ac.at/views"
+    xsi:schemaLocation="http://www.big.tuwien.ac.at/views ../../model/views.ecore">
+  <viewGroups
+      name="A"
+      welcomeViewGroup="true">
+    <views xsi:type="views:CreateView"
+        name="A"
+        header="A"
+        startView="true">
+      <class
+          href="../domain_model/Constraint6ValidTest.xmi#//@domainModelElements.0"/>
+      <layout/>
+      <elementGroups
+          header="a">
+        <layout/>
+        <viewElements
+            xsi:type="views:Table"
+            label="t"
+            elementID="01">
+          <link
+              targetView="//@viewGroups.0/@views.1"
+              label="l"/>
+          <association
+              href="../domain_model/Constraint6ValidTest.xmi#//@domainModelElements.5"/>
+        </viewElements>
+      </elementGroups>
+    </views>
+    <views xsi:type="views:ReadView"
+        name="B"
+        header="B">
+      <class
+          href="../domain_model/Constraint6ValidTest.xmi#//@domainModelElements.1"/>
+      <layout/>
+    </views>
+  </viewGroups>
+</views:ViewModel>
