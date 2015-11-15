@@ -5,8 +5,183 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 // implement your grammar here, starting with the root element: ViewModel
 
+ViewModel returns ViewModel:
+	(viewGroups+=ViewGroup)*;
+
+ViewGroup returns ViewGroup:
+	welcomeViewGroup?="welcome"? "viewgroup" name=ID
+	"{"
+		(views+= (CreateView | ReadView | UpdateView | DeleteView | ClassIndexView) ",")*
+		(views+= (CreateView | ReadView | UpdateView | DeleteView | ClassIndexView))
+	"}"
+;
+	
+//TODO redefine STRING, no new line, ".." or '..'
+
+/**View returns View:
+	 ClassOperationView | ClassIndexView
+;
+
+ClassOperationView returns ClassOperationView: //irgendwie sinnlos
+	CreateView | ReadView | UpdateView | DeleteView
+;*/
+
+CreateView returns CreateView:
+	layout=Layout startView?="start"? "create-view" name = ID header = STRING "handles" class=[Class|QualifiedName]
+	"{"
+	("view-description" description= STRING)?
+	(elementGroups+=ElementGroup ",")*
+	(elementGroups+=ElementGroup)
+	"}"
+;
+
+ReadView returns ReadView:
+	layout=Layout startView?="start"? "read-view" name = ID header = STRING "handles" class=[Class|QualifiedName]
+	"{"
+	("view-description" description= STRING)?
+	(elementGroups+=ElementGroup ",")*
+	(elementGroups+=ElementGroup)
+	"}"
+;
+
+UpdateView returns UpdateView:
+	layout=Layout startView?="start"? "update-view" name = ID header = STRING "handles" class=[Class|QualifiedName]
+	"{"
+	("view-description" description= STRING)?
+	(elementGroups+=ElementGroup ",")*
+	(elementGroups+=ElementGroup)
+	"}"
+;
+
+DeleteView returns DeleteView:
+	layout=Layout startView?="start"? "delete-view" name = ID header = STRING "handles" class=[Class|QualifiedName]
+	"{"
+	("view-description" description= STRING)?
+	(elementGroups+=ElementGroup ",")*
+	(elementGroups+=ElementGroup)
+	"}"
+;
+
+ClassIndexView returns ClassIndexView:
+	startView?="start"? "index-view" name = ID header = STRING "handles" class=[Class|QualifiedName]
+	"{"
+	("view-description" description= STRING)?
+	(link+=Link)*
+	"}"
+;
+	
+	
+ElementGroup returns ElementGroup:
+	layout=Layout "elementgroup" header = STRING "contains"?
+	"{"
+	(viewElements+=(Column | Text | DateTimePicker | Selection | List | Table) ",")*
+	(viewElements+=(Column | Text | DateTimePicker | Selection | List | Table))
+	"}"
+
+	//TODO conditions
+;
+
+/**ViewElement:
+	AssociationElement | PropertyElement
+;
+
+AssociationElement:
+	List | Table
+;*/
+
+
+
+List returns List:
+	"list" elementID = ID label = STRING "handles" association=[Association|QualifiedName]
+	"{"
+		(link+=Link ",")*
+		(link+=Link)*
+	"}" ','?
+;	
+
+
+
+Table returns Table:
+	"table" elementID = ID label = STRING "handles" association=[Association|QualifiedName]
+	"{"		
+		(link+=Link",")*	
+		(columns+=Column ",")*
+		(columns+=Column)
+		
+			//TODO better solution for ','
+	"}" ','?
+;
+
+/**PropertyElement:
+	Column | Text | DateTimePicker | Selection
+;*/
+
+
+
+Column returns Column:
+	"column" elementID= ID label= STRING "handles" property=[Property|QualifiedName]
+;	
+
+
+Text returns Text:
+	long?="long"? "text" elementID=ID label=STRING ("format" format=RegExp)? "handles" property=[Property|QualifiedName]
+;	
+
+
+
+DateTimePicker returns DateTimePicker:
+	"date-time-picker" elementID= ID label=STRING ("format" format=DateFormat)? "handles"  property=[Property|QualifiedName]
+;	
+
+
+Selection returns Selection:
+	"selection" elementID=ID label=STRING "handles" property=[Property|QualifiedName]
+	"{"
+		(((selectionItems+=SelectionItem ',')* (selectionItems+=SelectionItem))
+			| ((selectionItems+=EnumerationLiteralItem ',')* (selectionItems+=EnumerationLiteralItem)))
+	"}"
+;	
+
+	
+EnumerationLiteralItem returns EnumerationLiteralItem:
+	"enum-literal" value=STRING "handles" enumerationLiteral=[EnumerationLiteral|QualifiedName]
+;
+
+
+SelectionItem returns SelectionItem:
+	"selection-item" value= STRING	
+;
+
+	
 EInt returns ecore::EInt:
 	'-'? INT;
 
 QualifiedName returns ecore::EString: 
 	ID (=> '.'ID)*;
+
+RegExp:
+	STRING
+	//TODO only regex, skip ""
+;
+	
+DateFormat:
+	STRING
+	//TODO only date format	, skip ""
+;
+
+Layout returns Layout:
+	alignment=LayoutStyle
+;
+
+enum LayoutStyle returns LayoutStyle:
+	Vertical = "vertical" |
+	Horizontal = "horizontal"	
+;
+
+
+Link returns Link:
+	"link" label = STRING "handles" targetView=[ClassOperationView|QualifiedName]
+;
+
+
+
