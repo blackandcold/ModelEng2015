@@ -18,3 +18,8 @@ Require-Bundle: at.ac.tuwien.big.views.view;visibility:=reexport,
  org.eclipse.compare
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: at.ac.tuwien.big.views.view.ui.quickfix,
+ at.ac.tuwien.big.views.view.ui.contentassist,
+ at.ac.tuwien.big.views.view.ui.internal,
+ at.ac.tuwien.big.views.view.ui.contentassist.antlr
+Bundle-Activator: at.ac.tuwien.big.views.view.ui.internal.ViewActivator

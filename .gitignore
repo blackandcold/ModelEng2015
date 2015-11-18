@@ -22,3 +22,6 @@ bin
 build.xml
 temp.folder
 *.jar
+samples/
+xtend-gen/
+src-gen/

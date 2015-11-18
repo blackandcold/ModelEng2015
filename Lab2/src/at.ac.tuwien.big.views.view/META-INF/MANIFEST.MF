@@ -22,4 +22,12 @@ Require-Bundle: org.eclipse.equinox.common;bundle-version="3.5.0",
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-
+Export-Package: at.ac.tuwien.big.views.view,
+ at.ac.tuwien.big.views.view.services,
+ at.ac.tuwien.big.views.view.serializer,
+ at.ac.tuwien.big.views.view.parser.antlr,
+ at.ac.tuwien.big.views.view.parser.antlr.internal,
+ at.ac.tuwien.big.views.view.validation,
+ at.ac.tuwien.big.views.view.scoping,
+ at.ac.tuwien.big.views.view.generator,
+ at.ac.tuwien.big.views.view.formatting
