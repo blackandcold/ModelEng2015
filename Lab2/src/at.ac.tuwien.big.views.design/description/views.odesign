@@ -1,8 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" name="views" version="10.0.0.201505222000">
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" name="views" version="10.0.0.201505222000">
   <ownedViewpoints name="views" modelFileExtension="views">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="Domain diagram" domainClass="views.DomainModel" enablePopupBars="true">
-      <defaultLayer name="Default"/>
+      <defaultLayer name="Default">
+        <containerMappings name="Class" domainClass="views.Class" childrenPresentation="List">
+          <subNodeMappings name="Property" semanticCandidatesExpression="feature:properties" domainClass="views.Property">
+            <style xsi:type="style:CustomStyleDescription" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EAttribute.gif" labelAlignment="LEFT" labelPosition="node" resizeKind="NSEW">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EClass.gif" widthComputationExpression="+4" heightComputationExpression="+4">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+          </style>
+        </containerMappings>
+        <containerMappings name="DataType" domainClass="views.DataType">
+          <style xsi:type="style:FlatContainerStyleDescription" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EDataType.gif">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+          </style>
+        </containerMappings>
+        <containerMappings name="Enumeration" domainClass="views.Enumeration" childrenPresentation="List">
+          <subNodeMappings name="EnumerationLiteral" semanticCandidatesExpression="feature:literals" domainClass="views.EnumerationLiteral">
+            <style xsi:type="style:CustomStyleDescription" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EEnumLiteral.gif" labelAlignment="LEFT" labelPosition="node" resizeKind="NSEW">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EEnum.gif">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_green']"/>
+          </style>
+        </containerMappings>
+      </defaultLayer>
     </ownedRepresentations>
   </ownedViewpoints>
 </description:Group>
