@@ -3,7 +3,7 @@
   <ownedViewpoints name="views" modelFileExtension="views">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="Domain diagram" domainClass="views.DomainModel" enablePopupBars="true">
       <defaultLayer name="Default">
-        <edgeMappings name="Association" sourceMapping="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" targetMapping="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" targetFinderExpression="[self.navigableEnd.type/]" sourceFinderExpression="[self.associationEnds -> excluding(self.navigableEnd) -> asSequence() -> first().type/]" domainClass="views.Association" useDomainElement="true">
+        <edgeMappings name="Association" labelDirectEdit="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@toolSections.1/@ownedTools[name='editAssociationName']" sourceMapping="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" targetMapping="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" targetFinderExpression="[self.navigableEnd.type/]" sourceFinderExpression="[self.associationEnds -> excluding(self.navigableEnd) -> asSequence() -> first().type/]" domainClass="views.Association" useDomainElement="true">
           <style sizeComputationExpression="2" routingStyle="manhattan">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
             <beginLabelStyleDescription showIcon="false" labelExpression="[let nonNEnd : Property = (self.associationEnds -> excluding(self.navigableEnd) -> asSequence() -> first()) in nonNEnd.name + ' [' + nonNEnd.lowerBound + '..' + (if (nonNEnd.upperBound = (-1)) then '*' else nonNEnd.upperBound endif) + ']'/]">
@@ -12,7 +12,7 @@
             <centerLabelStyleDescription showIcon="false" labelExpression="feature:name" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EReference.gif">
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
-            <endLabelStyleDescription showIcon="false" labelExpression="[navigableEnd.name + ' [' + navigableEnd.lowerBound + '..' + (if (navigableEnd.upperBound = (-1)) then '*' else 'f' endif) + ']'/]">
+            <endLabelStyleDescription showIcon="false" labelExpression="[navigableEnd.name + ' [' + navigableEnd.lowerBound + '..' + (if (navigableEnd.upperBound = (-1)) then '*' else navigableEnd.upperBound endif) + ']'/]">
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </endLabelStyleDescription>
           </style>
@@ -25,7 +25,7 @@
               <centerLabelStyleDescription showIcon="false" labelExpression="feature:name" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EReference.gif">
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               </centerLabelStyleDescription>
-              <endLabelStyleDescription showIcon="false" labelExpression="[navigableEnd.name + ' [' + navigableEnd.lowerBound + '..' + (if (navigableEnd.upperBound = (-1)) then '*' else 'f' endif) + ']'/]">
+              <endLabelStyleDescription showIcon="false" labelExpression="[navigableEnd.name + ' [' + navigableEnd.lowerBound + '..' + (if (navigableEnd.upperBound = (-1)) then '*' else navigableEnd.upperBound endif) + ']'/]">
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               </endLabelStyleDescription>
             </style>
@@ -43,7 +43,7 @@
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
           </subNodeMappings>
-          <style xsi:type="style:FlatContainerStyleDescription" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EClass.gif" widthComputationExpression="+4" heightComputationExpression="+4">
+          <style xsi:type="style:FlatContainerStyleDescription" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EClass.gif">
             <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -79,7 +79,7 @@
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.Class" referenceName="domainModelElements">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['Class'/]"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['new Class'/]"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
@@ -90,7 +90,7 @@
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.DataType" referenceName="domainModelElements">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['DataType'/]"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['new DataType'/]"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
@@ -101,7 +101,7 @@
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.Enumeration" referenceName="domainModelElements">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['Enumeration'/]"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['new Enumeration'/]"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
@@ -126,6 +126,12 @@
               <firstModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[arg0/]"/>
             </initialOperation>
           </ownedTools>
+          <ownedTools xsi:type="tool:DirectEditLabel" name="editAssociationName">
+            <mask mask="{0}"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[arg0/]"/>
+            </initialOperation>
+          </ownedTools>
         </toolSections>
         <toolSections name="Features">
           <ownedTools xsi:type="tool:NodeCreationDescription" name="createProperty" label="Property" nodeMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']/@subNodeMappings[name='Property']" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EAttribute.gif">
@@ -134,7 +140,8 @@
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.Property" referenceName="properties">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['Property'/]"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['new Property'/]"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="upperBound" valueExpression="[1/]"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
@@ -145,7 +152,7 @@
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.EnumerationLiteral" referenceName="literals">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['EnumerationLiteral'/]"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['new EnumerationLiteral'/]"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
@@ -160,6 +167,32 @@
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
                 <subModelOperations xsi:type="tool_1:SetValue" featureName="superClass" valueExpression="var:target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="createAssociation" label="Association" edgeMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@edgeMappings[name='Association']" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EReference.gif">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer()/]">
+                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.Association" referenceName="domainModelElements">
+                    <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:instance">
+                      <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['new Association'/]"/>
+                      <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.Property" referenceName="associationEnds" variableName="instanceNonNav">
+                        <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['PropertyNonNav'/]"/>
+                        <subModelOperations xsi:type="tool_1:SetValue" featureName="type" valueExpression="var:source"/>
+                      </subModelOperations>
+                      <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.Property" referenceName="associationEnds" variableName="instanceNav">
+                        <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['PropertyNav'/]"/>
+                        <subModelOperations xsi:type="tool_1:SetValue" featureName="type" valueExpression="var:target"/>
+                      </subModelOperations>
+                      <subModelOperations xsi:type="tool_1:SetValue" featureName="navigableEnd" valueExpression="var:instanceNav"/>
+                    </subModelOperations>
+                  </subModelOperations>
+                </subModelOperations>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
