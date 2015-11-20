@@ -11,20 +11,20 @@ ViewModel returns ViewModel:
 ViewGroup returns ViewGroup:
 	welcomeViewGroup?="welcome"? "viewgroup" name=ID
 	"{"
-		(views+= (CreateView | ReadView | UpdateView | DeleteView | ClassIndexView) ",")*
-		(views+= (CreateView | ReadView | UpdateView | DeleteView | ClassIndexView))
+		(views+= (View) ",")*
+		(views+= (View))
 	"}"
 ;
 	
 //TODO redefine STRING, no new line, ".." or '..'
 
-/**View returns View:
+View:
 	 ClassOperationView | ClassIndexView
 ;
 
-ClassOperationView returns ClassOperationView: //irgendwie sinnlos
+ClassOperationView returns ClassOperationView:
 	CreateView | ReadView | UpdateView | DeleteView
-;*/
+;
 
 CreateView returns CreateView:
 	layout=Layout startView?="start"? "create-view" name = ID header = STRING "handles" class=[Class|QualifiedName]
@@ -74,20 +74,19 @@ ClassIndexView returns ClassIndexView:
 ElementGroup returns ElementGroup:
 	layout=Layout "elementgroup" header = STRING "contains"?
 	"{"
-	(viewElements+=(Column | Text | DateTimePicker | Selection | List | Table) ",")*
-	(viewElements+=(Column | Text | DateTimePicker | Selection | List | Table))
-	"}"
+	(viewElements+=(ViewElement) ",")*
+	(viewElements+=(ViewElement))
+	"}" ("with" condition=(Condition))?
 
-	//TODO conditions
 ;
 
-/**ViewElement:
+ViewElement:
 	AssociationElement | PropertyElement
 ;
 
 AssociationElement:
 	List | Table
-;*/
+;
 
 
 
@@ -95,8 +94,8 @@ List returns List:
 	"list" elementID = ID label = STRING "handles" association=[Association|QualifiedName]
 	"{"
 		(link+=Link ",")*
-		(link+=Link)*
-	"}" ','?
+		(link+=Link)
+	"}" ("with" condition=(Condition))?
 ;	
 
 
@@ -104,33 +103,34 @@ List returns List:
 Table returns Table:
 	"table" elementID = ID label = STRING "handles" association=[Association|QualifiedName]
 	"{"		
-		(link+=Link",")*	
-		(columns+=Column ",")*
-		(columns+=Column)
+		(((columns+=Column) | (link+=Link)) ",")*
+		( (columns+=Column) | (link+=Link)     )
 		
-			//TODO better solution for ','
-	"}" ','?
+	"}" ("with" condition=(Condition))?
 ;
 
-/**PropertyElement:
+PropertyElement:
 	Column | Text | DateTimePicker | Selection
-;*/
+;
 
 
 
 Column returns Column:
 	"column" elementID= ID label= STRING "handles" property=[Property|QualifiedName]
+	("with" condition=(Condition))?
 ;	
 
 
 Text returns Text:
 	long?="long"? "text" elementID=ID label=STRING ("format" format=RegExp)? "handles" property=[Property|QualifiedName]
+	("with" condition=(Condition))?
 ;	
 
 
 
 DateTimePicker returns DateTimePicker:
 	"date-time-picker" elementID= ID label=STRING ("format" format=DateFormat)? "handles"  property=[Property|QualifiedName]
+	("with" condition=(Condition))?
 ;	
 
 
@@ -139,7 +139,7 @@ Selection returns Selection:
 	"{"
 		(((selectionItems+=SelectionItem ',')* (selectionItems+=SelectionItem))
 			| ((selectionItems+=EnumerationLiteralItem ',')* (selectionItems+=EnumerationLiteralItem)))
-	"}"
+	"}" ("with" condition=(Condition))?
 ;	
 
 	
@@ -152,6 +152,61 @@ SelectionItem returns SelectionItem:
 	"selection-item" value= STRING	
 ;
 
+Condition:
+	VisibilityCondition
+;
+
+VisibilityCondition:
+	ComparisonCondition | CompositeCondition
+;
+
+ComparisonCondition returns ComparisonCondition:
+	"comparison-condition" conditionID=ID ":" property=[PropertyElement|QualifiedName] comparisonType=ComparisonConditionType comparisonValue=STRING  '?' type=VisibilityConditionType
+	
+;
+
+
+CompositeCondition returns CompositeCondition:
+	"composite-condition" conditionID=ID ":"
+	"("
+		composedConditions+=(ComparisonCondition) compositionType=CompositeConditionType composedConditions+=(ComparisonCondition)
+		
+	")" "?" type=VisibilityConditionType
+		
+;
+
+
+/** recursion error
+ * http://blog.efftinge.de/2010/08/parsing-expressions-with-xtext.html
+ * https://dslmeinte.wordpress.com/2011/12/05/using-syntactic-predicates-in-xtext-part-1/
+CompositeCondition returns CompositeCondition:
+	"composite-condition" conditionID=ID ":"
+	"("
+		//CompositeConditionLeaf ({CompositeCondition.composedConditions+=current} compositionType=CompositeConditionType composedConditions+=(VisibilityCondition))
+	composedConditions+=(CompositeConditionTree | CompositeConditionLeaf) compositionType=CompositeConditionType composedConditions+=(CompositeConditionTree | CompositeConditionLeaf)
+		
+	")" "?" type=VisibilityConditionType
+		
+;
+
+CompositeConditionTree returns CompositeCondition:
+"composite-condition" conditionID=ID ":"
+	"("
+		//CompositeConditionLeaf ({CompositeCondition.composedConditions+=current} compositionType=CompositeConditionType composedConditions+=(VisibilityCondition))
+	composedConditions+=(CompositeConditionLeaf) compositionType=CompositeConditionType composedConditions+=(CompositeConditionLeaf)
+		
+	")" "?" type=VisibilityConditionType
+		
+;
+
+
+CompositeConditionLeaf returns CompositeCondition:
+"composite-condition" conditionID=ID ":"
+	"("
+		composedConditions+=(ComparisonCondition) compositionType=CompositeConditionType composedConditions+=(ComparisonCondition)
+	")" "?" type=VisibilityConditionType
+;*/
+
 	
 EInt returns ecore::EInt:
 	'-'? INT;
@@ -161,12 +216,12 @@ QualifiedName returns ecore::EString:
 
 RegExp:
 	STRING
-	//TODO only regex, skip ""
+
 ;
 	
 DateFormat:
 	STRING
-	//TODO only date format	, skip ""
+
 ;
 
 Layout returns Layout:
@@ -178,6 +233,24 @@ enum LayoutStyle returns LayoutStyle:
 	Horizontal = "horizontal"	
 ;
 
+enum CompositeConditionType returns CompositeConditionType:
+	And = "&&" |
+	Or = "||"
+;
+
+enum VisibilityConditionType returns VisibilityConditionType:
+	Hide = "Hide" |
+	Show = "Show" |
+	Enable = "Enable" |
+	Disable = "Disable"
+		
+;
+
+enum ComparisonConditionType returns ComparisonConditionType:
+	Equal = "==" |
+	Less = "<" |
+	Greater = ">"
+;
 
 Link returns Link:
 	"link" label = STRING "handles" targetView=[ClassOperationView|QualifiedName]
