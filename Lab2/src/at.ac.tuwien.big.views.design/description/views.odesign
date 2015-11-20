@@ -3,9 +3,42 @@
   <ownedViewpoints name="views" modelFileExtension="views">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="Domain diagram" domainClass="views.DomainModel" enablePopupBars="true">
       <defaultLayer name="Default">
+        <edgeMappings name="Association" sourceMapping="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" targetMapping="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" targetFinderExpression="[self.navigableEnd.type/]" sourceFinderExpression="[self.associationEnds -> excluding(self.navigableEnd) -> asSequence() -> first().type/]" domainClass="views.Association" useDomainElement="true">
+          <style sizeComputationExpression="2" routingStyle="manhattan">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <beginLabelStyleDescription showIcon="false" labelExpression="[let nonNEnd : Property = (self.associationEnds -> excluding(self.navigableEnd) -> asSequence() -> first()) in nonNEnd.name + ' [' + nonNEnd.lowerBound + '..' + (if (nonNEnd.upperBound = (-1)) then '*' else nonNEnd.upperBound endif) + ']'/]">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </beginLabelStyleDescription>
+            <centerLabelStyleDescription showIcon="false" labelExpression="feature:name" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EReference.gif">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+            <endLabelStyleDescription showIcon="false" labelExpression="[navigableEnd.name + ' [' + navigableEnd.lowerBound + '..' + (if (navigableEnd.upperBound = (-1)) then '*' else 'f' endif) + ']'/]">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </endLabelStyleDescription>
+          </style>
+          <conditionnalStyles predicateExpression="feature:isComposition">
+            <style sourceArrow="FillDiamond" sizeComputationExpression="2" routingStyle="manhattan">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <beginLabelStyleDescription showIcon="false" labelExpression="[let nonNEnd : Property = (self.associationEnds -> excluding(self.navigableEnd) -> asSequence() -> first()) in nonNEnd.name + ' [' + nonNEnd.lowerBound + '..' + (if (nonNEnd.upperBound = (-1)) then '*' else nonNEnd.upperBound endif) + ']'/]">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </beginLabelStyleDescription>
+              <centerLabelStyleDescription showIcon="false" labelExpression="feature:name" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EReference.gif">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+              <endLabelStyleDescription showIcon="false" labelExpression="[navigableEnd.name + ' [' + navigableEnd.lowerBound + '..' + (if (navigableEnd.upperBound = (-1)) then '*' else 'f' endif) + ']'/]">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </endLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
+        </edgeMappings>
+        <edgeMappings name="Generalization" sourceMapping="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" targetMapping="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" targetFinderExpression="feature:superClass">
+          <style targetArrow="InputClosedArrow" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+          </style>
+        </edgeMappings>
         <containerMappings name="Class" domainClass="views.Class" childrenPresentation="List">
           <subNodeMappings name="Property" semanticCandidatesExpression="feature:properties" domainClass="views.Property">
-            <style xsi:type="style:CustomStyleDescription" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EAttribute.gif" labelAlignment="LEFT" labelPosition="node" resizeKind="NSEW">
+            <style xsi:type="style:CustomStyleDescription" labelExpression="[(if (self=self.eContainer(Class).id) then '*' else '' endif) + self.name + ': ' + self.type.name + '[' + self.lowerBound + '..' + self.upperBound + ']'/]" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EAttribute.gif" labelAlignment="LEFT" labelPosition="node" resizeKind="NSEW">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
@@ -27,7 +60,7 @@
         </containerMappings>
         <containerMappings name="Enumeration" domainClass="views.Enumeration" childrenPresentation="List">
           <subNodeMappings name="EnumerationLiteral" semanticCandidatesExpression="feature:literals" domainClass="views.EnumerationLiteral">
-            <style xsi:type="style:CustomStyleDescription" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EEnumLiteral.gif" labelAlignment="LEFT" labelPosition="node" resizeKind="NSEW">
+            <style xsi:type="style:CustomStyleDescription" labelExpression="['&lt;&lt;' + self.value + '>> ' + self.name/]" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EEnumLiteral.gif" labelAlignment="LEFT" labelPosition="node" resizeKind="NSEW">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </style>
