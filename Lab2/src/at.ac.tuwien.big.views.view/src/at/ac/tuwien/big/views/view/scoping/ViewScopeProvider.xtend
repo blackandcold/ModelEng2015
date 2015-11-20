@@ -3,55 +3,92 @@
  */
 package at.ac.tuwien.big.views.view.scoping
 
+import at.ac.tuwien.big.views.Class
+import at.ac.tuwien.big.views.DateTimePicker
+import at.ac.tuwien.big.views.Selection
+import at.ac.tuwien.big.views.Text
+import at.ac.tuwien.big.views.View
+import at.ac.tuwien.big.views.ViewsPackage
+import at.ac.tuwien.big.views.impl.ViewImpl
+import at.ac.tuwien.big.views.Property
+import java.util.ArrayList
+import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import at.ac.tuwien.big.views.ViewElement
-
-import static org.eclipse.xtext.scoping.Scopes.*;
-import at.ac.tuwien.big.views.View
-import at.ac.tuwien.big.views.Text
-import at.ac.tuwien.big.views.ViewsPackage
-import org.eclipse.xtext.EcoreUtil2
-import at.ac.tuwien.big.views.ViewGroup
-import at.ac.tuwien.big.views.impl.TextImpl
-import at.ac.tuwien.big.views.impl.ViewImpl
+import org.eclipse.xtext.scoping.IScope
+import org.eclipse.xtext.scoping.Scopes
+import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 
 /**
  * This class contains custom scoping description.
  * 
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#scoping
  * on how and when to use it.
- *
+ * 
  */
-class ViewScopeProvider extends org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider {
+class ViewScopeProvider extends AbstractDeclarativeScopeProvider {
 
-	def scope_Text_property(Text txt, EReference ref){
-		//println txt
-		println txt.eContainer
-		println txt.eContainingFeature
-		val v = txt.eContainer as View
-		println v
-	}
-	
-	def View getView(EObject obj){
-		if(obj instanceof ViewImpl){
-			return obj as View
-		}else{
-			return getView(obj.eContainer)	
-		}
-		
-	}
-	
-	override getScope(EObject context, EReference reference) {
-		if(context instanceof TextImpl && reference.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)){
-			//val views = context.eContainer.eContents.filter(View);
-			//val view = views.get(0) as View
-			val view = getView(context)
+	def IScope scope_Text_property(Text txt, EReference ref) {
+
+		if (txt instanceof Text && ref.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)) {
+			// val views = context.eContainer.eContents.filter(View);
+			// val view = views.get(0) as View
+			val view = getView(txt)
 			val list = view.class_.properties.toList
-			return scopeFor(list) 
+			val scope = Scopes.scopeFor(list)
+			return scope
 		}
-		
+		return IScope.NULLSCOPE
+	}
+
+	def View getView(EObject obj) {
+		if (obj instanceof ViewImpl) {
+			return obj as View
+		} else if (obj != null) {
+			return getView(obj.eContainer)
+		}
+		return null
+	}
+
+	def List<Property> getProps(Class clazz) {
+		val list = new ArrayList<Property>();
+		if (clazz.superClass != null) {
+			list.addAll(getProps(clazz.superClass))
+		}
+		if (clazz.properties != null) {
+			list.addAll(clazz.properties)
+		}
+		return list
+	}
+
+	def IScope getScopeForClass(Class clazz, String logname) {
+		val list = getProps(clazz)
+		System.out.println(logname + " " + list.map[it.name])
+		return Scopes.scopeFor(list)
+	}
+
+	override getScope(EObject context, EReference reference) {
+		val view = getView(context)
+
+		// Text
+		if (view != null && context instanceof Text &&
+			reference.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)) {
+			return getScopeForClass(view.class_, "TEXT")
+		}
+
+		// DateTimePicker
+		if (view != null && context instanceof DateTimePicker &&
+			reference.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)) {
+			return getScopeForClass(view.class_, "DATETIMEPICKER")
+		}
+
+		// Selection
+		if (view != null && context instanceof Selection &&
+			reference.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)) {
+			return getScopeForClass(view.class_, "SELECTION")
+		}
+
 		return super.getScope(context, reference)
 	}
-		
+
 }
