@@ -128,7 +128,7 @@
           </ownedTools>
         </toolSections>
         <toolSections name="Features">
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="createProperty" label="Property" nodeMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']/@subNodeMappings[name='Property']">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="createProperty" label="Property" nodeMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']/@subNodeMappings[name='Property']" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EAttribute.gif">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -136,6 +136,30 @@
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.Property" referenceName="properties">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['Property'/]"/>
                 </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="createEnumerationLiteral" label="EnumerationLiteral" nodeMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Enumeration']/@subNodeMappings[name='EnumerationLiteral']" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EEnumLiteral.gif">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.EnumerationLiteral" referenceName="literals">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['EnumerationLiteral'/]"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <toolSections name="Relationships">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="createGeneralization" label="Generalization" edgeMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@edgeMappings[name='Generalization']" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EGenericSuperType.gif">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="superClass" valueExpression="var:target"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
