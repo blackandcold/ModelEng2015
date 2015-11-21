@@ -19,6 +19,10 @@ import at.ac.tuwien.big.views.PropertyElement
 import at.ac.tuwien.big.views.ViewsPackage
 import at.ac.tuwien.big.views.ElementGroup
 import at.ac.tuwien.big.views.ViewGroup
+import at.ac.tuwien.big.views.Column
+import at.ac.tuwien.big.views.Table
+import at.ac.tuwien.big.views.Selection
+import at.ac.tuwien.big.views.DateTimePicker
 
 /**
  * This class contains custom scoping description.
@@ -31,23 +35,55 @@ class ViewScopeProvider extends AbstractDeclarativeScopeProvider {
 
 	override getScope(EObject context, EReference reference) {
 		val scope = super.getScope(context, reference)
-		System.out.println("DEFAULT CONTEXT:" + context.class.simpleName + " REF:" + reference.name + " " +
-			scope.allElements.map[it.name])
+		System.out.println(
+			"DEFAULT CONTEXT:" + context.class.simpleName + " REF:" + reference.name + " " + scope.allElements.map [
+				it.name
+			] + " " + getPredicate(context, reference))
 		return scope
 	}
 
 	def public IScope scope_PropertyElement_property(Text elm, EReference ref) {
 		val view = getView(elm)
-		if(ref.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)){
-			return getScopeForClass(elm, ref, view.class_, "TEXT")	
+//		if (ref.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)) {
+		if (view != null) {
+			return getScopeForClass(elm, ref, view.class_, "TEXT")
 		}
 		return IScope.NULLSCOPE
 	}
-	
+
+	def public IScope scope_PropertyElement_property(DateTimePicker elm, EReference ref) {
+		val view = getView(elm)
+		if (view != null) {
+			return getScopeForClass(elm, ref, view.class_, "TEXT")
+		}
+		return IScope.NULLSCOPE
+	}
+
+	def public IScope scope_PropertyElement_property(Column elm, EReference ref) {
+		val table = elm.eContainer as Table
+		if (table.association.navigableEnd.type instanceof Class) {
+			var clazz = table.association.navigableEnd.type as Class
+			return Scopes.scopeFor(getProps(clazz))
+		}
+		return IScope.NULLSCOPE
+	}
+
+	def public IScope scope_PropertyElement_property(Selection elm, EReference ref) {
+		val view = getView(elm)
+		if (view != null) {
+			return getScopeForClass(elm, ref, view.class_, "SELECTION")
+		}
+		return IScope.NULLSCOPE
+	}
+
+	/*
+	 * FIXME this was the source of ALL Properties in the Autocomplete
+	 * Disabled it now ... but isnt be the right solution...
+	 */
 	def public IScope scope_PropertyElement_property(ViewGroup elm, EReference ref) {
 		System.out.println("VIEWGROUP")
 		return IScope.NULLSCOPE
-	} 
+	}
 
 	def View getView(EObject obj) {
 		if (obj instanceof ViewImpl) {
