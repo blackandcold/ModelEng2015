@@ -4,9 +4,14 @@
 package at.ac.tuwien.big.views.view.scoping
 
 import at.ac.tuwien.big.views.Class
+import at.ac.tuwien.big.views.Column
+import at.ac.tuwien.big.views.DateTimePicker
 import at.ac.tuwien.big.views.Property
+import at.ac.tuwien.big.views.Selection
+import at.ac.tuwien.big.views.Table
 import at.ac.tuwien.big.views.Text
 import at.ac.tuwien.big.views.View
+import at.ac.tuwien.big.views.ViewGroup
 import at.ac.tuwien.big.views.impl.ViewImpl
 import java.util.ArrayList
 import java.util.List
@@ -15,14 +20,6 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
-import at.ac.tuwien.big.views.PropertyElement
-import at.ac.tuwien.big.views.ViewsPackage
-import at.ac.tuwien.big.views.ElementGroup
-import at.ac.tuwien.big.views.ViewGroup
-import at.ac.tuwien.big.views.Column
-import at.ac.tuwien.big.views.Table
-import at.ac.tuwien.big.views.Selection
-import at.ac.tuwien.big.views.DateTimePicker
 
 /**
  * This class contains custom scoping description.
