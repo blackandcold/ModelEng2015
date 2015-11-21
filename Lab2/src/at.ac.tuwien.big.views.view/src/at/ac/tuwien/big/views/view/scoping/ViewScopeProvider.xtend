@@ -15,6 +15,10 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
+import at.ac.tuwien.big.views.PropertyElement
+import at.ac.tuwien.big.views.ViewsPackage
+import at.ac.tuwien.big.views.ElementGroup
+import at.ac.tuwien.big.views.ViewGroup
 
 /**
  * This class contains custom scoping description.
@@ -25,17 +29,25 @@ import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
  */
 class ViewScopeProvider extends AbstractDeclarativeScopeProvider {
 
-	def public IScope scope_Text_property(Text txt, EReference ref) {
-		
-//		if (txt instanceof Text && ref.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)) {
-//			val view = getView(txt)
-//			val list = view.class_.properties.toList
-//			val scope = Scopes.scopeFor(list)
-//			return scope
-//		}
-		System.out.println("DEFAULT CONTEXT:" + txt.class.simpleName + " REF:" + ref.name + " ")
+	override getScope(EObject context, EReference reference) {
+		val scope = super.getScope(context, reference)
+		System.out.println("DEFAULT CONTEXT:" + context.class.simpleName + " REF:" + reference.name + " " +
+			scope.allElements.map[it.name])
+		return scope
+	}
+
+	def public IScope scope_PropertyElement_property(Text elm, EReference ref) {
+		val view = getView(elm)
+		if(ref.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)){
+			return getScopeForClass(elm, ref, view.class_, "TEXT")	
+		}
 		return IScope.NULLSCOPE
 	}
+	
+	def public IScope scope_PropertyElement_property(ViewGroup elm, EReference ref) {
+		System.out.println("VIEWGROUP")
+		return IScope.NULLSCOPE
+	} 
 
 	def View getView(EObject obj) {
 		if (obj instanceof ViewImpl) {
@@ -66,32 +78,4 @@ class ViewScopeProvider extends AbstractDeclarativeScopeProvider {
 				])
 		return Scopes.scopeFor(list)
 	}
-
-//	override getScope(EObject context, EReference reference) {
-//		val view = getView(context)
-//
-//		// Text
-//		if (view != null && (context instanceof Text || context instanceof DateTimePicker || context instanceof Selection || context instanceof ViewGroup ) &&
-//			reference.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)) {
-//			return getScopeForClass(context, reference, view.class_, "TEXT")
-//		}
-//
-////		// DateTimePicker
-////		if (view != null && context instanceof DateTimePicker &&
-////			reference.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)) {
-////			return getScopeForClass(context, reference, view.class_, "DATETIMEPICKER")
-////		}
-////
-////		// Selection
-////		if (view != null && context instanceof Selection &&
-////			reference.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)) {
-////			return getScopeForClass(context, reference, view.class_, "SELECTION")
-////		}
-//
-//		// return IScope.NULLSCOPE
-//		val scope = super.getScope(context, reference)
-//		System.out.println("DEFAULT CONTEXT:" + context.class.simpleName + " REF:" + reference.name + " " +
-//			scope.allElements.map[it.name])
-//		return super.getScope(context, reference)
-//	}
 }
