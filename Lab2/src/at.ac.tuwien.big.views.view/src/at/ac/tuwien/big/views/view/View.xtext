@@ -18,7 +18,7 @@ ViewGroup returns ViewGroup:
 	
 //TODO redefine STRING, no new line, ".." or '..'
 
-View:
+View returns View:
 	 ClassOperationView | ClassIndexView
 ;
 
@@ -80,11 +80,11 @@ ElementGroup returns ElementGroup:
 
 ;
 
-ViewElement:
+ViewElement returns ViewElement:
 	AssociationElement | PropertyElement
 ;
 
-AssociationElement:
+AssociationElement returns AssociationElement:
 	List | Table
 ;
 
@@ -109,7 +109,7 @@ Table returns Table:
 	"}" ("with" condition=(Condition))?
 ;
 
-PropertyElement:
+PropertyElement returns PropertyElement:
 	Column | Text | DateTimePicker | Selection
 ;
 
@@ -152,11 +152,11 @@ SelectionItem returns SelectionItem:
 	"selection-item" value= STRING	
 ;
 
-Condition:
+Condition returns Condition:
 	VisibilityCondition
 ;
 
-VisibilityCondition:
+VisibilityCondition returns VisibilityCondition:
 	ComparisonCondition | CompositeCondition
 ;
 

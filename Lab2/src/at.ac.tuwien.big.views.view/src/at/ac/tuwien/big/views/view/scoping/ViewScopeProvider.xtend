@@ -4,17 +4,14 @@
 package at.ac.tuwien.big.views.view.scoping
 
 import at.ac.tuwien.big.views.Class
-import at.ac.tuwien.big.views.Column
-import at.ac.tuwien.big.views.DateTimePicker
+import at.ac.tuwien.big.views.ClassOperationView
 import at.ac.tuwien.big.views.Property
-import at.ac.tuwien.big.views.Selection
 import at.ac.tuwien.big.views.Table
-import at.ac.tuwien.big.views.Text
 import at.ac.tuwien.big.views.View
-import at.ac.tuwien.big.views.ViewGroup
 import at.ac.tuwien.big.views.impl.ViewImpl
 import java.util.ArrayList
 import java.util.List
+import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
@@ -39,25 +36,17 @@ class ViewScopeProvider extends AbstractDeclarativeScopeProvider {
 		return scope
 	}
 
-	def public IScope scope_PropertyElement_property(Text elm, EReference ref) {
+	def public IScope scope_PropertyElement_property(ClassOperationView elm, EReference ref) {
 		val view = getView(elm)
-//		if (ref.equals(ViewsPackage.Literals.PROPERTY_ELEMENT__PROPERTY)) {
 		if (view != null) {
-			return getScopeForClass(elm, ref, view.class_, "TEXT")
+			return getScopeForClass(elm, ref, view.class_, "ClassOperationView")
 		}
 		return IScope.NULLSCOPE
 	}
-
-	def public IScope scope_PropertyElement_property(DateTimePicker elm, EReference ref) {
-		val view = getView(elm)
-		if (view != null) {
-			return getScopeForClass(elm, ref, view.class_, "TEXT")
-		}
-		return IScope.NULLSCOPE
-	}
-
-	def public IScope scope_PropertyElement_property(Column elm, EReference ref) {
-		val table = elm.eContainer as Table
+	
+	
+	def public IScope scope_PropertyElement_property(Table elm, EReference ref) {
+		val table = elm
 		if (table.association.navigableEnd.type instanceof Class) {
 			var clazz = table.association.navigableEnd.type as Class
 			return Scopes.scopeFor(getProps(clazz))
@@ -65,22 +54,50 @@ class ViewScopeProvider extends AbstractDeclarativeScopeProvider {
 		return IScope.NULLSCOPE
 	}
 
-	def public IScope scope_PropertyElement_property(Selection elm, EReference ref) {
-		val view = getView(elm)
-		if (view != null) {
-			return getScopeForClass(elm, ref, view.class_, "SELECTION")
-		}
-		return IScope.NULLSCOPE
-	}
+//	def public IScope scope_PropertyElement_property(Text elm, EReference ref) {
+//		val view = getView(elm)
+//		if (view != null) {
+//			return getScopeForClass(elm, ref, view.class_, "TEXT")
+//		}
+//		return IScope.NULLSCOPE
+//	}
+//
+//	def public IScope scope_PropertyElement_property(DateTimePicker elm, EReference ref) {
+//		val view = getView(elm)
+//		if (view != null) {
+//			return getScopeForClass(elm, ref, view.class_, "DateTimePicker")
+//		}
+//		return IScope.NULLSCOPE
+//	}
+//
+//	def public IScope scope_PropertyElement_property(Column elm, EReference ref) {
+//		val table = elm.eContainer as Table
+//		if (table.association.navigableEnd.type instanceof Class) {
+//			var clazz = table.association.navigableEnd.type as Class
+//			return Scopes.scopeFor(getProps(clazz))
+//		}
+//		return IScope.NULLSCOPE
+//	}
+//
+//	def public IScope scope_PropertyElement_property(Selection elm, EReference ref) {
+//		val view = getView(elm)
+//		if (view != null) {
+//			return getScopeForClass(elm, ref, view.class_, "SELECTION")
+//		}
+//		return IScope.NULLSCOPE
+//	}
 
 	/*
 	 * FIXME this was the source of ALL Properties in the Autocomplete
 	 * Disabled it now ... but isnt be the right solution...
 	 */
-	def public IScope scope_PropertyElement_property(ViewGroup elm, EReference ref) {
-		System.out.println("VIEWGROUP")
-		return IScope.NULLSCOPE
-	}
+//	def public IScope scope_PropertyElement_property(ViewGroup elm, EReference ref) {
+//		System.out.println("VIEWGROUP")
+//		val elements = EcoreUtil2.getAllContents(elm,true).filter[it instanceof PropertyElement].toList
+//		val x = elements.filter[it == ref.containerClass]
+//		
+//		return IScope.NULLSCOPE
+//	}
 
 	def View getView(EObject obj) {
 		if (obj instanceof ViewImpl) {
@@ -109,6 +126,6 @@ class ViewScopeProvider extends AbstractDeclarativeScopeProvider {
 				list.map [
 					it.name
 				])
-		return Scopes.scopeFor(list)
+		return Scopes.scopeFor(new BasicEList(list))
 	}
 }
