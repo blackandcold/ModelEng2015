@@ -15,8 +15,6 @@ ViewGroup returns ViewGroup:
 		(views+= (View))
 	"}"
 ;
-	
-//TODO redefine STRING, no new line, ".." or '..'
 
 View returns View:
 	 ClassOperationView | ClassIndexView
