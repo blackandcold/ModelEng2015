@@ -3,9 +3,56 @@
 module Domains2Views;
 create OUT : Views from IN : Views;
 
+helper def: id : Integer = 0;
+helper context Integer def : inc() : Integer = self + 1;
+
+rule Class2ClassIndexView {
+	from
+		cl : Views!Class
+		
+	to
+		cv : Views!CreateView (
+			header <- cl.name,
+			name <- cl.name
+
+			--elementGroups <- 
+			
+		
+		)
+	do { -- replace do?
+		cv.class <- cl;
+		--cv.layout.alignment <- thisModule;
+	}
+	
+}
+
+--lazy rule LayoutVertical{
+--	from 
+--		lay : Views!Layout
+--	to
+--		
+--	
+--}
+
+
 rule DomainModel2ViewModel {
 	from
 		dm : Views!DomainModel
 	to 
-		vm : Views!ViewModel ()
+		vg : Views!ViewGroup(
+			welcomeViewGroup <- true,
+			name <- 'Welcome View Group',
+			views <- dm.domainModelElements -> collect(x | thisModule.resolveTemp(x, 'cv'))
+			),
+		vm : Views!ViewModel (
+			viewGroups <- vg	
+		)
 }
+
+--rule Property2ElementGroup {
+--	from 
+--		pr : Views!Property
+--	to 
+--		eg : Views!Text()
+--	
+--}
