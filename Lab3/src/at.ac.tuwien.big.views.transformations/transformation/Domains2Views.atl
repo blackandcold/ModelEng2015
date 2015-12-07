@@ -6,6 +6,9 @@ create OUT : Views from IN : Views;
 helper def: id : Integer = 0;
 helper context Integer def : inc() : Integer = self + 1;
 
+
+
+
 rule Class2ClassIndexView {
 	from
 		cl : Views!Class
@@ -13,26 +16,37 @@ rule Class2ClassIndexView {
 	to
 		cv : Views!CreateView (
 			header <- cl.name,
-			name <- cl.name
-
+			name <- cl.name,
+			layout <- thisModule.LayoutHorizontal() -- helper with boolean?
+			
 			--elementGroups <- 
 			
 		
 		)
 	do { -- replace do?
 		cv.class <- cl;
-		--cv.layout.alignment <- thisModule;
 	}
 	
 }
 
---lazy rule LayoutVertical{
---	from 
---		lay : Views!Layout
---	to
---		
---	
---}
+lazy rule LayoutVertical{
+	from 
+		clLay : Views!Class
+	to
+		lay : Views!Layout (
+			alignment <- #Vertical
+		)
+}
+
+lazy rule LayoutHorizontal{
+	from 
+		clLay : Views!Class
+	to
+		lay : Views!Layout (
+			alignment <- #Horizontal
+		)
+}
+
 
 
 rule DomainModel2ViewModel {
