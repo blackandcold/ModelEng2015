@@ -1,0 +1,11 @@
+-- @path Views=/at.ac.tuwien.big.views.transformations/metamodel/views.ecore
+
+module Domains2Views;
+create OUT : Views from IN : Views;
+
+rule DomainModel2ViewModel {
+	from
+		dm : Views!DomainModel
+	to 
+		vm : Views!ViewModel ()
+}
