@@ -7,8 +7,6 @@ helper def: id : Integer = 0;
 helper context Integer def : inc() : Integer = self + 1;
 
 
-
-
 rule Class2ClassIndexView {
 	from
 		cl : Views!Class
@@ -22,7 +20,7 @@ rule Class2ClassIndexView {
 			layout <- thisModule.LayoutHorizontal(), -- helper with boolean?
 			
 			--elementGroups <-
-			elementGroups <- thisModule.PropertyToElementGroup(cl.properties.first())
+			elementGroups <- thisModule.ClassToElementGroup(cl)
 			
 		)
 	do { -- replace do?
@@ -37,19 +35,22 @@ lazy rule PropertyToViewElement{
 		p : Views!Property
 	to
 		g : Views!Text(
-			label <- p.name	
+			label <- p.name,
+			property <- p
 		)
 	do {
+		thisModule.id <- thisModule.id.inc();
+		g.elementID <- thisModule.id.toString(); 
 		p.debug();
 	}
 }
 
-lazy rule PropertyToElementGroup{
+lazy rule ClassToElementGroup{
 	from 
-		p : Views!Property
+		p : Views!Class
 	to
 		eg : Views!ElementGroup(
-			header <- 'dummy'--'Header ' + p.name	
+			header <- p.name + ' Information'
 		)
 }
 
