@@ -37,7 +37,7 @@ lazy rule ClassToElementGroup{
 			header <- cl.name + ' Information',
 			layout <- thisModule.LayoutVertical(),
 			-- viewElements <- cl.properties -> collect(x | thisModule.PropertyToViewElement(x)) -> flatten() -> asSet() -- kind of works?
-			viewElements <-  cl.properties -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet()
+			viewElements <- cl.properties -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet()
 		)
 }
 
@@ -52,10 +52,11 @@ abstract rule Property2ViewElement{
 
 rule Property2Text extends Property2ViewElement{
 	from
-		p : Views!Property
+		p : Views!Property(p.type.name='String')
 	to
 		viewElement: Views!Text(
-			label <- p.name
+			label <- p.name,
+			format <- '^[a-zA-Z -]+$'
 		)
 	do {
 		viewElement.property <- p;
@@ -69,9 +70,9 @@ rule Property2Text extends Property2ViewElement{
 
 rule Property2DatePicker extends Property2ViewElement{
 	from
-		p : Views!Property
+		p : Views!Property(p.type.name='DateTime')
 	to
-		viewElement: Views!DatePicker(
+		viewElement: Views!DateTimePicker(
 			label <- p.name
 		)
 	do {
@@ -83,6 +84,24 @@ rule Property2DatePicker extends Property2ViewElement{
 		p.type.name.debug();
 	}
 }
+
+--rule Property2Enumeration extends Property2ViewElement{
+--	from
+--		p : Views!Property(p.type.name='Enumeration')
+--	to
+--		viewElement: Views!Selection(
+--			label <- p.oclType(Enumeration).
+--		)
+--	do {
+--		viewElement.property <- p;
+--		thisModule.id <- thisModule.id.inc();
+--		viewElement.elementID <- thisModule.id.toString(); 
+--		p.debug();
+--		p.type.debug();
+--		p.type.name.debug();
+--	}
+--}
+
 
 lazy rule LayoutVertical{
 	from 
