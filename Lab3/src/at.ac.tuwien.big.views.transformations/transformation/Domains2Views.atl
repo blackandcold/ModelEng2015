@@ -17,16 +17,40 @@ rule Class2ClassIndexView {
 		cv : Views!CreateView (
 			header <- cl.name,
 			name <- cl.name,
-			layout <- thisModule.LayoutHorizontal() -- helper with boolean?
+			description <- 'class index view of ' + cl.name,
 			
-			--elementGroups <- 
+			layout <- thisModule.LayoutHorizontal(), -- helper with boolean?
 			
-		
+			--elementGroups <-
+			elementGroups <- thisModule.PropertyToElementGroup(cl.properties.first())
+			
 		)
 	do { -- replace do?
 		cv.class <- cl;
+		cv.elementGroups.first().viewElements <- cl.properties -> collect(x | thisModule.PropertyToViewElement(x)) -> flatten() -> asSet();
 	}
 	
+}
+
+lazy rule PropertyToViewElement{
+	from
+		p : Views!Property
+	to
+		g : Views!Text(
+			label <- p.name	
+		)
+	do {
+		p.debug();
+	}
+}
+
+lazy rule PropertyToElementGroup{
+	from 
+		p : Views!Property
+	to
+		eg : Views!ElementGroup(
+			header <- 'dummy'--'Header ' + p.name	
+		)
 }
 
 lazy rule LayoutVertical{
@@ -61,6 +85,7 @@ rule DomainModel2ViewModel {
 		vm : Views!ViewModel (
 			viewGroups <- vg	
 		)
+		
 }
 
 --rule Property2ElementGroup {
