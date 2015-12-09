@@ -1,2 +1,66 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<views:ViewModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:views="http://www.big.tuwien.ac.at/views"/>
+<views:ViewModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:views="http://www.big.tuwien.ac.at/views">
+  <viewGroups name="Welcome View Group" welcomeViewGroup="true">
+    <views xsi:type="views:CreateView" name="Institute" header="Institute" description="class index view of Institute">
+      <class href="instituteDomainModel.xmi#//@domainModelElements.0"/>
+      <layout alignment="Horizontal"/>
+      <elementGroups header="Institute Information">
+        <layout/>
+        <viewElements xsi:type="views:Text" label="name" elementID="1" format="^[a-zA-Z -]+$">
+          <property href="instituteDomainModel.xmi#//@domainModelElements.0/@properties.1"/>
+        </viewElements>
+      </elementGroups>
+    </views>
+    <views xsi:type="views:CreateView" name="Course" header="Course" description="class index view of Course">
+      <class href="instituteDomainModel.xmi#//@domainModelElements.1"/>
+      <layout alignment="Horizontal"/>
+      <elementGroups header="Course Information">
+        <layout/>
+        <viewElements xsi:type="views:Text" label="keywords" elementID="5" format="^[a-zA-Z -]+$">
+          <property href="instituteDomainModel.xmi#//@domainModelElements.1/@properties.7"/>
+        </viewElements>
+        <viewElements xsi:type="views:Text" label="description" elementID="3" format="^[a-zA-Z -]+$">
+          <property href="instituteDomainModel.xmi#//@domainModelElements.1/@properties.3"/>
+        </viewElements>
+        <viewElements xsi:type="views:Text" label="title" elementID="2" format="^[a-zA-Z -]+$">
+          <property href="instituteDomainModel.xmi#//@domainModelElements.1/@properties.1"/>
+        </viewElements>
+        <viewElements xsi:type="views:DateTimePicker" label="date" elementID="10">
+          <property href="instituteDomainModel.xmi#//@domainModelElements.1/@properties.4"/>
+        </viewElements>
+        <viewElements xsi:type="views:Text" label="topic" elementID="4" format="^[a-zA-Z -]+$">
+          <property href="instituteDomainModel.xmi#//@domainModelElements.1/@properties.6"/>
+        </viewElements>
+        <viewElements xsi:type="views:DateTimePicker" label="time" elementID="11">
+          <property href="instituteDomainModel.xmi#//@domainModelElements.1/@properties.5"/>
+        </viewElements>
+      </elementGroups>
+    </views>
+    <views xsi:type="views:CreateView" name="Staff" header="Staff" description="class index view of Staff">
+      <class href="instituteDomainModel.xmi#//@domainModelElements.2"/>
+      <layout alignment="Horizontal"/>
+      <elementGroups header="Staff Information">
+        <layout/>
+        <viewElements xsi:type="views:Text" label="email" elementID="8" format="^[a-zA-Z -]+$">
+          <property href="instituteDomainModel.xmi#//@domainModelElements.2/@properties.2"/>
+        </viewElements>
+        <viewElements xsi:type="views:Text" label="firstname" elementID="6" format="^[a-zA-Z -]+$">
+          <property href="instituteDomainModel.xmi#//@domainModelElements.2/@properties.0"/>
+        </viewElements>
+        <viewElements xsi:type="views:Text" label="lastname" elementID="7" format="^[a-zA-Z -]+$">
+          <property href="instituteDomainModel.xmi#//@domainModelElements.2/@properties.1"/>
+        </viewElements>
+      </elementGroups>
+    </views>
+    <views xsi:type="views:CreateView" name="Professor" header="Professor" description="class index view of Professor">
+      <class href="instituteDomainModel.xmi#//@domainModelElements.3"/>
+      <layout alignment="Horizontal"/>
+      <elementGroups header="Professor Information">
+        <layout/>
+        <viewElements xsi:type="views:Text" label="homeUniversity" elementID="9" format="^[a-zA-Z -]+$">
+          <property href="instituteDomainModel.xmi#//@domainModelElements.3/@properties.0"/>
+        </viewElements>
+      </elementGroups>
+    </views>
+  </viewGroups>
+</views:ViewModel>
