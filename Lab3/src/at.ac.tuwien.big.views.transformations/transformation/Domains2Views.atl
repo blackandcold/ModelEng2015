@@ -25,33 +25,63 @@ rule Class2ClassIndexView {
 		)
 	do { -- replace do?
 		cv.class <- cl;
-		cv.elementGroups.first().viewElements <- cl.properties -> collect(x | thisModule.PropertyToViewElement(x)) -> flatten() -> asSet();
 	}
 	
 }
 
-lazy rule PropertyToViewElement{
+lazy rule ClassToElementGroup{
+	from 
+		cl : Views!Class
+	to
+		eg : Views!ElementGroup(
+			header <- cl.name + ' Information',
+			layout <- thisModule.LayoutVertical(),
+			-- viewElements <- cl.properties -> collect(x | thisModule.PropertyToViewElement(x)) -> flatten() -> asSet() -- kind of works?
+			viewElements <-  cl.properties -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet()
+		)
+}
+
+abstract rule Property2ViewElement{
 	from
 		p : Views!Property
 	to
-		g : Views!Text(
-			label <- p.name,
-			property <- p
+		viewElement : Views!Text(
+			label <- p.name
+		)
+}
+
+rule Property2Text extends Property2ViewElement{
+	from
+		p : Views!Property
+	to
+		viewElement: Views!Text(
+			label <- p.name
 		)
 	do {
+		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
-		g.elementID <- thisModule.id.toString(); 
+		viewElement.elementID <- thisModule.id.toString(); 
 		p.debug();
+		p.type.debug();
+		p.type.name.debug();
 	}
 }
 
-lazy rule ClassToElementGroup{
-	from 
-		p : Views!Class
+rule Property2DatePicker extends Property2ViewElement{
+	from
+		p : Views!Property
 	to
-		eg : Views!ElementGroup(
-			header <- p.name + ' Information'
+		viewElement: Views!DatePicker(
+			label <- p.name
 		)
+	do {
+		viewElement.property <- p;
+		thisModule.id <- thisModule.id.inc();
+		viewElement.elementID <- thisModule.id.toString(); 
+		p.debug();
+		p.type.debug();
+		p.type.name.debug();
+	}
 }
 
 lazy rule LayoutVertical{
