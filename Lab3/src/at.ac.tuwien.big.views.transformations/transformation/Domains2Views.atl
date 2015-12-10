@@ -27,6 +27,17 @@ helper def: firstToUpper(name : String) : String =
 	in first + name.substring(2, name.size());
 
 
+helper def: getAllProperties(clazz : Views!Class) : Sequence(Views!Property) = 
+	let props : Sequence (Views!Property) = clazz.properties
+	in
+	if (not clazz.superClass.oclIsUndefined()) then
+		props.union(thisModule.getAllProperties(clazz.superClass))
+	else
+		props
+	endif;
+	
+	
+	
 -- Rules
 rule Class2ClassIndexView {
 	from
@@ -57,7 +68,7 @@ lazy rule ClassToElementGroup{
 			header <- cl.name + ' Information',
 			layout <- thisModule.LayoutVertical(),
 			-- viewElements <- cl.properties -> collect(x | thisModule.PropertyToViewElement(x)) -> flatten() -> asSet() -- kind of works?
-			viewElements <- cl.properties -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet() -- TODO properties of superclasses
+			viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet() -- TODO properties of superclasses
 			
 		)
 }
@@ -82,9 +93,6 @@ rule Property2Text extends Property2ViewElement{
 		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
 		viewElement.elementID <- thisModule.id.toString(); 
-		-- p.debug();
-		-- p.type.debug();
-		-- p.type.name.debug();
 	}
 }
 
@@ -100,9 +108,21 @@ rule Property2Integer extends Property2ViewElement{
 		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
 		viewElement.elementID <- thisModule.id.toString(); 
-		-- p.debug();
-		-- p.type.debug();
-		-- p.type.name.debug();
+	}
+}
+
+rule Property2Double extends Property2ViewElement{
+	-- created as text view
+	from
+		p : Views!Property(p.type.name='Double')
+	to
+		viewElement: Views!Text(
+			format <- '^[0-9]+\\[0-9]$'
+		)
+	do {
+		viewElement.property <- p;
+		thisModule.id <- thisModule.id.inc();
+		viewElement.elementID <- thisModule.id.toString(); 
 	}
 }
 
@@ -111,14 +131,12 @@ rule Property2DatePicker extends Property2ViewElement{
 		p : Views!Property(p.type.name='DateTime')
 	to
 		viewElement: Views!DateTimePicker(
+			format <- 'dddd, MMMM Do YYYY, h:mm A'
 		)
 	do {
 		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
 		viewElement.elementID <- thisModule.id.toString(); 
-		-- p.debug();
-		-- p.type.debug();
-		-- p.type.name.debug();
 	}
 }
 
@@ -133,9 +151,6 @@ rule Property2Enumeration extends Property2ViewElement{
 		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
 		viewElement.elementID <- thisModule.id.toString(); 
-		-- p.debug();
-		-- p.type.debug();
-		-- p.type.name.debug();
 	}
 }
 
@@ -175,10 +190,3 @@ rule DomainModel2ViewModel {
 		
 }
 
---rule Property2ElementGroup {
---	from 
---		pr : Views!Property
---	to 
---		eg : Views!Text()
---	
---}
