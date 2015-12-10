@@ -35,6 +35,22 @@ helper def: getAllProperties(clazz : Views!Class) : Sequence(Views!Property) =
 	else
 		props
 	endif;
+
+helper def: getViewElement(prop : Views!Property) : Views!ViewElement =
+	
+	if (prop.type.name = 'String') then
+		thisModule.Property2Text(prop)
+	else if (prop.type.name = 'Integer') then
+		thisModule.Property2Integer(prop)
+	else if (prop.type.name = 'Double') then
+		thisModule.Property2Double(prop)
+	else if (prop.type.name = 'DateTime') then
+		thisModule.Property2DatePicker(prop)
+	else 
+		thisModule.Property2Enumeration(prop)
+	
+	endif endif endif endif 
+	;
 	
 	
 	
@@ -62,13 +78,15 @@ rule Class2ClassIndexView {
 
 lazy rule ClassToElementGroup{
 	from 
-		cl : Views!Class
+		cl: Views!Class
 	to
 		eg : Views!ElementGroup(
 			header <- cl.name + ' Information',
 			layout <- thisModule.LayoutVertical(),
 			-- viewElements <- cl.properties -> collect(x | thisModule.PropertyToViewElement(x)) -> flatten() -> asSet() -- kind of works?
-			viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet() -- TODO properties of superclasses
+			viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet()
+			-- viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.getViewElement(x)) -> asSet()
+			-- TODO duplicate properties
 			
 		)
 }
