@@ -3,10 +3,31 @@
 module Domains2Views;
 create OUT : Views from IN : Views;
 
+--Helper
 helper def: id : Integer = 0;
 helper context Integer def : inc() : Integer = self + 1;
 
+-- create start view
+helper def: isStartView(clazz : Views!Class) : Boolean = 
+	-- start view does not exists
+	if (Views!CreateView.allInstances() -> select(x | x.startView = true) -> size() = 0 ) then 
+		-- class has no associations
+		if (Views!Association.allInstances() -> collect(as | as.associationEnds).flatten() -> select(pr | pr.type.name = clazz.name) -> size() = 0) then 
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+	
+-- first letter to upper case
+helper def: firstToUpper(name : String) : String =
+	let first : String = name.substring(1, 1).toUpper()
+	in first + name.substring(2, name.size());
 
+
+-- Rules
 rule Class2ClassIndexView {
 	from
 		cl : Views!Class
@@ -14,11 +35,10 @@ rule Class2ClassIndexView {
 	to
 		cv : Views!CreateView (
 			header <- cl.name,
-			name <- cl.name,
-			description <- 'class index view of ' + cl.name,
-			
+			name <- cl.name,	
 			layout <- thisModule.LayoutHorizontal(), -- helper with boolean?
-			
+			startView <- thisModule.isStartView(cl),
+					
 			--elementGroups <-
 			elementGroups <- thisModule.ClassToElementGroup(cl)
 			
@@ -37,7 +57,8 @@ lazy rule ClassToElementGroup{
 			header <- cl.name + ' Information',
 			layout <- thisModule.LayoutVertical(),
 			-- viewElements <- cl.properties -> collect(x | thisModule.PropertyToViewElement(x)) -> flatten() -> asSet() -- kind of works?
-			viewElements <- cl.properties -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet()
+			viewElements <- cl.properties -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet() -- TODO properties of superclasses
+			
 		)
 }
 
@@ -46,7 +67,7 @@ abstract rule Property2ViewElement{
 		p : Views!Property
 	to
 		viewElement : Views!Text(
-			label <- p.name
+			label <- thisModule.firstToUpper(p.name)
 		)
 }
 
@@ -55,16 +76,33 @@ rule Property2Text extends Property2ViewElement{
 		p : Views!Property(p.type.name='String')
 	to
 		viewElement: Views!Text(
-			label <- p.name,
 			format <- '^[a-zA-Z -]+$'
 		)
 	do {
 		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
 		viewElement.elementID <- thisModule.id.toString(); 
-		p.debug();
-		p.type.debug();
-		p.type.name.debug();
+		-- p.debug();
+		-- p.type.debug();
+		-- p.type.name.debug();
+	}
+}
+
+rule Property2Integer extends Property2ViewElement{
+	-- created as text view
+	from
+		p : Views!Property(p.type.name='Integer')
+	to
+		viewElement: Views!Text(
+			format <- '^[0-9]+$'
+		)
+	do {
+		viewElement.property <- p;
+		thisModule.id <- thisModule.id.inc();
+		viewElement.elementID <- thisModule.id.toString(); 
+		-- p.debug();
+		-- p.type.debug();
+		-- p.type.name.debug();
 	}
 }
 
@@ -73,15 +111,14 @@ rule Property2DatePicker extends Property2ViewElement{
 		p : Views!Property(p.type.name='DateTime')
 	to
 		viewElement: Views!DateTimePicker(
-			label <- p.name
 		)
 	do {
 		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
 		viewElement.elementID <- thisModule.id.toString(); 
-		p.debug();
-		p.type.debug();
-		p.type.name.debug();
+		-- p.debug();
+		-- p.type.debug();
+		-- p.type.name.debug();
 	}
 }
 
@@ -96,9 +133,9 @@ rule Property2Enumeration extends Property2ViewElement{
 		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
 		viewElement.elementID <- thisModule.id.toString(); 
-		p.debug();
-		p.type.debug();
-		p.type.name.debug();
+		-- p.debug();
+		-- p.type.debug();
+		-- p.type.name.debug();
 	}
 }
 
