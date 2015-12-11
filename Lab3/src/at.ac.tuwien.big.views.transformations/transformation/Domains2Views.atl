@@ -6,6 +6,10 @@ create OUT : Views from IN : Views;
 --Helper
 helper def: id : Integer = 0;
 helper context Integer def : inc() : Integer = self + 1;
+helper def: newID() : Integer = 
+	let id : Integer = thisModule.inc()
+	in
+	id;
 
 -- create start view
 helper def: isStartView(clazz : Views!Class) : Boolean = 
@@ -36,20 +40,33 @@ helper def: getAllProperties(clazz : Views!Class) : Sequence(Views!Property) =
 		props
 	endif;
 
-helper def: getViewElement(prop : Views!Property) : Views!ViewElement =
+helper def: getViewElement(ps : Sequence(Views!Property)) : Sequence(Views!ViewElement) =
+	let ve : Sequence(Views!ViewElement) = ps -> collect(p | 
 	
-	if (prop.type.name = 'String') then
-		thisModule.Property2Text(prop)
-	else if (prop.type.name = 'Integer') then
-		thisModule.Property2Integer(prop)
-	else if (prop.type.name = 'Double') then
-		thisModule.Property2Double(prop)
-	else if (prop.type.name = 'DateTime') then
-		thisModule.Property2DatePicker(prop)
-	else 
-		thisModule.Property2Enumeration(prop)
-	
-	endif endif endif endif 
+
+	if (p.type.name = 'String') then
+		thisModule.Property2Text(p)
+	else
+		if (p.type.name = 'Integer') then
+			thisModule.Property2Integer(p)
+		else
+			if (p.type.name = 'Double') then
+				thisModule.Property2Double(p)
+			else
+				if (p.type.name = 'DateTime') then
+					thisModule.Property2DatePicker(p)
+				else
+					if (p.type.oclIsTypeOf(Views!Enumeration)) then
+						thisModule.Property2Selection(p)
+					else
+						OclUndefined
+					endif
+				endif
+			endif
+		endif
+	endif)
+	in
+	ve
 	;
 	
 helper def: getEnumeration(en : Views!Enumeration) : Sequence(Views!EnumerationLiteralItem) = 
@@ -58,6 +75,10 @@ helper def: getEnumeration(en : Views!Enumeration) : Sequence(Views!EnumerationL
 	items
 	;
 
+--helper def: toProperty(p : Views!Type) : Views!Property =
+--	let pTyped : Views!Property = p
+--	in
+--	pTyped;
 
 -- Rules
 rule Class2ClassIndexView {
@@ -68,7 +89,7 @@ rule Class2ClassIndexView {
 		cv : Views!CreateView (
 			header <- cl.name,
 			name <- cl.name,	
-			layout <- thisModule.LayoutHorizontal(), -- helper with boolean?
+			layout <- thisModule.LayoutHorizontal(),
 			startView <- thisModule.isStartView(cl),
 					
 			--elementGroups <-
@@ -89,8 +110,9 @@ lazy rule Class2ElementGroup{
 			header <- cl.name + ' Information',
 			layout <- thisModule.LayoutVertical(),
 			-- viewElements <- cl.properties -> collect(x | thisModule.PropertyToViewElement(x)) -> flatten() -> asSet() -- kind of works?
-			viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet()
-			-- viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.getViewElement(x)) -> asSet()
+			--viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.resolveTemp(x, 'viewElement')).debug() -> asSet()
+			-- viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.getViewElement(x)) -> asSet().debug()
+			viewElements <- thisModule.getViewElement(thisModule.getAllProperties(cl)) -> asSet()
 			-- TODO duplicate properties
 			
 		)
@@ -104,92 +126,95 @@ lazy rule Association2ElementGroup{
 			header <- cl.name + ' Information',
 			layout <- thisModule.LayoutVertical(),
 			-- viewElements <- cl.properties -> collect(x | thisModule.PropertyToViewElement(x)) -> flatten() -> asSet() -- kind of works?
-			viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet()
-			-- viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.getViewElement(x)) -> asSet()
-			-- TODO duplicate properties
+			-- viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet()
+			viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.getViewElement(x)) -> asSet()
+
 			
 		)
 }
 
-abstract rule Property2ViewElement{
-	from
-		p : Views!Property -- changed property to named element - InPattern of subrules must be subclass of InPattern superrule
-	to
-		viewElement : Views!Text(
-			label <- thisModule.firstToUpper(p.name)
-		)
-}
+--lazy abstract rule Property2ViewElement{
+--	from
+--		p : Views!Property
+--	to
+--		viewElement : Views!Text(
+--			label <- thisModule.firstToUpper(p.name)
+--			-- property <- p.oclType().debug()
+--		)
+--}
 
-rule Property2Text extends Property2ViewElement{
+lazy rule Property2Text{-- extends Property2ViewElement{
 	from
-		p : Views!Property(p.type.name='String')
+		p : Views!Property
 	to
 		viewElement: Views!Text(
-			format <- '^[a-zA-Z -]+$'
+			label <- thisModule.firstToUpper(p.name),
+			format <- '^[a-zA-Z -]+$',
+			property <- p
 		)
 	do {
-		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
 		viewElement.elementID <- thisModule.id.toString(); 
 	}
 }
 
-rule Property2Integer extends Property2ViewElement{
+lazy rule Property2Integer{ -- extends Property2ViewElement{
 	-- created as text view
 	from
-		p : Views!Property(p.type.name='Integer')
+		p : Views!Property
 	to
 		viewElement: Views!Text(
-			format <- '^[0-9]+$'
+			label <- thisModule.firstToUpper(p.name),
+			format <- '^[0-9]+$',
+			property <- p
 		)
 	do {
-		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
 		viewElement.elementID <- thisModule.id.toString(); 
 	}
 }
 
-rule Property2Double extends Property2ViewElement{
+lazy rule Property2Double {-- extends Property2ViewElement{
 	-- created as text view
 	from
-		p : Views!Property(p.type.name='Double')
+		p : Views!Property
 	to
 		viewElement: Views!Text(
-			format <- '^[0-9]+\\[0-9]$'
+			label <- thisModule.firstToUpper(p.name),
+			format <- '^[0-9]+\\[0-9]$',
+			property <- p
 		)
 	do {
-		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
 		viewElement.elementID <- thisModule.id.toString(); 
 	}
 }
 
-rule Property2DatePicker extends Property2ViewElement{
+lazy rule Property2DatePicker {-- extends Property2ViewElement{
 	from
-		p : Views!Property(p.type.name='DateTime')
+		p : Views!Property
 	to
 		viewElement: Views!DateTimePicker(
-			format <- 'dddd, MMMM Do YYYY, h:mm A'
+			label <- thisModule.firstToUpper(p.name),
+			format <- 'dddd, MMMM Do YYYY, h:mm A',
+			property <- p
 		)
 	do {
-		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
 		viewElement.elementID <- thisModule.id.toString(); 
 	}
 }
 
-rule Property2Selection extends Property2ViewElement{
+lazy rule Property2Selection {-- extends Property2ViewElement{
 	from
-		p : Views!Property(p.type.oclIsTypeOf(Views!Enumeration))
+		p : Views!Property
 	to
 		viewElement: Views!Selection(
-
-		selectionItems <- thisModule.getEnumeration(p.type) -> asSet()
-		
-		
+			label <- thisModule.firstToUpper(p.name),
+			selectionItems <- thisModule.getEnumeration(p.type) -> asSet(),
+			property <- p
 		)
 	do {
-		viewElement.property <- p;
 		thisModule.id <- thisModule.id.inc();
 		viewElement.elementID <- thisModule.id.toString(); 
 	}
