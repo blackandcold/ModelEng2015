@@ -52,8 +52,13 @@ helper def: getViewElement(prop : Views!Property) : Views!ViewElement =
 	endif endif endif endif 
 	;
 	
-	
-	
+helper def: getEnumeration(en : Views!Enumeration) : Sequence(Views!EnumerationLiteralItem) = 
+	let items : Sequence(Views!EnumerationLiteralItem) = en.literals -> asSequence() -> collect(el | thisModule.EnumerationLiteral2EnumerationLiteralItem(el))
+	in
+	items
+	;
+
+
 -- Rules
 rule Class2ClassIndexView {
 	from
@@ -67,7 +72,7 @@ rule Class2ClassIndexView {
 			startView <- thisModule.isStartView(cl),
 					
 			--elementGroups <-
-			elementGroups <- thisModule.ClassToElementGroup(cl)
+			elementGroups <- thisModule.Class2ElementGroup(cl)
 			
 		)
 	do { -- replace do?
@@ -76,7 +81,22 @@ rule Class2ClassIndexView {
 	
 }
 
-lazy rule ClassToElementGroup{
+lazy rule Class2ElementGroup{
+	from 
+		cl: Views!Class
+	to
+		eg : Views!ElementGroup(
+			header <- cl.name + ' Information',
+			layout <- thisModule.LayoutVertical(),
+			-- viewElements <- cl.properties -> collect(x | thisModule.PropertyToViewElement(x)) -> flatten() -> asSet() -- kind of works?
+			viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet()
+			-- viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.getViewElement(x)) -> asSet()
+			-- TODO duplicate properties
+			
+		)
+}
+
+lazy rule Association2ElementGroup{
 	from 
 		cl: Views!Class
 	to
@@ -93,7 +113,7 @@ lazy rule ClassToElementGroup{
 
 abstract rule Property2ViewElement{
 	from
-		p : Views!Property
+		p : Views!Property -- changed property to named element - InPattern of subrules must be subclass of InPattern superrule
 	to
 		viewElement : Views!Text(
 			label <- thisModule.firstToUpper(p.name)
@@ -158,12 +178,15 @@ rule Property2DatePicker extends Property2ViewElement{
 	}
 }
 
-rule Property2Enumeration extends Property2ViewElement{
+rule Property2Selection extends Property2ViewElement{
 	from
-		p : Views!Property(p.type.name='Enumeration')
+		p : Views!Property(p.type.oclIsTypeOf(Views!Enumeration))
 	to
 		viewElement: Views!Selection(
-			label <- p.type.toString()
+
+		selectionItems <- thisModule.getEnumeration(p.type) -> asSet()
+		
+		
 		)
 	do {
 		viewElement.property <- p;
@@ -172,6 +195,15 @@ rule Property2Enumeration extends Property2ViewElement{
 	}
 }
 
+lazy rule EnumerationLiteral2EnumerationLiteralItem {
+	from
+		el : Views!EnumerationLiteral
+	to
+		eli : Views!EnumerationLiteralItem(
+			value <- el.name,
+			enumerationLiteral <- el
+		)
+}
 
 lazy rule LayoutVertical{
 	from 
