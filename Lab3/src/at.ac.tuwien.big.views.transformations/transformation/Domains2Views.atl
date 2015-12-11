@@ -3,7 +3,7 @@
 module Domains2Views;
 create OUT : Views from IN : Views;
 
---Helper
+-- Helper --
 helper def: id : Integer = 0;
 helper context Integer def : inc() : Integer = self + 1;
 helper def: newID() : Integer = 
@@ -11,12 +11,14 @@ helper def: newID() : Integer =
 	in
 	id;
 
--- create start view
+-- detect start view
 helper def: isStartView(clazz : Views!Class) : Boolean = 
 	-- start view does not exists
 	if (Views!CreateView.allInstances() -> select(x | x.startView = true) -> size() = 0 ) then 
 		-- class has no associations
-		if (Views!Association.allInstances() -> collect(as | as.associationEnds).flatten() -> select(pr | pr.type.name = clazz.name) -> size() = 0) then 
+		if (Views!Association.allInstances() 
+				-> collect(as | as.associationEnds).flatten() 
+					-> select(pr | pr.type.name = clazz.name) -> size() = 0) then 
 			true
 		else
 			false
@@ -30,57 +32,57 @@ helper def: firstToUpper(name : String) : String =
 	let first : String = name.substring(1, 1).toUpper()
 	in first + name.substring(2, name.size());
 
-
+-- get all properties for class and superclasses
 helper def: getAllProperties(clazz : Views!Class) : Sequence(Views!Property) = 
 	let props : Sequence (Views!Property) = clazz.properties
 	in
 	if (not clazz.superClass.oclIsUndefined()) then
-		props.union(thisModule.getAllProperties(clazz.superClass))
+		props.union(thisModule.getAllProperties(clazz.superClass)) -- add properties from superclass
 	else
 		props
 	endif;
 
+-- get view elements for all properties
 helper def: getViewElement(ps : Sequence(Views!Property)) : Sequence(Views!ViewElement) =
 	let ve : Sequence(Views!ViewElement) = ps -> collect(p | 
 	
-
-	if (p.type.name = 'String') then
-		thisModule.Property2Text(p)
-	else
-		if (p.type.name = 'Integer') then
-			thisModule.Property2Integer(p)
+		if (p.type.name = 'String') then
+			thisModule.Property2Text(p)
 		else
-			if (p.type.name = 'Double') then
-				thisModule.Property2Double(p)
+			if (p.type.name = 'Integer') then
+				thisModule.Property2Integer(p)
 			else
-				if (p.type.name = 'DateTime') then
-					thisModule.Property2DatePicker(p)
+				if (p.type.name = 'Double') then
+					thisModule.Property2Double(p)
 				else
-					if (p.type.oclIsTypeOf(Views!Enumeration)) then
-						thisModule.Property2Selection(p)
+					if (p.type.name = 'DateTime') then
+						thisModule.Property2DatePicker(p)
 					else
-						OclUndefined
+						if (p.type.oclIsTypeOf(Views!Enumeration)) then
+							thisModule.Property2Selection(p)
+						else
+							OclUndefined
+						endif
 					endif
 				endif
 			endif
-		endif
-	endif)
+		endif)
 	in
 	ve
 	;
-	
-helper def: getEnumeration(en : Views!Enumeration) : Sequence(Views!EnumerationLiteralItem) = 
-	let items : Sequence(Views!EnumerationLiteralItem) = en.literals -> asSequence() -> collect(el | thisModule.EnumerationLiteral2EnumerationLiteralItem(el))
+
+-- get EnumerationLiteralItem for enumeration
+helper def: getEnumerationLiteralItem(en : Views!Enumeration) : Sequence(Views!EnumerationLiteralItem) = 
+	let items : Sequence(Views!EnumerationLiteralItem) = 
+		en.literals -> asSequence() 
+			-> collect(el | thisModule.EnumerationLiteral2EnumerationLiteralItem(el))
 	in
 	items
 	;
 
---helper def: toProperty(p : Views!Type) : Views!Property =
---	let pTyped : Views!Property = p
---	in
---	pTyped;
 
--- Rules
+-- Rules --
+
 rule Class2ClassIndexView {
 	from
 		cl : Views!Class
@@ -91,12 +93,11 @@ rule Class2ClassIndexView {
 			name <- cl.name,	
 			layout <- thisModule.LayoutHorizontal(),
 			startView <- thisModule.isStartView(cl),
-					
-			--elementGroups <-
+
 			elementGroups <- thisModule.Class2ElementGroup(cl)
 			
 		)
-	do { -- replace do?
+	do {
 		cv.class <- cl;
 	}
 	
@@ -109,15 +110,12 @@ lazy rule Class2ElementGroup{
 		eg : Views!ElementGroup(
 			header <- cl.name + ' Information',
 			layout <- thisModule.LayoutVertical(),
-			-- viewElements <- cl.properties -> collect(x | thisModule.PropertyToViewElement(x)) -> flatten() -> asSet() -- kind of works?
-			--viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.resolveTemp(x, 'viewElement')).debug() -> asSet()
-			-- viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.getViewElement(x)) -> asSet().debug()
 			viewElements <- thisModule.getViewElement(thisModule.getAllProperties(cl)) -> asSet()
-			-- TODO duplicate properties
-			
 		)
 }
 
+
+-- TODO
 lazy rule Association2ElementGroup{
 	from 
 		cl: Views!Class
@@ -211,7 +209,7 @@ lazy rule Property2Selection {-- extends Property2ViewElement{
 	to
 		viewElement: Views!Selection(
 			label <- thisModule.firstToUpper(p.name),
-			selectionItems <- thisModule.getEnumeration(p.type) -> asSet(),
+			selectionItems <- thisModule.getEnumerationLiteralItem(p.type) -> asSet(),
 			property <- p
 		)
 	do {
@@ -247,7 +245,6 @@ lazy rule LayoutHorizontal{
 			alignment <- #Horizontal
 		)
 }
-
 
 
 rule DomainModel2ViewModel {
