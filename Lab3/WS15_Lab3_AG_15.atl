@@ -1,0 +1,293 @@
+-- @path Views=/at.ac.tuwien.big.views.transformations/metamodel/views.ecore
+
+module Domains2Views;
+create OUT : Views from IN : Views;
+
+-- Helper --
+helper def: id : Integer = 0;
+helper context Integer def : inc() : Integer = self + 1;
+
+
+-- detect start view
+helper def: isStartView(clazz : Views!Class) : Boolean = 
+	-- start view does not exists
+	if (Views!CreateView.allInstances() -> select(x | x.startView = true) -> size() = 0 ) then 
+		-- class has no associations
+		if (Views!Association.allInstances() 
+				-> collect(as | as.associationEnds).flatten() 
+					-> select(pr | pr.type.name = clazz.name) -> size() = 0) then 
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+	
+-- first letter to upper case
+helper def: firstToUpper(name : String) : String =
+	let first : String = name.substring(1, 1).toUpper()
+	in first + name.substring(2, name.size());
+
+-- get all properties for class and superclasses
+helper def: getAllProperties(clazz : Views!Class) : Sequence(Views!Property) = 
+	let props : Sequence (Views!Property) = clazz.properties
+	in
+	if (not clazz.superClass.oclIsUndefined()) then
+		props.union(thisModule.getAllProperties(clazz.superClass)) -- add properties from superclass
+	else
+		props
+	endif;
+
+-- get view elements for all properties
+helper def: getViewElement(ps : Sequence(Views!Property)) : Sequence(Views!ViewElement) =
+	let ve : Sequence(Views!ViewElement) = ps -> collect(p | 
+	
+		if (p.type.name = 'String') then
+			thisModule.Property2Text(p)
+		else
+			if (p.type.name = 'Integer') then
+				thisModule.Property2Integer(p)
+			else
+				if (p.type.name = 'Double') then
+					thisModule.Property2Double(p)
+				else
+					if (p.type.name = 'DateTime') then
+						thisModule.Property2DatePicker(p)
+					else
+						if (p.type.oclIsTypeOf(Views!Enumeration)) then
+							thisModule.Property2Selection(p)
+						else
+							OclUndefined
+						endif
+					endif
+				endif
+			endif
+		endif)
+	in
+	ve
+	;
+
+-- get EnumerationLiteralItem for enumeration
+helper def: getEnumerationLiteralItem(en : Views!Enumeration) : Sequence(Views!EnumerationLiteralItem) = 
+	let items : Sequence(Views!EnumerationLiteralItem) = 
+		en.literals -> asSequence() 
+			-> collect(el | thisModule.EnumerationLiteral2EnumerationLiteralItem(el))
+	in
+	items
+	;
+
+-- get all associations for non navigable end classes
+helper def: getAssociations(cl : Views!Class) : Sequence(Views!Association) = 
+	let assoc : Sequence(Views!Association) = 
+		Views!Association.allInstances() 
+			-> select(as | (as.associationEnds.excluding(as.navigableEnd) -> select(p | p.type = cl) -> flatten() -> size()) > 0 )
+	in
+	assoc;
+
+
+-- Rules --
+
+unique lazy rule Class2ClassIndexView {
+	from
+		cl : Views!Class
+		
+	to
+		cv : Views!CreateView (
+			-- class <- cl,
+			header <- cl.name,
+			name <- cl.name,	
+			layout <- thisModule.LayoutHorizontal(),
+			startView <- thisModule.isStartView(cl),
+			elementGroups <- thisModule.resolveTemp(cl, 'eg'),
+			elementGroups <- thisModule.getAssociations(cl) -> collect(ass | thisModule.resolveTemp(ass, 'eg')) -> asSet()
+			
+			
+		)
+	do {
+		cv.class <- cl;
+	}
+}
+
+
+abstract rule NamedElement2ElementGroup {
+	from
+		ne: Views!NamedElement
+	to
+		eg: Views!ElementGroup(
+			header <- thisModule.firstToUpper(ne.name),
+			layout <- thisModule.LayoutVertical()
+		)
+	
+}
+
+rule Class2ElementGroup extends NamedElement2ElementGroup{
+	from 
+		ne: Views!Class
+	to
+		eg : Views!ElementGroup(
+			header <- ne.name + ' Information',
+			viewElements <- thisModule.getViewElement(thisModule.getAllProperties(ne)) -> asSet()
+		)
+}
+
+
+rule Association2ElementGroup extends NamedElement2ElementGroup{
+	from 
+		ne: Views!Association
+	to
+		eg : Views!ElementGroup(
+			viewElements <- thisModule.AssociationToList(ne)
+		)
+}
+
+
+lazy rule AssociationToList {
+	from
+		ass: Views!Association
+	to
+		list: Views!List(
+			label <- thisModule.firstToUpper(ass.name),
+			link <- thisModule.AssociationLink(ass.navigableEnd.type)
+			--association <- ass
+	)
+	do {
+		thisModule.id <- thisModule.id.inc();
+		list.elementID <- thisModule.id.toString();
+		list.association <- ass;
+	}
+}
+
+
+lazy rule AssociationLink {
+	from
+		cl: Views!Class
+	to
+		link: Views!Link (
+			label <- 'Add',
+			targetView <- thisModule.Class2ClassIndexView(cl)
+		)
+}
+
+
+lazy rule Property2Text{
+	from
+		p : Views!Property
+	to
+		viewElement: Views!Text(
+			label <- thisModule.firstToUpper(p.name),
+			format <- '^[a-zA-Z -]+$',
+			property <- p
+		)
+	do {
+		thisModule.id <- thisModule.id.inc();
+		viewElement.elementID <- thisModule.id.toString(); 
+	}
+}
+
+lazy rule Property2Integer{
+	-- created as text view
+	from
+		p : Views!Property
+	to
+		viewElement: Views!Text(
+			label <- thisModule.firstToUpper(p.name),
+			format <- '^[0-9]+$',
+			property <- p
+		)
+	do {
+		thisModule.id <- thisModule.id.inc();
+		viewElement.elementID <- thisModule.id.toString(); 
+	}
+}
+
+lazy rule Property2Double {
+	-- created as text view
+	from
+		p : Views!Property
+	to
+		viewElement: Views!Text(
+			label <- thisModule.firstToUpper(p.name),
+			format <- '^[0-9]+\\[0-9]$',
+			property <- p
+		)
+	do {
+		thisModule.id <- thisModule.id.inc();
+		viewElement.elementID <- thisModule.id.toString(); 
+	}
+}
+
+lazy rule Property2DatePicker {
+	from
+		p : Views!Property
+	to
+		viewElement: Views!DateTimePicker(
+			label <- thisModule.firstToUpper(p.name),
+			format <- 'dddd, MMMM Do YYYY, h:mm A',
+			property <- p
+		)
+	do {
+		thisModule.id <- thisModule.id.inc();
+		viewElement.elementID <- thisModule.id.toString(); 
+	}
+}
+
+lazy rule Property2Selection {
+	from
+		p : Views!Property
+	to
+		viewElement: Views!Selection(
+			label <- thisModule.firstToUpper(p.name),
+			selectionItems <- thisModule.getEnumerationLiteralItem(p.type) -> asSet(),
+			property <- p
+		)
+	do {
+		thisModule.id <- thisModule.id.inc();
+		viewElement.elementID <- thisModule.id.toString(); 
+	}
+}
+
+lazy rule EnumerationLiteral2EnumerationLiteralItem {
+	from
+		el : Views!EnumerationLiteral
+	to
+		eli : Views!EnumerationLiteralItem(
+			value <- el.name,
+			enumerationLiteral <- el
+		)
+}
+
+lazy rule LayoutVertical{
+	from 
+		clLay : Views!Class
+	to
+		lay : Views!Layout (
+			alignment <- #Vertical
+		)
+}
+
+lazy rule LayoutHorizontal{
+	from 
+		clLay : Views!Class
+	to
+		lay : Views!Layout (
+			alignment <- #Horizontal
+		)
+}
+
+
+rule DomainModel2ViewModel {
+	from
+		dm : Views!DomainModel
+	to 
+		vg : Views!ViewGroup(
+			welcomeViewGroup <- true,
+			name <- 'Welcome View Group',
+			views <- Views!Class.allInstances() -> collect(x | thisModule.Class2ClassIndexView(x))
+		),
+		vm : Views!ViewModel (
+			viewGroups <- vg	
+		)
+		
+}
+
