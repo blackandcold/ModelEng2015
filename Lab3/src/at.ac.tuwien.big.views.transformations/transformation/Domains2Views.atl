@@ -6,10 +6,7 @@ create OUT : Views from IN : Views;
 -- Helper --
 helper def: id : Integer = 0;
 helper context Integer def : inc() : Integer = self + 1;
-helper def: newID() : Integer = 
-	let id : Integer = thisModule.inc()
-	in
-	id;
+
 
 -- detect start view
 helper def: isStartView(clazz : Views!Class) : Boolean = 
@@ -80,10 +77,18 @@ helper def: getEnumerationLiteralItem(en : Views!Enumeration) : Sequence(Views!E
 	items
 	;
 
+-- get all associations for non navigable end classes
+helper def: getAssociations(cl : Views!Class) : Sequence(Views!Association) = 
+	let assoc : Sequence(Views!Association) = 
+		Views!Association.allInstances() 
+			-> select(as | (as.associationEnds.excluding(as.navigableEnd)-> select(p | p.type = cl) -> flatten() -> size()) > 0 )
+	in
+	assoc;
+
 
 -- Rules --
 
-rule Class2ClassIndexView {
+unique lazy rule Class2ClassIndexView {
 	from
 		cl : Views!Class
 		
@@ -93,55 +98,76 @@ rule Class2ClassIndexView {
 			name <- cl.name,	
 			layout <- thisModule.LayoutHorizontal(),
 			startView <- thisModule.isStartView(cl),
-
-			elementGroups <- thisModule.Class2ElementGroup(cl)
+			elementGroups <- thisModule.resolveTemp(cl, 'eg'),
+			elementGroups <- thisModule.getAssociations(cl) -> collect(x | thisModule.resolveTemp(x, 'eg')) -> asSet()
 			
 		)
 	do {
 		cv.class <- cl;
 	}
+}
+
+
+abstract rule NamedElement2ElementGroup {
+	from
+		ne: Views!NamedElement
+	to
+		eg: Views!ElementGroup(
+			header <- thisModule.firstToUpper(ne.name),
+			layout <- thisModule.LayoutVertical()
+		)
 	
 }
 
-lazy rule Class2ElementGroup{
+rule Class2ElementGroup extends NamedElement2ElementGroup{
 	from 
-		cl: Views!Class
+		ne: Views!Class
 	to
 		eg : Views!ElementGroup(
-			header <- cl.name + ' Information',
-			layout <- thisModule.LayoutVertical(),
-			viewElements <- thisModule.getViewElement(thisModule.getAllProperties(cl)) -> asSet()
+			header <- ne.name + ' Information',
+			viewElements <- thisModule.getViewElement(thisModule.getAllProperties(ne)) -> asSet()
 		)
 }
 
 
--- TODO
-lazy rule Association2ElementGroup{
+rule Association2ElementGroup extends NamedElement2ElementGroup{
 	from 
-		cl: Views!Class
+		ne: Views!Association
 	to
 		eg : Views!ElementGroup(
-			header <- cl.name + ' Information',
-			layout <- thisModule.LayoutVertical(),
-			-- viewElements <- cl.properties -> collect(x | thisModule.PropertyToViewElement(x)) -> flatten() -> asSet() -- kind of works?
-			-- viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.resolveTemp(x, 'viewElement')) -> asSet()
-			viewElements <- thisModule.getAllProperties(cl)  -> collect(x | thisModule.getViewElement(x)) -> asSet()
-
-			
+			viewElements <- thisModule.AssociationToList(ne)
 		)
 }
 
---lazy abstract rule Property2ViewElement{
---	from
---		p : Views!Property
---	to
---		viewElement : Views!Text(
---			label <- thisModule.firstToUpper(p.name)
---			-- property <- p.oclType().debug()
---		)
---}
 
-lazy rule Property2Text{-- extends Property2ViewElement{
+lazy rule AssociationToList {
+	from
+		ass: Views!Association
+	to
+		list: Views!List(
+			label <- thisModule.firstToUpper(ass.name),
+			link <- thisModule.AssociationLink(ass.navigableEnd.type)
+	)
+	do {
+		thisModule.id <- thisModule.id.inc();
+		list.elementID <- thisModule.id.toString();
+		list.association <- ass;
+	}
+}
+
+
+lazy rule AssociationLink {
+	from
+		cl: Views!Class
+	to
+		link: Views!Link (
+			label <- 'Add',
+			targetView <- thisModule.Class2ClassIndexView(cl)
+		)
+}
+
+
+lazy rule Property2Text{
 	from
 		p : Views!Property
 	to
@@ -156,7 +182,7 @@ lazy rule Property2Text{-- extends Property2ViewElement{
 	}
 }
 
-lazy rule Property2Integer{ -- extends Property2ViewElement{
+lazy rule Property2Integer{
 	-- created as text view
 	from
 		p : Views!Property
@@ -172,7 +198,7 @@ lazy rule Property2Integer{ -- extends Property2ViewElement{
 	}
 }
 
-lazy rule Property2Double {-- extends Property2ViewElement{
+lazy rule Property2Double {
 	-- created as text view
 	from
 		p : Views!Property
@@ -188,7 +214,7 @@ lazy rule Property2Double {-- extends Property2ViewElement{
 	}
 }
 
-lazy rule Property2DatePicker {-- extends Property2ViewElement{
+lazy rule Property2DatePicker {
 	from
 		p : Views!Property
 	to
@@ -203,7 +229,7 @@ lazy rule Property2DatePicker {-- extends Property2ViewElement{
 	}
 }
 
-lazy rule Property2Selection {-- extends Property2ViewElement{
+lazy rule Property2Selection {
 	from
 		p : Views!Property
 	to
@@ -254,8 +280,8 @@ rule DomainModel2ViewModel {
 		vg : Views!ViewGroup(
 			welcomeViewGroup <- true,
 			name <- 'Welcome View Group',
-			views <- dm.domainModelElements -> collect(x | thisModule.resolveTemp(x, 'cv'))
-			),
+			views <- Views!Class.allInstances() -> collect(x | thisModule.Class2ClassIndexView(x))
+		),
 		vm : Views!ViewModel (
 			viewGroups <- vg	
 		)
