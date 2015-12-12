@@ -81,7 +81,7 @@ helper def: getEnumerationLiteralItem(en : Views!Enumeration) : Sequence(Views!E
 helper def: getAssociations(cl : Views!Class) : Sequence(Views!Association) = 
 	let assoc : Sequence(Views!Association) = 
 		Views!Association.allInstances() 
-			-> select(as | (as.associationEnds.excluding(as.navigableEnd)-> select(p | p.type = cl) -> flatten() -> size()) > 0 )
+			-> select(as | (as.associationEnds.excluding(as.navigableEnd) -> select(p | p.type = cl) -> flatten() -> size()) > 0 )
 	in
 	assoc;
 
@@ -94,12 +94,14 @@ unique lazy rule Class2ClassIndexView {
 		
 	to
 		cv : Views!CreateView (
+			-- class <- cl,
 			header <- cl.name,
 			name <- cl.name,	
 			layout <- thisModule.LayoutHorizontal(),
 			startView <- thisModule.isStartView(cl),
 			elementGroups <- thisModule.resolveTemp(cl, 'eg'),
-			elementGroups <- thisModule.getAssociations(cl) -> collect(x | thisModule.resolveTemp(x, 'eg')) -> asSet()
+			elementGroups <- thisModule.getAssociations(cl) -> collect(ass | thisModule.resolveTemp(ass, 'eg')) -> asSet()
+			
 			
 		)
 	do {
@@ -147,6 +149,7 @@ lazy rule AssociationToList {
 		list: Views!List(
 			label <- thisModule.firstToUpper(ass.name),
 			link <- thisModule.AssociationLink(ass.navigableEnd.type)
+			--association <- ass
 	)
 	do {
 		thisModule.id <- thisModule.id.inc();
