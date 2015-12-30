@@ -13,6 +13,7 @@ import java.util.ArrayList
 import at.ac.tuwien.big.views.DeleteView
 import at.ac.tuwien.big.views.ClassOperationView
 import at.ac.tuwien.big.views.PropertyElement
+import at.ac.tuwien.big.views.ReadView
 
 class View2HTMLGenerator implements IGenerator {
 	
@@ -32,9 +33,9 @@ class View2HTMLGenerator implements IGenerator {
 					«var indexViews = getIndexViews(viewModel)»
 					«generateIndexViews(indexViews)» ««« //TODO alle classen berücksichtigen
 					
-					«var delViews = viewModel.viewGroups.map[it.views].flatten.filter(DeleteView).toList»
-					«FOR dv : delViews»
-					«createReadDeleteView(dv)»
+					«var operationViews = viewModel.viewGroups.map[it.views].flatten.filter(ClassOperationView).toList»
+					«FOR opv : operationViews»
+					«createReadDeleteView(opv)»
 					«ENDFOR»
 «««					//add HTML Elements here
 		
@@ -164,8 +165,10 @@ class View2HTMLGenerator implements IGenerator {
 		if(view instanceof DeleteView) {
 			action = "delete"
 			isDelete = true
-		} else{
+		} else if (view instanceof ReadView){
 			action = "show"
+		}else{
+			return ""
 		}
 		var upperAction = getNameCapital(action)
 		var upperName = getNameCapital(name)
@@ -174,7 +177,7 @@ class View2HTMLGenerator implements IGenerator {
 		
 		//TODO: check Properties
 		
-		'''
+		return '''
 		<div class="modal fade" id="modal«upperAction»«upperName»">
   	    <div class="modal-dialog">
          <div class="modal-content">
