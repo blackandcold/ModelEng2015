@@ -25,3 +25,7 @@ temp.folder
 samples/
 xtend-gen/
 src-gen/
+.metadata/
+
+
+.DS_STORE
