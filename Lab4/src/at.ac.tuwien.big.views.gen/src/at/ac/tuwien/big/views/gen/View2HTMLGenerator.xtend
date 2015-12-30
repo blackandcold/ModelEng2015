@@ -6,6 +6,10 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 import at.ac.tuwien.big.views.ViewModel
 import at.ac.tuwien.big.views.ViewGroup
+import at.ac.tuwien.big.views.View
+import at.ac.tuwien.big.views.DeleteView
+import at.ac.tuwien.big.views.ClassOperationView
+import at.ac.tuwien.big.views.PropertyElement
 
 class View2HTMLGenerator implements IGenerator {
 	
@@ -67,6 +71,11 @@ class View2HTMLGenerator implements IGenerator {
 	def getWelcomeGroupCapital(ViewModel model){
 		return Character.toUpperCase(getWelcomeGroup(model).name.charAt(0)) + getWelcomeGroup(model).name.substring(1);
 	}
+	
+	def getNameCapital(String st){
+		Character.toUpperCase(st.charAt(0)) + st.name.substring(1)
+	}
+	
 	def getName(String st){
 		return st.toLowerCase.replaceAll("\\W", "")
 	}
@@ -95,6 +104,55 @@ class View2HTMLGenerator implements IGenerator {
 			'''
 		}
 		return navListItems
+	} 
+
+	def createReadDeleteView(ClassOperationView view){
+		var name = getName(view.class_.name)
+		var isDelete = false
+		var action = ""
+		if(view instanceof DeleteView) {
+			action = "delete"
+			isDelete = true
+		} else{
+			action = "show"
+		}
+		var upperAction = getNameCapital(action)
+		var upperName = getNameCapital(name)
+		
+		var properties = view.elementGroups.map[it.viewElements].flatten.filter(PropertyElement).toList
+		
+		//TODO: check Properties
+		
+		'''
+		<div class="modal fade" id="modal«upperAction»«upperName»">
+  	    <div class="modal-dialog">
+         <div class="modal-content">
+          <div class="modal-header">
+           <h4 class="modal-title">«upperName»</h4>
+          </div>
+          <div class="modal-body">
+           «IF isDelete»
+	       <p>Do you really want to delete this «name»?</p>
+	       «ENDIF»
+	       <h5>«upperAction» «upperName»</h5>
+	       <!-- INSERT PROPERTIES, SUPERCLASS? -->
+	       «FOR p : properties»
+	       <p>«p.label»: {{ «name».«p.property.name»}}</p>
+	       «ENDFOR»
+          </div>
+          <div class="modal-footer">
+           «IF isDelete»
+           <button class="btn btn-default" data-dismiss="modal" data-ng-click="delete«upperName»(«name».id)">Delete</button>
+           <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+           «ENDIF»
+           «IF !isDelete»
+           <button class="btn btn-default" data-dismiss="modal">Close</button>
+           «ENDIF»
+          </div>
+         </div>
+  	    </div>
+	   </div>
+	   '''
 	}
 
 }
