@@ -32,6 +32,10 @@ class View2HTMLGenerator implements IGenerator {
 					«var indexViews = getIndexViews(viewModel)»
 					«generateIndexViews(indexViews)» ««« //TODO alle classen berücksichtigen
 					
+					«var delViews = viewModel.viewGroups.map[it.views].flatten.filter(DeleteView).toList»
+					«FOR dv : delViews»
+					«createReadDeleteView(dv)»
+					«ENDFOR»
 «««					//add HTML Elements here
 		
 		
@@ -200,6 +204,5 @@ class View2HTMLGenerator implements IGenerator {
   	    </div>
 	   </div>
 	   '''
-	}
 	}
 }
