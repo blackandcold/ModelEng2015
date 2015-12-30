@@ -6,6 +6,10 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 import at.ac.tuwien.big.views.ViewModel
 import at.ac.tuwien.big.views.ViewGroup
+import at.ac.tuwien.big.views.ClassIndexView
+import at.ac.tuwien.big.views.View
+import java.util.List
+import java.util.ArrayList
 
 class View2HTMLGenerator implements IGenerator {
 	
@@ -22,6 +26,9 @@ class View2HTMLGenerator implements IGenerator {
 					<body data-ng-controller="«welcomegroup_name»Controller">
 					
 					«generateNavigation(viewModel)»
+					«var indexViews = getIndexViews(viewModel)»
+					«generateIndexViews(indexViews)» ««« //TODO alle classen berücksichtigen
+					
 «««					//add HTML Elements here
 		
 		
@@ -29,6 +36,21 @@ class View2HTMLGenerator implements IGenerator {
 					</html>'''	
 			)	
 		}
+	}
+	
+	def getIndexViews(ViewModel model) {
+		//TODO for all view groups?
+		var groups = model.viewGroups
+		var List<View> indexViews = new ArrayList<View>
+		
+		
+		for(ViewGroup group : groups){
+			for(View view : group.views)
+			if(view instanceof ClassIndexView)
+				indexViews.add(view)
+		}
+		
+		return indexViews
 	}
 	
 	def generateHead(ViewModel viewModel) { '''
@@ -70,6 +92,9 @@ class View2HTMLGenerator implements IGenerator {
 	def getName(String st){
 		return st.toLowerCase.replaceAll("\\W", "")
 	}
+	def getNameCapitalPreserved(String st){
+		return st.replaceAll("\\W", "")
+	}
 
 	def generateNavigation(ViewModel model){
 
@@ -96,5 +121,29 @@ class View2HTMLGenerator implements IGenerator {
 		}
 		return navListItems
 	}
+	
 
+	def generateIndexViews(List<View> views){
+		var indexViews = ''''''
+		
+		for(View view : views)
+		{
+			var clazzName = view.class_.name
+			indexViews += '''
+				<div class="container" id="«getNameCapitalPreserved(view.name)»">
+					<h2>«view.header»</h2>
+					<h3>«view.description»</h3>
+					<ul>
+						<li data-ng-repeat="«clazzName» in «clazzName»s">{{ course.title }} <a
+							href="" data-toggle="modal" data-target="#modalShow«clazzName»"
+							data-ng-click="get«clazzName»(«clazzName».id)">show</a>
+						</li>
+					</ul>
+				</div>
+			'''
+				
+		}
+		return indexViews
+	}
+	}
 }
