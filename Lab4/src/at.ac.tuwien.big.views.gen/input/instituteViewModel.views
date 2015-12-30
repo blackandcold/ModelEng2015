@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<views:ViewModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:views="http://www.big.tuwien.ac.at/views">
+  <viewGroups
+      name="Institute"
+      welcomeViewGroup="true">
+    <views xsi:type="views:CreateView"
+        name="Create Institute"
+        header="Institute"
+        description="This is a form for creating institutes."
+        startView="true">
+      <class
+          href="instituteDomainModel.views#//@domainModelElements.0"/>
+      <layout/>
+      <elementGroups
+          header="Institute Details">
+        <layout/>
+        <viewElements
+            xsi:type="views:Text"
+            label="Number"
+            elementID="01"
+            format="^[0-9]+$">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.0/@properties.0"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:Text"
+            label="Name"
+            elementID="02"
+            format="^[a-zA-Z -]+$">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.0/@properties.1"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:List"
+            label="Professors"
+            elementID="03">
+          <link
+              targetView="//@viewGroups.0/@views.2"
+              label="Update"/>
+          <link
+              targetView="//@viewGroups.0/@views.1"
+              label="Add"/>
+          <association
+              href="instituteDomainModel.views#//@domainModelElements.6"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:Table"
+            label="Courses"
+            elementID="04">
+          <link
+              targetView="//@viewGroups.0/@views.4"
+              label="Delete"/>
+          <link
+              targetView="//@viewGroups.0/@views.3"
+              label="Add"/>
+          <association
+              href="instituteDomainModel.views#//@domainModelElements.5"/>
+          <columns
+              label="Type"
+              elementID="c01">
+            <property
+                href="instituteDomainModel.views#//@domainModelElements.1/@properties.0"/>
+          </columns>
+          <columns
+              label="Title"
+              elementID="c02">
+            <property
+                href="instituteDomainModel.views#//@domainModelElements.1/@properties.1"/>
+          </columns>
+          <columns
+              label="Credits"
+              elementID="c03">
+            <property
+                href="instituteDomainModel.views#//@domainModelElements.1/@properties.2"/>
+          </columns>
+        </viewElements>
+      </elementGroups>
+    </views>
+    <views xsi:type="views:CreateView"
+        name="Create Professor"
+        header="Professor">
+      <class
+          href="instituteDomainModel.views#//@domainModelElements.3"/>
+      <layout
+          alignment="Horizontal"/>
+      <elementGroups
+          header="Personal Details">
+        <layout/>
+        <viewElements
+            xsi:type="views:Text"
+            label="First name"
+            elementID="05">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.2/@properties.0"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:Text"
+            label="Last name"
+            elementID="06">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.2/@properties.1"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:Text"
+            label="E-Mail"
+            elementID="07"
+            format="">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.2/@properties.2"/>
+        </viewElements>
+      </elementGroups>
+      <elementGroups
+          header="Status">
+        <layout/>
+        <viewElements
+            xsi:type="views:Selection"
+            label="Visiting professor"
+            elementID="08">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.3/@properties.0"/>
+          <selectionItems
+              value="true"/>
+          <selectionItems
+              value="false"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:Text"
+            label="Home university"
+            elementID="09">
+          <condition
+              xsi:type="views:ComparisonCondition"
+              conditionID="c01"
+              comparisonValue="false"
+              property="//@viewGroups.0/@views.1/@elementGroups.1/@viewElements.0"/>
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.3/@properties.1"/>
+        </viewElements>
+      </elementGroups>
+    </views>
+    <views xsi:type="views:UpdateView"
+        name="Update Professor"
+        header="Professor">
+      <class
+          href="instituteDomainModel.views#//@domainModelElements.3"/>
+      <layout/>
+      <elementGroups
+          header="Update E-Mail Address">
+        <layout/>
+        <viewElements
+            xsi:type="views:Text"
+            label="E-Mail"
+            elementID="10"
+            format="">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.2/@properties.2"/>
+        </viewElements>
+      </elementGroups>
+    </views>
+    <views xsi:type="views:CreateView"
+        name="Create Course"
+        header="Course">
+      <class
+          href="instituteDomainModel.views#//@domainModelElements.1"/>
+      <layout/>
+      <elementGroups
+          header="Course Details">
+        <layout/>
+        <viewElements
+            xsi:type="views:Selection"
+            label="Type"
+            elementID="11">
+          <condition
+              xsi:type="views:CompositeCondition"
+              type="Disable"
+              conditionID="c02"
+              compositionType="Or">
+            <composedConditions
+                xsi:type="views:ComparisonCondition"
+                type="Disable"
+                conditionID="c03"
+                comparisonValue="1.0"
+                property="//@viewGroups.0/@views.3/@elementGroups.0/@viewElements.2"
+                comparisonType="Less"/>
+            <composedConditions
+                xsi:type="views:ComparisonCondition"
+                type="Disable"
+                conditionID="c04"
+                comparisonValue="30.0"
+                property="//@viewGroups.0/@views.3/@elementGroups.0/@viewElements.2"
+                comparisonType="Greater"/>
+          </condition>
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.1/@properties.0"/>
+          <selectionItems
+              xsi:type="views:EnumerationLiteralItem"
+              value="Lecture">
+            <enumerationLiteral
+                href="instituteDomainModel.views#//@domainModelElements.4/@literals.0"/>
+          </selectionItems>
+          <selectionItems
+              xsi:type="views:EnumerationLiteralItem"
+              value="Thesis">
+            <enumerationLiteral
+                href="instituteDomainModel.views#//@domainModelElements.4/@literals.1"/>
+          </selectionItems>
+        </viewElements>
+        <viewElements
+            xsi:type="views:Text"
+            label="Title"
+            elementID="12"
+            format="^[a-zA-Z -]+$">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.1/@properties.1"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:Text"
+            label="Credits"
+            elementID="13"
+            format="^[0-9]+\.[0-9]$">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.1/@properties.2"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:Text"
+            label="Description"
+            elementID="14"
+            format=""
+            long="true">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.1/@properties.3"/>
+        </viewElements>
+      </elementGroups>
+      <elementGroups
+          header="First Meeting">
+        <layout/>
+        <viewElements
+            xsi:type="views:DateTimePicker"
+            label="Date"
+            elementID="15"
+            format="dddd, MMMM Do YYYY">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.1/@properties.4"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:DateTimePicker"
+            label="Time"
+            elementID="16"
+            format="h:mm A">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.1/@properties.5"/>
+        </viewElements>
+      </elementGroups>
+      <elementGroups
+          header="Lecture">
+        <layout/>
+        <condition
+            xsi:type="views:ComparisonCondition"
+            type="Show"
+            conditionID="c05"
+            comparisonValue="LE"
+            property="//@viewGroups.0/@views.3/@elementGroups.0/@viewElements.0"/>
+        <viewElements
+            xsi:type="views:Text"
+            label="Topic"
+            elementID="17"
+            format=""
+            long="true">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.1/@properties.6"/>
+        </viewElements>
+      </elementGroups>
+      <elementGroups
+          header="Thesis">
+        <layout/>
+        <condition
+            xsi:type="views:ComparisonCondition"
+            type="Show"
+            conditionID="c06"
+            comparisonValue="TH"
+            property="//@viewGroups.0/@views.3/@elementGroups.0/@viewElements.0"/>
+        <viewElements
+            xsi:type="views:Text"
+            label="Keywords"
+            elementID="18">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.1/@properties.7"/>
+        </viewElements>
+      </elementGroups>
+    </views>
+    <views xsi:type="views:DeleteView"
+        name="Delete Course"
+        header="Course"
+        description="Do you really want to delete this course?">
+      <class
+          href="instituteDomainModel.views#//@domainModelElements.1"/>
+      <layout/>
+      <elementGroups
+          header="Deleted Course">
+        <layout/>
+        <viewElements
+            xsi:type="views:Text"
+            label="Title"
+            elementID="19"
+            format="">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.1/@properties.1"/>
+        </viewElements>
+      </elementGroups>
+    </views>
+  </viewGroups>
+  <viewGroups
+      name="Courses">
+    <views xsi:type="views:ClassIndexView"
+        name="Course Index"
+        header="Courses"
+        description="List of all current courses"
+        startView="true">
+      <link
+          targetView="//@viewGroups.1/@views.1"
+          label="Show"/>
+      <class
+          href="instituteDomainModel.views#//@domainModelElements.1"/>
+    </views>
+    <views xsi:type="views:ReadView"
+        name="Show Course"
+        header="Course">
+      <class
+          href="instituteDomainModel.views#//@domainModelElements.1"/>
+      <layout/>
+      <elementGroups
+          header="Course Details">
+        <layout/>
+        <viewElements
+            xsi:type="views:Text"
+            label="Type"
+            elementID="20">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.1/@properties.0"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:Text"
+            label="Title"
+            elementID="21">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.1/@properties.1"/>
+        </viewElements>
+        <viewElements
+            xsi:type="views:Text"
+            label="Description"
+            elementID="22"
+            format=""
+            long="true">
+          <property
+              href="instituteDomainModel.views#//@domainModelElements.1/@properties.3"/>
+        </viewElements>
+      </elementGroups>
+    </views>
+  </viewGroups>
+</views:ViewModel>

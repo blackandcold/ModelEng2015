@@ -1,0 +1,54 @@
+module at.ac.tuwien.big.views.gen.View2HTMLGenerator
+
+import org.eclipse.emf.mwe.utils.*
+
+var inputDir = "input"
+var outputDir = "output"
+
+Workflow {
+
+	bean = StandaloneSetup {
+		registerGeneratedEPackage = "at.ac.tuwien.big.views.ViewsPackage"
+	}
+
+	component = DirectoryCleaner {
+		directory = outputDir
+	}
+
+	component = at.ac.tuwien.big.views.gen.View2HTMLGeneratorSupport {}
+	
+	component = at.ac.tuwien.big.views.gen.Domain2AngularJSGeneratorSupport {}
+
+	component = OCLEnabledResourceReader {
+		path = inputDir
+		register = at.ac.tuwien.big.views.gen.View2HTMLGeneratorSetup {}
+		loadResource = {
+			slot = "package"
+		}
+	}
+
+	component = org.eclipse.xtext.generator.GeneratorComponent {
+		register = at.ac.tuwien.big.views.gen.View2HTMLGeneratorSetup {}
+		slot = 'package'
+		outlet = {
+			path = outputDir
+		}
+	}
+	
+	component = OCLEnabledResourceReader {
+		path = inputDir
+		register = at.ac.tuwien.big.views.gen.Domain2AngularJSGeneratorSetup {}
+		loadResource = {
+			slot = "package"
+		}
+	}
+	
+	component = org.eclipse.xtext.generator.GeneratorComponent {
+		register = at.ac.tuwien.big.views.gen.Domain2AngularJSGeneratorSetup {}
+		slot = 'package'
+		outlet = {
+			path = outputDir
+		}
+	}
+	
+}

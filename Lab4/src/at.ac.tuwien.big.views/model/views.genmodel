@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/at.ac.tuwien.big.views/src" modelPluginID="at.ac.tuwien.big.views"
+    modelName="Views" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>views.ecore</foreignModel>
+  <genPackages prefix="Views" basePackage="at.ac.tuwien.big" disposableProviderFactory="true"
+      ecorePackage="views.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="views.ecore#//VisibilityConditionType">
+      <genEnumLiterals ecoreEnumLiteral="views.ecore#//VisibilityConditionType/Hide"/>
+      <genEnumLiterals ecoreEnumLiteral="views.ecore#//VisibilityConditionType/Show"/>
+      <genEnumLiterals ecoreEnumLiteral="views.ecore#//VisibilityConditionType/Enable"/>
+      <genEnumLiterals ecoreEnumLiteral="views.ecore#//VisibilityConditionType/Disable"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="views.ecore#//CompositeConditionType">
+      <genEnumLiterals ecoreEnumLiteral="views.ecore#//CompositeConditionType/And"/>
+      <genEnumLiterals ecoreEnumLiteral="views.ecore#//CompositeConditionType/Or"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="views.ecore#//ComparisonConditionType">
+      <genEnumLiterals ecoreEnumLiteral="views.ecore#//ComparisonConditionType/Equal"/>
+      <genEnumLiterals ecoreEnumLiteral="views.ecore#//ComparisonConditionType/Less"/>
+      <genEnumLiterals ecoreEnumLiteral="views.ecore#//ComparisonConditionType/Greater"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="views.ecore#//LayoutStyle">
+      <genEnumLiterals ecoreEnumLiteral="views.ecore#//LayoutStyle/Vertical"/>
+      <genEnumLiterals ecoreEnumLiteral="views.ecore#//LayoutStyle/Horizontal"/>
+    </genEnums>
+    <genClasses image="false" ecoreClass="views.ecore#//NamedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//NamedElement/name"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//DomainModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//DomainModel/domainModelElements"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="views.ecore#//DomainModelElement"/>
+    <genClasses image="false" ecoreClass="views.ecore#//Type"/>
+    <genClasses ecoreClass="views.ecore#//Class">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//Class/properties"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference views.ecore#//Class/superClass"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference views.ecore#//Class/id"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//DataType"/>
+    <genClasses ecoreClass="views.ecore#//Enumeration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//Enumeration/literals"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//EnumerationLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//EnumerationLiteral/value"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="views.ecore#//MultiplicityElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//MultiplicityElement/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//MultiplicityElement/upperBound"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//Association">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//Association/isComposition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//Association/associationEnds"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference views.ecore#//Association/navigableEnd"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//Property">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference views.ecore#//Property/type"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//ViewModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//ViewModel/viewGroups"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//ViewGroup">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//ViewGroup/views"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//ViewGroup/welcomeViewGroup"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="views.ecore#//View">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//View/header"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//View/description"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference views.ecore#//View/class"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//View/startView"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//ClassIndexView"/>
+    <genClasses image="false" ecoreClass="views.ecore#//ClassOperationView">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//ClassOperationView/elementGroups"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//CreateView"/>
+    <genClasses ecoreClass="views.ecore#//ReadView"/>
+    <genClasses ecoreClass="views.ecore#//UpdateView"/>
+    <genClasses ecoreClass="views.ecore#//DeleteView"/>
+    <genClasses ecoreClass="views.ecore#//ElementGroup">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//ElementGroup/header"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//ElementGroup/viewElements"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="views.ecore#//ViewElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//ViewElement/label"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//ViewElement/elementID"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="views.ecore#//AssociationElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference views.ecore#//AssociationElement/association"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//List"/>
+    <genClasses ecoreClass="views.ecore#//Table">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//Table/columns"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="views.ecore#//PropertyElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference views.ecore#//PropertyElement/property"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//Column"/>
+    <genClasses ecoreClass="views.ecore#//Text">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//Text/format"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//Text/long"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//DateTimePicker">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//DateTimePicker/format"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//Selection">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//Selection/selectionItems"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="views.ecore#//VisibilityCondition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//VisibilityCondition/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//VisibilityCondition/conditionID"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//CompositeCondition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//CompositeCondition/composedConditions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//CompositeCondition/compositionType"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//ComparisonCondition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//ComparisonCondition/comparisonValue"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference views.ecore#//ComparisonCondition/property"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//ComparisonCondition/comparisonType"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="views.ecore#//LayoutableElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//LayoutableElement/layout"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//Layout">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//Layout/alignment"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="views.ecore#//LinkableElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//LinkableElement/link"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//Link">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference views.ecore#//Link/targetView"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//Link/label"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="views.ecore#//SelectionItem">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute views.ecore#//SelectionItem/value"/>
+    </genClasses>
+    <genClasses ecoreClass="views.ecore#//EnumerationLiteralItem">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference views.ecore#//EnumerationLiteralItem/enumerationLiteral"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="views.ecore#//ConditionalElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference views.ecore#//ConditionalElement/condition"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="views.ecore#//Condition"/>
+  </genPackages>
+</genmodel:GenModel>
