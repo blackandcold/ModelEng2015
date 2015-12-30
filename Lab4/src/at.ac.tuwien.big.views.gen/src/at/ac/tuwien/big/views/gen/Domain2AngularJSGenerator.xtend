@@ -25,26 +25,25 @@ class Domain2AngularJSGenerator implements IGenerator {
 	}
 
 	def generateModule(DomainModel model) {
-	'''var module = angular.module('«getFirstClassName(model)»App', []);'''
+		'''var module = angular.module('«getFirstClassName(model)»App', []);'''
 	}
 
 	def generateService(DomainModel model) {
-	'''
-	module.service('«getFirstClassName(model)»Service', function () {
-		/* «getAllClassNames(model)» */
-		
-		«createServiceMethods(model)»
-	«««			//add services here
-		
-	});'''
+		'''
+		module.service('«getFirstClassName(model)»Service', function () {
+			/* «getAllClassNames(model)» */
+			
+			«createServiceMethods(model)»
+		«««			//add services here
+		});'''
 	}
 
 	def generateController(DomainModel model) {
+		var moduleName = getFirstClassName(model)
 	'''
-	module.controller('«getFirstClassName(model)»Controller', function ($scope, «getFirstClassName(model)»Service) {
-	
+	module.controller('«moduleName»Controller', function ($scope, «moduleName»Service) {
+		«createControllerMethods(model,moduleName)»
 	«««			//add controllers here
-
 	});'''
 	}
 
@@ -58,12 +57,14 @@ class Domain2AngularJSGenerator implements IGenerator {
 	}
 
 	def getListOfClasses(DomainModel model) {
-		model.domainModelElements.filter(Class)
+		return model.domainModelElements.filter(Class)
 	}
 
 	def getAllClassNames(DomainModel model) {
 		return getListOfClasses(model).map[getLowerClassName(it)].toList.join(",")
 	}
+
+	/* SERVICES */
 
 	def createServiceMethods(DomainModel model) {
 		var list = getListOfClasses(model);
@@ -80,7 +81,7 @@ class Domain2AngularJSGenerator implements IGenerator {
 	def createServiceMethodsForClass(Class clazz) {
 
 		var lowerName = getLowerClassName(clazz)
-		var upperName = Character.toUpperCase(lowerName.charAt(0)) + lowerName.substring(1);
+		var upperName = Character.toUpperCase(lowerName.charAt(0)) + lowerName.substring(1)
 		var arrayName = lowerName + "s"
 		var idName = lowerName + "id"
 
@@ -106,7 +107,7 @@ class Domain2AngularJSGenerator implements IGenerator {
 			for (i in «arrayName») {
 				if («arrayName»[i].id == id) {
 					return «arrayName»[i];
-				}   
+				}
 			}
 		}
 		
@@ -124,4 +125,53 @@ class Domain2AngularJSGenerator implements IGenerator {
 		'''
 	}
 
+	/* CONTROLLERS */
+
+	def createControllerMethods(DomainModel model, String moduleName){
+		var list = getListOfClasses(model);
+
+		var services = new StringBuilder();
+
+		for (Class c : list) {
+			services.append(createControllerMethodForClass(c,moduleName))
+		}
+
+		return services.toString
+	}
+	
+	def createControllerMethodForClass(Class clazz, String moduleName){
+		
+		var lowerName = getLowerClassName(clazz)
+		var upperName = Character.toUpperCase(lowerName.charAt(0)) + lowerName.substring(1)
+		var scopeName = lowerName + "s"
+		var serviceName = moduleName + "Service"
+		
+	'''
+	/*«upperName»*/
+	$scope.«scopeName» = «serviceName».list«upperName»Service();
+		
+	$scope.save«upperName» = function () {
+		«serviceName».save«upperName»Service($scope.new«lowerName»);
+		$scope.new«lowerName» = {};
+	}
+
+	$scope.delete«upperName» = function (id) {
+		«serviceName».delete«upperName»Service(id);
+	}
+
+	$scope.update«upperName» = function (id) {
+		$scope.new«lowerName» = angular.copy(«serviceName».get«upperName»Service(id));
+	}
+
+	$scope.get«upperName» = function (id) {
+		$scope.«lowerName» = angular.copy(«serviceName».get«upperName»Service(id));
+	}
+			
+	$scope.navigation«upperName» = function (targetView) {
+		$(".container").hide();
+		var view = angular.element('#'+targetView);
+		view.show();
+	}
+	'''
+	}
 }

@@ -23,7 +23,7 @@ module.service('instituteService', function () {
 		for (i in institutes) {
 			if (institutes[i].id == id) {
 				return institutes[i];
-			}   
+			}
 		}
 	}
 	
@@ -59,7 +59,7 @@ module.service('instituteService', function () {
 		for (i in courses) {
 			if (courses[i].id == id) {
 				return courses[i];
-			}   
+			}
 		}
 	}
 	
@@ -95,7 +95,7 @@ module.service('instituteService', function () {
 		for (i in staffs) {
 			if (staffs[i].id == id) {
 				return staffs[i];
-			}   
+			}
 		}
 	}
 	
@@ -131,7 +131,7 @@ module.service('instituteService', function () {
 		for (i in professors) {
 			if (professors[i].id == id) {
 				return professors[i];
-			}   
+			}
 		}
 	}
 	
@@ -146,9 +146,106 @@ module.service('instituteService', function () {
 	this.listProfessorService = function () {
 		return professors;
 	}
-		
-});
+		});
 module.controller('instituteController', function ($scope, instituteService) {
-
-
-});
+	/*Institute*/
+	$scope.institutes = instituteService.listInstituteService();
+		
+	$scope.saveInstitute = function () {
+		instituteService.saveInstituteService($scope.newinstitute);
+		$scope.newinstitute = {};
+	}
+	
+	$scope.deleteInstitute = function (id) {
+		instituteService.deleteInstituteService(id);
+	}
+	
+	$scope.updateInstitute = function (id) {
+		$scope.newinstitute = angular.copy(instituteService.getInstituteService(id));
+	}
+	
+	$scope.getInstitute = function (id) {
+		$scope.institute = angular.copy(instituteService.getInstituteService(id));
+	}
+			
+	$scope.navigationInstitute = function (targetView) {
+		$(".container").hide();
+		var view = angular.element('#'+targetView);
+		view.show();
+	}
+	/*Course*/
+	$scope.courses = instituteService.listCourseService();
+		
+	$scope.saveCourse = function () {
+		instituteService.saveCourseService($scope.newcourse);
+		$scope.newcourse = {};
+	}
+	
+	$scope.deleteCourse = function (id) {
+		instituteService.deleteCourseService(id);
+	}
+	
+	$scope.updateCourse = function (id) {
+		$scope.newcourse = angular.copy(instituteService.getCourseService(id));
+	}
+	
+	$scope.getCourse = function (id) {
+		$scope.course = angular.copy(instituteService.getCourseService(id));
+	}
+			
+	$scope.navigationCourse = function (targetView) {
+		$(".container").hide();
+		var view = angular.element('#'+targetView);
+		view.show();
+	}
+	/*Staff*/
+	$scope.staffs = instituteService.listStaffService();
+		
+	$scope.saveStaff = function () {
+		instituteService.saveStaffService($scope.newstaff);
+		$scope.newstaff = {};
+	}
+	
+	$scope.deleteStaff = function (id) {
+		instituteService.deleteStaffService(id);
+	}
+	
+	$scope.updateStaff = function (id) {
+		$scope.newstaff = angular.copy(instituteService.getStaffService(id));
+	}
+	
+	$scope.getStaff = function (id) {
+		$scope.staff = angular.copy(instituteService.getStaffService(id));
+	}
+			
+	$scope.navigationStaff = function (targetView) {
+		$(".container").hide();
+		var view = angular.element('#'+targetView);
+		view.show();
+	}
+	/*Professor*/
+	$scope.professors = instituteService.listProfessorService();
+		
+	$scope.saveProfessor = function () {
+		instituteService.saveProfessorService($scope.newprofessor);
+		$scope.newprofessor = {};
+	}
+	
+	$scope.deleteProfessor = function (id) {
+		instituteService.deleteProfessorService(id);
+	}
+	
+	$scope.updateProfessor = function (id) {
+		$scope.newprofessor = angular.copy(instituteService.getProfessorService(id));
+	}
+	
+	$scope.getProfessor = function (id) {
+		$scope.professor = angular.copy(instituteService.getProfessorService(id));
+	}
+			
+	$scope.navigationProfessor = function (targetView) {
+		$(".container").hide();
+		var view = angular.element('#'+targetView);
+		view.show();
+	}
+	});
