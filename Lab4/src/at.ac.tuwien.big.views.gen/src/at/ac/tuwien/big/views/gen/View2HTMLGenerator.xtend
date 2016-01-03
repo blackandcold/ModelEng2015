@@ -18,6 +18,10 @@ import at.ac.tuwien.big.views.DomainModel
 import org.eclipse.uml2.uml.internal.operations.ClassOperations
 import at.ac.tuwien.big.views.UpdateView
 import at.ac.tuwien.big.views.CreateView
+import at.ac.tuwien.big.views.Layout
+import at.ac.tuwien.big.views.LayoutStyle
+import at.ac.tuwien.big.views.ElementGroup
+import at.ac.tuwien.big.views.Condition
 
 class View2HTMLGenerator implements IGenerator {
 	
@@ -202,17 +206,25 @@ class View2HTMLGenerator implements IGenerator {
 		var className = view.class_.name
 		
 		val startView = getWelcomeGroupStartView(viewModel).name.replaceAll("\\W","");
-		
+
 		return '''
 		<div class="container" id="«viewName»">
 			<h2>«className»</h2>
 			<form name="«viewName»Form" novalidate>
 				<p>«view.description»</p>
 				<div class="panel-group">
+					«IF view.layout == LayoutStyle.HORIZONTAL»
 					<div class="row"> //only for views with horizontal layout
-						
 						<!-- add element groups here -->
+						«FOR eg : view.elementGroups»
+						«createElementGroup(view, eg)»
+						«ENDFOR»
 					</div>
+					«ELSE»
+						«FOR eg : view.elementGroups»
+						«createElementGroup(view, eg)»
+						«ENDFOR»
+					«ENDIF»
 				</div>
 				«IF !view.startView»
 				<!-- add “save button” here -->
@@ -221,6 +233,37 @@ class View2HTMLGenerator implements IGenerator {
 			</form>
 		</div>
 		'''
+	}
+	
+	def createElementGroup(ClassOperationView view, ElementGroup group) {
+		return '''
+		<!-- for views with vertical layout: -->
+		«IF view.layout == LayoutStyle.VERTICAL»
+		<div class="elementgroup" «createCondition(group.condition)» >
+		«ELSE»
+		<!-- for views with horizontal layout: -->
+		<div class="elementgroup col-sm-6" «createCondition(group.condition)» >
+		«ENDIF»
+			<h4>«group.header»</h4>
+			<div class="panel-body">
+				«IF group.layout == LayoutStyle.HORIZONTAL»
+				<div class="form-inline" role="form"> <!-- only for views with horizontal layout-->
+					«createViewElements(view)»
+				</div>
+				«ELSE»
+				«createViewElements(view)»
+				«ENDIF»
+			</div>
+		</div>
+		'''
+	}
+	
+	def createViewElements(ClassOperationView view) {
+		'''<!-- add view elements here -->'''
+	}
+	
+	def createCondition(Condition condition) {
+		''' add-condition '''
 	}
 	
 	def createSaveButton(String buttonValue, String viewName, String className) {
