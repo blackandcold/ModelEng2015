@@ -14,6 +14,10 @@ import at.ac.tuwien.big.views.DeleteView
 import at.ac.tuwien.big.views.ClassOperationView
 import at.ac.tuwien.big.views.PropertyElement
 import at.ac.tuwien.big.views.ReadView
+import at.ac.tuwien.big.views.DomainModel
+import org.eclipse.uml2.uml.internal.operations.ClassOperations
+import at.ac.tuwien.big.views.UpdateView
+import at.ac.tuwien.big.views.CreateView
 
 class View2HTMLGenerator implements IGenerator {
 	
@@ -33,10 +37,8 @@ class View2HTMLGenerator implements IGenerator {
 					«var indexViews = getIndexViews(viewModel)»
 					«generateIndexViews(indexViews)» ««« //TODO alle classen berücksichtigen
 					
-					«var operationViews = viewModel.viewGroups.map[it.views].flatten.filter(ClassOperationView).toList»
-					«FOR opv : operationViews»
-					«createReadDeleteView(opv)»
-					«ENDFOR»
+					
+					«createViews(viewModel)»
 «««					//add HTML Elements here
 		
 		
@@ -45,6 +47,7 @@ class View2HTMLGenerator implements IGenerator {
 			)	
 		}
 	}
+	
 	
 	def getIndexViews(ViewModel model) {
 		//TODO for all view groups?
@@ -92,6 +95,12 @@ class View2HTMLGenerator implements IGenerator {
 		for(group : model.viewGroups)
 			if(group.isWelcomeViewGroup)
 				return group.name.replaceAll("\\W", "")
+	}
+	
+	def getWelcomeGroupStartView(ViewModel model){
+		for(group : model.viewGroups)
+			if(group.isWelcomeViewGroup)
+				return group.views.filter[it.isStartView].get(0)
 	}
 	
 	def getWelcomeGroupCapital(ViewModel model){
@@ -158,6 +167,71 @@ class View2HTMLGenerator implements IGenerator {
 	}
 	
 	
+	def createViews(ViewModel viewModel) {
+		var readDeleteViews = viewModel.viewGroups.map[it.views].flatten.filter[{
+			it instanceof DeleteView || it instanceof ReadView
+		}].map[it as ClassOperationView].toList
+		
+		var createUpdateViews = viewModel.viewGroups.map[it.views].flatten.filter[{
+			it instanceof CreateView || it instanceof UpdateView
+		}].map[it as ClassOperationView].toList
+		
+		return '''
+		<!-- CREATE AND UPDATE VIEWS -->
+		«FOR cuv : createUpdateViews»
+		«createCreateUpdateView(cuv, viewModel)»
+		«ENDFOR»
+		<!-- READ AND DELETE VIEWS -->
+		«FOR rdv : readDeleteViews»
+		«createReadDeleteView(rdv)»
+		«ENDFOR»
+		'''
+	}	
+	
+	def createCreateUpdateView(ClassOperationView view, ViewModel viewModel) {
+		var viewName = view.name.replaceAll("\\W", "")
+		
+		var isCreate = false
+		if(view instanceof CreateView){
+			isCreate = true
+		}else if(view instanceof UpdateView){
+			isCreate = false
+		}else{
+			return ""
+		}
+		var className = view.class_.name
+		
+		val startView = getWelcomeGroupStartView(viewModel).name.replaceAll("\\W","");
+		
+		return '''
+		<div class="container" id="«viewName»">
+			<h2>«className»</h2>
+			<form name="«viewName»Form" novalidate>
+				<p>«view.description»</p>
+				<div class="panel-group">
+					<div class="row"> //only for views with horizontal layout
+						
+						<!-- add element groups here -->
+					</div>
+				</div>
+				«IF !view.startView»
+				<!-- add “save button” here -->
+				«createSaveButton(startView,viewName,className)»
+				«ENDIF»
+			</form>
+		</div>
+		'''
+	}
+	
+	def createSaveButton(String buttonValue, String viewName, String className) {
+		//TODO: A save button is a <button> element with the value set to the name of the start view of the welcome group (whitespaces are removed).
+		return '''
+<button value="«buttonValue»" class="btn btn-primary btn-sm"
+	data-ng-disabled="«viewName»Form.$invalid"
+	data-ng-click="save«className»()">Save</button>
+		'''
+	}
+	
 	def createReadDeleteView(ClassOperationView view){
 		var name = getName(view.class_.name)
 		var isDelete = false
@@ -165,7 +239,8 @@ class View2HTMLGenerator implements IGenerator {
 		if(view instanceof DeleteView) {
 			action = "delete"
 			isDelete = true
-		} else if (view instanceof ReadView){
+		}
+		else if(view instanceof ReadView){
 			action = "show"
 		}else{
 			return ""
@@ -186,7 +261,7 @@ class View2HTMLGenerator implements IGenerator {
           </div>
           <div class="modal-body">
            «IF isDelete»
-	       <p>Do you really want to delete this «name»?</p>
+			<p>Do you really want to delete this «name»?</p>
 	       «ENDIF»
 	       <h5>«upperAction» «upperName»</h5>
 	       <!-- INSERT PROPERTIES, SUPERCLASS? -->
