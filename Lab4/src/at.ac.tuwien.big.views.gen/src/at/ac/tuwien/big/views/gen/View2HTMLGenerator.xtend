@@ -1,37 +1,34 @@
 package at.ac.tuwien.big.views.gen
 
+import at.ac.tuwien.big.views.AssociationElement
+import at.ac.tuwien.big.views.Class
+import at.ac.tuwien.big.views.ClassIndexView
+import at.ac.tuwien.big.views.ClassOperationView
+import at.ac.tuwien.big.views.Condition
+import at.ac.tuwien.big.views.CreateView
+import at.ac.tuwien.big.views.DateTimePicker
+import at.ac.tuwien.big.views.DeleteView
+import at.ac.tuwien.big.views.ElementGroup
+import at.ac.tuwien.big.views.EnumerationLiteralItem
+import at.ac.tuwien.big.views.LayoutStyle
+import at.ac.tuwien.big.views.PropertyElement
+import at.ac.tuwien.big.views.ReadView
+import at.ac.tuwien.big.views.Selection
+import at.ac.tuwien.big.views.Text
+import at.ac.tuwien.big.views.UpdateView
+import at.ac.tuwien.big.views.View
+import at.ac.tuwien.big.views.ViewGroup
+import at.ac.tuwien.big.views.ViewModel
 import java.io.File
+import java.util.ArrayList
+import java.util.List
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import at.ac.tuwien.big.views.ViewModel
-import at.ac.tuwien.big.views.ViewGroup
-import at.ac.tuwien.big.views.ClassIndexView
-import at.ac.tuwien.big.views.View
-import java.util.List
-import java.util.ArrayList
-import at.ac.tuwien.big.views.DeleteView
-import at.ac.tuwien.big.views.ClassOperationView
-import at.ac.tuwien.big.views.PropertyElement
-import at.ac.tuwien.big.views.ReadView
-import at.ac.tuwien.big.views.DomainModel
-import org.eclipse.uml2.uml.internal.operations.ClassOperations
-import at.ac.tuwien.big.views.UpdateView
-import at.ac.tuwien.big.views.CreateView
-import at.ac.tuwien.big.views.Layout
-import at.ac.tuwien.big.views.LayoutStyle
-import at.ac.tuwien.big.views.ElementGroup
-import at.ac.tuwien.big.views.Condition
-import at.ac.tuwien.big.views.AssociationElement
-import org.eclipse.ocl.xtext.markupcs.TextElement
-import org.eclipse.emf.common.ui.editor.ProblemEditorPart.TextProvider
-import at.ac.tuwien.big.views.Text
-import at.ac.tuwien.big.views.Selection
-import at.ac.tuwien.big.views.Enumeration
-import at.ac.tuwien.big.views.EnumerationLiteral
-import at.ac.tuwien.big.views.EnumerationLiteralItem
-import at.ac.tuwien.big.views.DateTimePicker
-import at.ac.tuwien.big.views.DataType
+import at.ac.tuwien.big.views.Table
+import at.ac.tuwien.big.views.Type
+import java.util.Properties
+import at.ac.tuwien.big.views.Property
 
 class View2HTMLGenerator implements IGenerator {
 	
@@ -281,7 +278,7 @@ class View2HTMLGenerator implements IGenerator {
 		'''
 	}
 	
-	def createPropertyElement(PropertyElement elm, at.ac.tuwien.big.views.Class clazz){
+	def createPropertyElement(PropertyElement elm, Class clazz){
 		val isMandatory = elm.property.lowerBound == elm.property.upperBound == 1
 		'''
 		<!-- PropertyElement -->
@@ -357,26 +354,100 @@ class View2HTMLGenerator implements IGenerator {
 	}
 	
 	def createAssociationElement(AssociationElement elm) {
+		val clazz = elm.association.navigableEnd.type as Class
+		val className = getName(clazz.name)
+		
 		'''
 		<!-- AssociationElement -->
+		«IF elm instanceof at.ac.tuwien.big.views.List»
+		<div class="form-group">
+			<div «createCondition(elm.condition)» >
+				<h5>«elm.label»</h5>
+				<ul id=”«elm.elementID»”>
+					<li data-ng-repeat="«className» in «className»s">
+					{{ «className».«clazz.id.name» }}
+					<!--add links here-->
+					</li>
+				</ul>
+				<!--add "add buttons” here-->
+			</div>
+		</div>
+		«ELSEIF elm instanceof Table»
+		«val table = elm as Table»
+		<div class="form-group">
+			<div «createCondition(elm.condition)» >
+				<h5>«elm.label»</h5>
+				<table class="table table-striped" id="«elm.elementID»">
+					<thead>
+						<tr>
+							«FOR col : table.columns»
+							<th>«col.label»</th>
+							«ENDFOR»
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-ng-repeat="«className» in «className»s">
+							«FOR col : table.columns»
+							<td> {{ «className».«col.property.name» }} </td>
+							«ENDFOR»
+							<td>
+							<!--add links here-->
+						</tr>
+					</tbody>
+				</table>
+				<!--add “add buttons” here-->
+			</div>
+		</div>
+		«ENDIF»
 		'''	
 	}
 	
+	/*
+	 * TODO
+	 */
 	def createCondition(Condition condition) {
 		''' add-condition '''
 	}
 	
+	/*
+	 * TODO
+	 */	
 	def createErrorSpan(){
 		'''<!--add error span tags-->'''
 	}
 	
+	/*
+	 * TODO
+	 */
+	def createAddButton(){
+		
+	}
+	
+	/*
+	 * TODO
+	 */
 	def createSaveButton(String buttonValue, String viewName, String className) {
 		//TODO: A save button is a <button> element with the value set to the name of the start view of the welcome group (whitespaces are removed).
 		return '''
-<button value="«buttonValue»" class="btn btn-primary btn-sm"
-	data-ng-disabled="«viewName»Form.$invalid"
-	data-ng-click="save«className»()">Save</button>
+		<button value="«buttonValue»" class="btn btn-primary btn-sm"
+			data-ng-disabled="«viewName»Form.$invalid"
+			data-ng-click="save«className»()">Save</button>
 		'''
+	}
+	
+	/*
+	 * TODO
+	 */	
+	def createModalButton(){
+		
+	}
+	
+	/*
+	 * TODO
+	 */
+	def createLink(){
+		
 	}
 	
 	def createReadDeleteView(ClassOperationView view){
@@ -397,8 +468,6 @@ class View2HTMLGenerator implements IGenerator {
 		
 		var properties = view.elementGroups.map[it.viewElements].flatten.filter(PropertyElement).toList
 		
-		//TODO: check Properties
-		
 		return '''
 		<div class="modal fade" id="modal«upperAction»«upperName»">
   	    <div class="modal-dialog">
@@ -411,7 +480,6 @@ class View2HTMLGenerator implements IGenerator {
 			<p>Do you really want to delete this «name»?</p>
 	       «ENDIF»
 	       <h5>«upperAction» «upperName»</h5>
-	       <!-- INSERT PROPERTIES, SUPERCLASS? -->
 	       «FOR p : properties»
 	       <p>«p.label»: {{ «name».«p.property.name»}}</p>
 	       «ENDFOR»
