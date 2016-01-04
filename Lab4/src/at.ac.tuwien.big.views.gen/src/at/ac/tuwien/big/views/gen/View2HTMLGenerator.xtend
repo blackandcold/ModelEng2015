@@ -95,12 +95,10 @@ class View2HTMLGenerator implements IGenerator {
 			<script src="../assets/views.js"></script>
 			<script src="«getWelcomeGroup(viewModel).name».js"></script>
 			<script type="text/javascript">
-				$(document).ready({
-					function(){				 
-	                    		view.addWelcomePage('Create«getWelcomeGroupCapital(viewModel)»');
-								view.init();
-						    });						
-						});
+				$(document).ready(function(){				 
+            		view.addWelcomePage('Create«getWelcomeGroupCapital(viewModel)»');
+					view.init();
+				});
 			</script>
 		</head>'''
 	}
