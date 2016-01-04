@@ -127,8 +127,9 @@ class View2HTMLGenerator implements IGenerator {
 		var navListItems = ''''''
 		for(ViewGroup group : groups)
 		{
+			val startView = group.views.filter[it.startView].get(0)
 			navListItems += '''
-				<li><a href="" class="viewgroup" target="«group.name»Index">«group.name»</a></li>
+				<li><a href="" class="viewgroup" target="«removeWhiteSpace(startView.name)»">«group.name»</a></li>
 			'''
 		}
 		return navListItems
