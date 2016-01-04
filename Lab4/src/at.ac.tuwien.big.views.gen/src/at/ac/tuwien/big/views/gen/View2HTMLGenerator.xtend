@@ -45,34 +45,14 @@ class View2HTMLGenerator implements IGenerator {
 					<body data-ng-controller="«welcomegroup_name»Controller">
 					
 					«generateNavigation(viewModel)»
-					«var indexViews = getIndexViews(viewModel)»
-					«generateIndexViews(indexViews)» ««« //TODO alle classen berücksichtigen
-					
 					
 					«createViews(viewModel)»
 «««					//add HTML Elements here
-		
 		
 					</body>
 					</html>'''	
 			)	
 		}
-	}
-	
-	
-	def getIndexViews(ViewModel model) {
-		//TODO for all view groups?
-		var groups = model.viewGroups
-		var List<View> indexViews = new ArrayList<View>
-		
-		
-		for(ViewGroup group : groups){
-			for(View view : group.views)
-			if(view instanceof ClassIndexView)
-				indexViews.add(view)
-		}
-		
-		return indexViews
 	}
 	
 	def generateHead(ViewModel viewModel) { '''
@@ -124,6 +104,9 @@ class View2HTMLGenerator implements IGenerator {
 	def getNameCapitalPreserved(String st){
 		return st.replaceAll("\\W", "")
 	}
+	def removeWhiteSpace(String st){
+		st.replaceAll("\\W", "")
+	}
 
 	def generateNavigation(ViewModel model){
 
@@ -151,41 +134,24 @@ class View2HTMLGenerator implements IGenerator {
 		return navListItems
 	}
 	
-
-	def generateIndexViews(List<View> views){
-		var indexViews = ''''''
-		
-		for(View view : views)
-		{
-			var clazzName = view.class_.name
-			indexViews += '''
-				<div class="container" id="«getNameCapitalPreserved(view.name)»">
-					<h2>«view.header»</h2>
-					<h3>«view.description»</h3>
-					<ul>
-						<li data-ng-repeat="«clazzName» in «clazzName»s">{{ course.title }} <a
-							href="" data-toggle="modal" data-target="#modalShow«clazzName»"
-							data-ng-click="get«clazzName»(«clazzName».id)">show</a>
-						</li>
-					</ul>
-				</div>
-			'''
-				
-		}
-		return indexViews
-	}
-	
-	
 	def createViews(ViewModel viewModel) {
-		var readDeleteViews = viewModel.viewGroups.map[it.views].flatten.filter[{
+		val indexViews = viewModel.viewGroups.map[it.views].flatten.filter[{
+			it instanceof ClassIndexView
+		}].map[it as ClassIndexView].toList
+		
+		val readDeleteViews = viewModel.viewGroups.map[it.views].flatten.filter[{
 			it instanceof DeleteView || it instanceof ReadView
 		}].map[it as ClassOperationView].toList
 		
-		var createUpdateViews = viewModel.viewGroups.map[it.views].flatten.filter[{
+		val createUpdateViews = viewModel.viewGroups.map[it.views].flatten.filter[{
 			it instanceof CreateView || it instanceof UpdateView
 		}].map[it as ClassOperationView].toList
 		
 		return '''
+		<!-- CLASS INDEX VIEWS -->
+		«FOR idx : indexViews»
+		«createClassIndexView(idx, viewModel)»
+		«ENDFOR»
 		<!-- CREATE AND UPDATE VIEWS -->
 		«FOR cuv : createUpdateViews»
 		«createCreateUpdateView(cuv, viewModel)»
@@ -196,6 +162,23 @@ class View2HTMLGenerator implements IGenerator {
 		«ENDFOR»
 		'''
 	}	
+	
+	def createClassIndexView(ClassIndexView view, ViewModel viewModel){
+		val clazzName = view.class_.name
+		val lowerClassName = getName(view.class_.name)
+		return '''
+		<div class="container" id="«removeWhiteSpace(view.name)»">
+			<h2>«view.header»</h2>
+			<h3>«view.description»</h3>
+			<ul>
+				<li data-ng-repeat="«lowerClassName» in «lowerClassName»s">{{ «lowerClassName».«view.class_.id.name» }} <a
+					href="" data-toggle="modal" data-target="#modalShow«clazzName»"
+					data-ng-click="get«clazzName»(«lowerClassName».id)">show</a>
+				</li>
+			</ul>
+		</div>
+		'''
+	}
 	
 	def createCreateUpdateView(ClassOperationView view, ViewModel viewModel) {
 		var viewName = view.name.replaceAll("\\W", "")
