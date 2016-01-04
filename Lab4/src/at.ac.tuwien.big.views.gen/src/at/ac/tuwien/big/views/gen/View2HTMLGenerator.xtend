@@ -136,6 +136,7 @@ class View2HTMLGenerator implements IGenerator {
 	}
 	
 	def createViews(ViewModel viewModel) {
+		/*
 		val indexViews = viewModel.viewGroups.map[it.views].flatten.filter[{
 			it instanceof ClassIndexView
 		}].map[it as ClassIndexView].toList
@@ -147,6 +148,7 @@ class View2HTMLGenerator implements IGenerator {
 		val createUpdateViews = viewModel.viewGroups.map[it.views].flatten.filter[{
 			it instanceof CreateView || it instanceof UpdateView
 		}].map[it as ClassOperationView].toList
+		 
 		
 		return '''
 		<!-- CLASS INDEX VIEWS -->
@@ -162,6 +164,24 @@ class View2HTMLGenerator implements IGenerator {
 		«createReadDeleteView(rdv)»
 		«ENDFOR»
 		'''
+		 
+		 */
+		 
+		val allViews = viewModel.viewGroups.map[it.views].flatten.toList
+		 
+		return '''
+«««		<!-- CLASS INDEX VIEWS -->
+		«FOR v : allViews»
+		«IF v instanceof ClassIndexView»
+		«createClassIndexView(v as ClassIndexView, viewModel)»
+		«ELSEIF v instanceof CreateView || v instanceof UpdateView»
+		«createCreateUpdateView(v as ClassOperationView, viewModel)»
+		«ELSEIF v instanceof ReadView || v instanceof DeleteView»
+		«createReadDeleteView(v as ClassOperationView)»
+		«ENDIF»
+		«ENDFOR»
+		'''
+		 
 	}	
 	
 	def createClassIndexView(ClassIndexView view, ViewModel viewModel){
@@ -204,7 +224,7 @@ class View2HTMLGenerator implements IGenerator {
 				<div class="panel-group">
 					«IF view.layout.alignment == LayoutStyle.HORIZONTAL»
 					<div class="row"> //only for views with horizontal layout
-						<!-- add element groups here -->
+«««						<!-- add element groups here -->
 						«FOR eg : view.elementGroups»
 						«createElementGroup(view, eg)»
 						«ENDFOR»
@@ -216,7 +236,7 @@ class View2HTMLGenerator implements IGenerator {
 					«ENDIF»
 				</div>
 				«IF !view.startView»
-				<!-- add “save button” here -->
+«««				<!-- add “save button” here -->
 				«createSaveButton(startView,viewName,className)»
 				«ENDIF»
 			</form>
@@ -226,11 +246,11 @@ class View2HTMLGenerator implements IGenerator {
 	
 	def createElementGroup(ClassOperationView view, ElementGroup group) {
 		return '''
-		<!-- for views with vertical layout: -->
+«««		<!-- for views with vertical layout: -->
 		«IF view.layout.alignment == LayoutStyle.VERTICAL»
 		<div class="elementgroup" «createCondition(group.condition)» >
 		«ELSE»
-		<!-- for views with horizontal layout: -->
+«««		<!-- for views with horizontal layout: -->
 		<div class="elementgroup col-sm-6" «createCondition(group.condition)» >
 		«ENDIF»
 			<h4>«group.header»</h4>
@@ -248,10 +268,7 @@ class View2HTMLGenerator implements IGenerator {
 	}
 	
 	def createViewElements(ClassOperationView view, ElementGroup group) {
-		
-		
-		
-		return '''<!-- add view elements here -->
+		return '''
 		«FOR elm : group.viewElements»
 		«IF elm instanceof AssociationElement»
 			«createAssociationElement(elm as AssociationElement)»
@@ -263,9 +280,9 @@ class View2HTMLGenerator implements IGenerator {
 	}
 	
 	def createPropertyElement(PropertyElement elm, Class clazz){
-		val isMandatory = elm.property.lowerBound == elm.property.upperBound == 1
+		val isMandatory = elm.property.lowerBound == 1 && elm.property.upperBound == 1
 		'''
-		<!-- PropertyElement -->
+«««		<!-- PropertyElement -->
 		«IF elm instanceof Text»
 		<div class="form-group">
 			«createPropertyLabel(elm,isMandatory)»
@@ -342,7 +359,7 @@ class View2HTMLGenerator implements IGenerator {
 		val className = getName(clazz.name)
 		
 		'''
-		<!-- AssociationElement -->
+«««		<!-- AssociationElement -->
 		«IF elm instanceof at.ac.tuwien.big.views.List»
 		<div class="form-group">
 			<div «createCondition(elm.condition)» >
@@ -373,7 +390,7 @@ class View2HTMLGenerator implements IGenerator {
 					<tbody>
 						<tr data-ng-repeat="«className» in «className»s">
 							«FOR col : table.columns»
-							<td> {{ «className».«col.property.name» }} </td>
+							<td>{{ «className».«col.property.name» }}</td>
 							«ENDFOR»
 							<td>
 							<!--add links here-->
