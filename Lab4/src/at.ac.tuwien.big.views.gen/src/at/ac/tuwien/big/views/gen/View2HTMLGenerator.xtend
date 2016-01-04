@@ -221,7 +221,7 @@ class View2HTMLGenerator implements IGenerator {
 			<form name="«viewName»Form" novalidate>
 				<p>«view.description»</p>
 				<div class="panel-group">
-					«IF view.layout == LayoutStyle.HORIZONTAL»
+					«IF view.layout.alignment == LayoutStyle.HORIZONTAL»
 					<div class="row"> //only for views with horizontal layout
 						<!-- add element groups here -->
 						«FOR eg : view.elementGroups»
@@ -246,7 +246,7 @@ class View2HTMLGenerator implements IGenerator {
 	def createElementGroup(ClassOperationView view, ElementGroup group) {
 		return '''
 		<!-- for views with vertical layout: -->
-		«IF view.layout == LayoutStyle.VERTICAL»
+		«IF view.layout.alignment == LayoutStyle.VERTICAL»
 		<div class="elementgroup" «createCondition(group.condition)» >
 		«ELSE»
 		<!-- for views with horizontal layout: -->
@@ -254,7 +254,7 @@ class View2HTMLGenerator implements IGenerator {
 		«ENDIF»
 			<h4>«group.header»</h4>
 			<div class="panel-body">
-				«IF group.layout == LayoutStyle.HORIZONTAL»
+				«IF group.layout.alignment == LayoutStyle.HORIZONTAL»
 				<div class="form-inline" role="form"> <!-- only for views with horizontal layout-->
 					«createViewElements(view, group)»
 				</div>
