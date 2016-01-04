@@ -22,6 +22,16 @@ import at.ac.tuwien.big.views.Layout
 import at.ac.tuwien.big.views.LayoutStyle
 import at.ac.tuwien.big.views.ElementGroup
 import at.ac.tuwien.big.views.Condition
+import at.ac.tuwien.big.views.AssociationElement
+import org.eclipse.ocl.xtext.markupcs.TextElement
+import org.eclipse.emf.common.ui.editor.ProblemEditorPart.TextProvider
+import at.ac.tuwien.big.views.Text
+import at.ac.tuwien.big.views.Selection
+import at.ac.tuwien.big.views.Enumeration
+import at.ac.tuwien.big.views.EnumerationLiteral
+import at.ac.tuwien.big.views.EnumerationLiteralItem
+import at.ac.tuwien.big.views.DateTimePicker
+import at.ac.tuwien.big.views.DataType
 
 class View2HTMLGenerator implements IGenerator {
 	
@@ -248,22 +258,118 @@ class View2HTMLGenerator implements IGenerator {
 			<div class="panel-body">
 				«IF group.layout == LayoutStyle.HORIZONTAL»
 				<div class="form-inline" role="form"> <!-- only for views with horizontal layout-->
-					«createViewElements(view)»
+					«createViewElements(view, group)»
 				</div>
 				«ELSE»
-				«createViewElements(view)»
+				«createViewElements(view, group)»
 				«ENDIF»
 			</div>
 		</div>
 		'''
 	}
 	
-	def createViewElements(ClassOperationView view) {
-		'''<!-- add view elements here -->'''
+	def createViewElements(ClassOperationView view, ElementGroup group) {
+		
+		
+		
+		return '''<!-- add view elements here -->
+		«FOR elm : group.viewElements»
+		«IF elm instanceof AssociationElement»
+			«createAssociationElement(elm as AssociationElement)»
+		«ELSEIF elm instanceof PropertyElement»
+			«createPropertyElement(elm as PropertyElement, view.class_)»
+		«ENDIF»
+		«ENDFOR»
+		'''
+	}
+	
+	def createPropertyElement(PropertyElement elm, at.ac.tuwien.big.views.Class clazz){
+		val isMandatory = elm.property.lowerBound == elm.property.upperBound == 1
+		'''
+		<!-- PropertyElement -->
+		«IF elm instanceof Text»
+		<div class="form-group">
+			«createPropertyLabel(elm,isMandatory)»
+			«IF (elm as Text).long»
+			<textarea class="form-control" rows="4" id="«elm.elementID»" name="«elm.property.name»"
+			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «createCondition(elm.condition)» >
+			</textarea>
+			«ELSE»
+			<input type="text" class="form-control" id="«elm.elementID»" name="«elm.property.name»" 
+			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «IF isMandatory»required«ENDIF» data-ng-pattern="/«elm.format»/" «createCondition(elm.condition)» />
+			«ENDIF»
+			«createErrorSpan()»
+		</div>
+		«ENDIF»
+		«IF elm instanceof Selection»
+		<div class="form-group">
+			«createPropertyLabel(elm, isMandatory)»
+			<select data-ng-option class="form-control" id="«elm.elementID»"
+			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «IF isMandatory»required«ENDIF» «createCondition(elm.condition)» >
+				<option value="" disabled selected>Select your option</option>
+				«FOR opt : (elm as Selection).selectionItems»
+				«IF opt instanceof EnumerationLiteralItem»
+				«val enumItm = (opt as EnumerationLiteralItem).enumerationLiteral»
+				<option value="«enumItm.value»">«enumItm.name»</option>
+				«ELSE»
+				<option value="«opt.value»">«opt.value»</option>
+				«ENDIF»
+				«ENDFOR»
+			</select>
+			«createErrorSpan()»
+		</div>
+		«ENDIF»
+		«IF elm instanceof DateTimePicker»
+		<div class="form-group">
+			<div class="row">
+				<div class="col-xs-6 col-sm-12">
+					<div class="form-group">
+						«createPropertyLabel(elm, isMandatory)»
+						«IF elm.property.type.name == "Date" »
+						<!--pickers for properties with datatype "Date":-->
+						<div class="input-group date" id="picker«elm.elementID»" style="calendar">
+						«ELSEIF elm.property.type.name == "Time" »
+						<!--pickers for properties with datatype "Time":-->
+						<div class='input-group date' id='picker«elm.elementID»' style='time'>
+						«ENDIF»
+							<input type="text" class="form-control" id="«elm.elementID»" name="«elm.property.name»"
+							data-ng-model="new«getName(clazz.name)».«elm.property.name»" data-ng-pattern="/«elm.format»/"
+							«createCondition(elm.condition)» />
+							<span class="input-group-addon">
+								«IF elm.property.type.name == "Date" »
+								<!--pickers for properties with datatype “Date”:-->
+								<span class="glyphicon glyphicon-calendar"></span>
+								«ELSEIF elm.property.type.name == "Time"»
+								<!--pickers for properties with datatype “Time”:-->
+								<span class="glyphicon glyphicon-time"></span>
+								«ENDIF»
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			«createErrorSpan()»
+		</div>
+		«ENDIF»
+		'''
+	}
+		
+	def createPropertyLabel(PropertyElement elm, boolean isMandatory){
+		'''<label for="«elm.elementID»">«elm.label»«IF isMandatory»<span>*</span>«ENDIF»:</label>'''
+	}
+	
+	def createAssociationElement(AssociationElement elm) {
+		'''
+		<!-- AssociationElement -->
+		'''	
 	}
 	
 	def createCondition(Condition condition) {
 		''' add-condition '''
+	}
+	
+	def createErrorSpan(){
+		'''<!--add error span tags-->'''
 	}
 	
 	def createSaveButton(String buttonValue, String viewName, String className) {
