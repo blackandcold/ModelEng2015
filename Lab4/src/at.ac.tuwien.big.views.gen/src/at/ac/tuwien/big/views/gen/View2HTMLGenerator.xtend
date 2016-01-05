@@ -293,7 +293,7 @@ class View2HTMLGenerator implements IGenerator {
 			</textarea>
 			«ELSE»
 			<input type="text" class="form-control" id="«elm.elementID»" name="«elm.property.name»" 
-			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «IF isMandatory»required«ENDIF» data-ng-pattern="/«elm.format»/" «createCondition(elm.condition)» />
+			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «IF isMandatory»required«ENDIF» «IF !elm.format.isNullOrEmpty»data-ng-pattern="/«elm.format»/"«ENDIF» «createCondition(elm.condition)» />
 			«ENDIF»
 			«createErrorSpan(view, elm, isMandatory)»
 		</div>
@@ -330,7 +330,7 @@ class View2HTMLGenerator implements IGenerator {
 						<div class='input-group date' id='picker«elm.elementID»' style='time'>
 						«ENDIF»
 							<input type="text" class="form-control" id="«elm.elementID»" name="«elm.property.name»"
-							data-ng-model="new«getName(clazz.name)».«elm.property.name»" data-ng-pattern="/«elm.format»/"
+							data-ng-model="new«getName(clazz.name)».«elm.property.name»" «IF !elm.format.isNullOrEmpty»data-ng-pattern="/«elm.format»/"«ENDIF»
 							«createCondition(elm.condition)» />
 							<span class="input-group-addon">
 								«IF elm.property.type.name == "Date" »
