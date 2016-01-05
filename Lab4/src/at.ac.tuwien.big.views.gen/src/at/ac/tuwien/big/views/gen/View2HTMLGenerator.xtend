@@ -457,10 +457,10 @@ class View2HTMLGenerator implements IGenerator {
 	/*
 	 * TODO
 	 */
-	def createSaveButton(String buttonValue, String viewName, String className) {
+	def createSaveButton(String startView, String viewName, String className) {
 		//TODO: A save button is a <button> element with the value set to the name of the start view of the welcome group (whitespaces are removed).
 		return '''
-		<button value="«buttonValue»" class="btn btn-primary btn-sm"
+		<button value="«startView»" class="btn btn-primary btn-sm"
 		data-ng-disabled="«viewName»Form.$invalid"
 		data-ng-click="save«className»()">Save</button>
 		'''
@@ -481,42 +481,36 @@ class View2HTMLGenerator implements IGenerator {
 	}
 	
 	def createReadDeleteView(ClassOperationView view){
-		var name = getName(view.class_.name)
+		var className = getName(view.class_.name)
+		var upperName = view.class_.name
 		var isDelete = false
-		var action = ""
-		if(view instanceof DeleteView) {
-			action = "delete"
+		if(view instanceof DeleteView)
 			isDelete = true
-		}
-		else if(view instanceof ReadView){
-			action = "show"
-		}else{
+		else if(view instanceof ReadView)
+			isDelete = false
+		else
 			return ""
-		}
-		var upperAction = getNameCapital(action)
-		var upperName = getNameCapital(name)
 		
 		var properties = view.elementGroups.map[it.viewElements].flatten.filter(PropertyElement).toList
+		val viewName = removeWhiteSpace(view.name)
 		
 		return '''
-		<div class="modal fade" id="modal«upperAction»«upperName»">
+		<div class="modal fade" id="modal«viewName»">
   	    <div class="modal-dialog">
          <div class="modal-content">
           <div class="modal-header">
-           <h4 class="modal-title">«upperName»</h4>
+           <h4 class="modal-title">«view.header»</h4>
           </div>
           <div class="modal-body">
-           «IF isDelete»
-			<p>Do you really want to delete this «name»?</p>
-	       «ENDIF»
-	       <h5>«upperAction» «upperName»</h5>
+		   <p>«view.description»</p>
+	       <h5>«view.name»</h5>
 	       «FOR p : properties»
-	       <p>«p.label»: {{ «name».«p.property.name»}}</p>
+	       <p>«p.label»: {{ «className».«p.property.name» }}</p>
 	       «ENDFOR»
           </div>
           <div class="modal-footer">
            «IF isDelete»
-           <button class="btn btn-default" data-dismiss="modal" data-ng-click="delete«upperName»(«name».id)">Delete</button>
+           <button class="btn btn-default" data-dismiss="modal" data-ng-click="delete«upperName»(«className».id)">Delete</button>
            <button class="btn btn-default" data-dismiss="modal">Cancel</button>
            «ENDIF»
            «IF !isDelete»
