@@ -72,8 +72,8 @@ class View2HTMLGenerator implements IGenerator {
 			<script src="../assets/views.js"></script>
 			<script src="«getWelcomeGroup(viewModel).name».js"></script>
 			<script type="text/javascript">
-				$(document).ready(function(){				 
-            		view.addWelcomePage('Create«getWelcomeGroupCapital(viewModel)»');
+				$(document).ready(function() {
+					view.addWelcomePage('Create«getWelcomeGroupCapital(viewModel)»');
 					view.init();
 				});
 			</script>
@@ -273,13 +273,14 @@ class View2HTMLGenerator implements IGenerator {
 		«IF elm instanceof AssociationElement»
 			«createAssociationElement(elm as AssociationElement)»
 		«ELSEIF elm instanceof PropertyElement»
-			«createPropertyElement(elm as PropertyElement, view.class_)»
+			«createPropertyElement(elm as PropertyElement, view)»
 		«ENDIF»
 		«ENDFOR»
 		'''
 	}
 	
-	def createPropertyElement(PropertyElement elm, Class clazz){
+	def createPropertyElement(PropertyElement elm, ClassOperationView view){
+		val clazz = view.class_
 		val isMandatory = elm.property.lowerBound == 1 && elm.property.upperBound == 1
 		'''
 «««		<!-- PropertyElement -->
@@ -294,7 +295,7 @@ class View2HTMLGenerator implements IGenerator {
 			<input type="text" class="form-control" id="«elm.elementID»" name="«elm.property.name»" 
 			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «IF isMandatory»required«ENDIF» data-ng-pattern="/«elm.format»/" «createCondition(elm.condition)» />
 			«ENDIF»
-			«createErrorSpan()»
+			«createErrorSpan(view, elm, isMandatory)»
 		</div>
 		«ENDIF»
 		«IF elm instanceof Selection»
@@ -312,7 +313,7 @@ class View2HTMLGenerator implements IGenerator {
 				«ENDIF»
 				«ENDFOR»
 			</select>
-			«createErrorSpan()»
+			«createErrorSpan(view, elm, isMandatory)»
 		</div>
 		«ENDIF»
 		«IF elm instanceof DateTimePicker»
@@ -344,7 +345,7 @@ class View2HTMLGenerator implements IGenerator {
 					</div>
 				</div>
 			</div>
-			«createErrorSpan()»
+			«createErrorSpan(view, elm, isMandatory)»
 		</div>
 		«ENDIF»
 		'''
@@ -358,6 +359,8 @@ class View2HTMLGenerator implements IGenerator {
 		val clazz = elm.association.navigableEnd.type as Class
 		val className = getName(clazz.name)
 		
+		val addButtons = elm.link.filter[it.targetView instanceof CreateView].toList
+		
 		'''
 «««		<!-- AssociationElement -->
 		«IF elm instanceof at.ac.tuwien.big.views.List»
@@ -370,7 +373,10 @@ class View2HTMLGenerator implements IGenerator {
 					<!--add links here-->
 					</li>
 				</ul>
-				<!--add "add buttons” here-->
+«««				<!--add "add buttons” here-->
+				«FOR btn : addButtons»
+				«createAddButton(btn.targetView)»
+				«ENDFOR»
 			</div>
 		</div>
 		«ELSEIF elm instanceof Table»
@@ -397,7 +403,10 @@ class View2HTMLGenerator implements IGenerator {
 						</tr>
 					</tbody>
 				</table>
-				<!--add “add buttons” here-->
+«««				<!--add “add buttons” here-->
+				«FOR btn : addButtons»
+				«createAddButton(btn.targetView)»
+				«ENDFOR»
 			</div>
 		</div>
 		«ENDIF»
@@ -414,15 +423,35 @@ class View2HTMLGenerator implements IGenerator {
 	/*
 	 * TODO
 	 */	
-	def createErrorSpan(){
-		'''<!--add error span tags-->'''
+	def createErrorSpan(ClassOperationView view,PropertyElement elm, boolean isMandatory){
+		val viewname = removeWhiteSpace(view.name)
+		val isTextOrDate = (elm instanceof Text || elm instanceof DateTimePicker)
+		var format = "" 
+		if(elm instanceof Text){
+			format = elm.format
+		}else if(elm instanceof DateTimePicker){
+			format  = elm.format
+		}
+		//TODO: check lab4.pdf not clear what should be used in element "elm.property.name" or "elm.label" ...
+		'''
+		<span class="«viewname»Span" style="color:red" data-ng-show="«viewname»Form.«elm.property.name».$dirty && «viewname»Form.«elm.property.name».$invalid">
+		«IF isMandatory»
+«««		//only for mandatory property elements:
+		<span data-ng-show="«viewname»Form.«elm.property.name».$error.required">Input is mandatory.</span>
+		«ENDIF»
+		«IF isTextOrDate && !format.isNullOrEmpty »
+«««		//only for text view elements or date time pickers defining a format strings
+		<span data-ng-show="«viewname»Form.«elm.property.name».$error.pattern"> Input doesn't match expected pattern.</span>
+		«ENDIF»
+		</span>
+		'''
 	}
 	
 	/*
 	 * TODO
 	 */
-	def createAddButton(){
-		
+	def createAddButton(View targetView){
+		'''<button value="«targetView.name»" class="btn btn-primary btn-sm">Add</button>'''
 	}
 	
 	/*
@@ -432,8 +461,8 @@ class View2HTMLGenerator implements IGenerator {
 		//TODO: A save button is a <button> element with the value set to the name of the start view of the welcome group (whitespaces are removed).
 		return '''
 		<button value="«buttonValue»" class="btn btn-primary btn-sm"
-			data-ng-disabled="«viewName»Form.$invalid"
-			data-ng-click="save«className»()">Save</button>
+		data-ng-disabled="«viewName»Form.$invalid"
+		data-ng-click="save«className»()">Save</button>
 		'''
 	}
 	
