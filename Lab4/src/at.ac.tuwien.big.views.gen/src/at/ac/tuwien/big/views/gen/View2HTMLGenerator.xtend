@@ -451,7 +451,8 @@ class View2HTMLGenerator implements IGenerator {
 	 * TODO
 	 */
 	def createAddButton(View targetView){
-		'''<button value="«targetView.name»" class="btn btn-primary btn-sm">Add</button>'''
+		val value = removeWhiteSpace(targetView.name)
+		'''<button value="«value»" class="btn btn-primary btn-sm">Add</button>'''
 	}
 	
 	/*
@@ -469,8 +470,16 @@ class View2HTMLGenerator implements IGenerator {
 	/*
 	 * TODO
 	 */	
-	def createModalButton(){
-		
+	def createModalButton(String upperName, String className, boolean isDelete){
+		'''
+       	«IF isDelete»
+       	<button class="btn btn-default" data-dismiss="modal" data-ng-click="delete«upperName»(«className».id)">Delete</button>
+       	<button class="btn btn-default" data-dismiss="modal">Cancel</button>
+       	«ENDIF»
+       	«IF !isDelete»
+       	<button class="btn btn-default" data-dismiss="modal">Close</button>
+       	«ENDIF»
+       	'''
 	}
 	
 	/*
@@ -509,13 +518,7 @@ class View2HTMLGenerator implements IGenerator {
 	       «ENDFOR»
           </div>
           <div class="modal-footer">
-           «IF isDelete»
-           <button class="btn btn-default" data-dismiss="modal" data-ng-click="delete«upperName»(«className».id)">Delete</button>
-           <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-           «ENDIF»
-           «IF !isDelete»
-           <button class="btn btn-default" data-dismiss="modal">Close</button>
-           «ENDIF»
+          	«createModalButton(upperName,className,isDelete)»
           </div>
          </div>
   	    </div>
