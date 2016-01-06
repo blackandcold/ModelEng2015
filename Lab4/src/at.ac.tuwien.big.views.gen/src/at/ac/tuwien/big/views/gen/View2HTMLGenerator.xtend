@@ -371,7 +371,7 @@ class View2HTMLGenerator implements IGenerator {
 		<div class="form-group">
 			<div «createCondition(elm.condition)» >
 				<h5>«elm.label»</h5>
-				<ul id=”«elm.elementID»”>
+				<ul id="«elm.elementID»">
 					<li data-ng-repeat="«className» in «className»s">
 					{{ «className».«clazz.id.name» }}
 					<!--add links here-->
