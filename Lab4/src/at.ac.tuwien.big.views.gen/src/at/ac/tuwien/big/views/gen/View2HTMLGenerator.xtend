@@ -29,6 +29,7 @@ import at.ac.tuwien.big.views.Table
 import at.ac.tuwien.big.views.Type
 import java.util.Properties
 import at.ac.tuwien.big.views.Property
+import at.ac.tuwien.big.views.Link
 
 class View2HTMLGenerator implements IGenerator {
 	
@@ -95,6 +96,9 @@ class View2HTMLGenerator implements IGenerator {
 	def getWelcomeGroupCapital(ViewModel model){
 		return Character.toUpperCase(getWelcomeGroup(model).name.charAt(0)) + getWelcomeGroup(model).name.substring(1);
 	}
+	/*
+	 * lowerCase and remove whitespaces
+	 */
 	def getName(String st){
 		return st.toLowerCase.replaceAll("\\W", "")
 	}
@@ -371,6 +375,9 @@ class View2HTMLGenerator implements IGenerator {
 					<li data-ng-repeat="«className» in «className»s">
 					{{ «className».«clazz.id.name» }}
 					<!--add links here-->
+					«FOR lnk : elm.link»
+					«createLink(lnk)»
+					«ENDFOR»
 					</li>
 				</ul>
 «««				<!--add "add buttons” here-->
@@ -485,8 +492,24 @@ class View2HTMLGenerator implements IGenerator {
 	/*
 	 * TODO
 	 */
-	def createLink(){
+	def createLink(Link link){
+		val viewName = removeWhiteSpace(link.targetView.name)
+		val viewHeader = link.targetView.header
+		val className = link.targetView.class_.name
+		val lowerClassName = getName(link.targetView.class_.name)
 		
+		'''
+		«IF link.targetView instanceof ReadView»
+		<a href="" data-toggle="modal" data-target="#modal«viewName»"
+		data-ng-click="get«className»(«lowerClassName».id)">show</a>
+		«ELSEIF link.targetView instanceof DeleteView»
+		<a href="" data-toggle="modal" data-target="#modal«viewName»"
+		data-ng-click="get«className»(«lowerClassName».id)">delete</a></td>
+		«ELSEIF link.targetView instanceof UpdateView»
+		<a href="" data-ng-click="navigation«viewHeader»('«viewName»');
+		update«className»(«lowerClassName».id)">udpate</a>
+		«ENDIF»
+		'''
 	}
 	
 	def createReadDeleteView(ClassOperationView view){

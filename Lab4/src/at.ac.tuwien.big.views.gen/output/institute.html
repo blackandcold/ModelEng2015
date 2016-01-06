@@ -68,6 +68,8 @@
 								<li data-ng-repeat="professor in professors">
 								{{ professor.email }}
 								<!--add links here-->
+								<a href="" data-ng-click="navigationProfessor('UpdateProfessor');
+								updateProfessor(professor.id)">udpate</a>
 								</li>
 							</ul>
 							<button value="CreateProfessor" class="btn btn-primary btn-sm">Add</button>
