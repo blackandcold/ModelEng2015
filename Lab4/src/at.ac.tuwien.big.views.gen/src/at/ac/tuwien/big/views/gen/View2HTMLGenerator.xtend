@@ -243,7 +243,7 @@ class View2HTMLGenerator implements IGenerator {
 				<p>«view.description»</p>
 				<div class="panel-group">
 					«IF view.layout.alignment == LayoutStyle.HORIZONTAL»
-					<div class="row"> //only for views with horizontal layout
+					<div class="row"> «««	//only for views with horizontal layout
 «««						<!-- add element groups here -->
 						«FOR eg : view.elementGroups»
 						«createElementGroup(view, eg)»
@@ -313,12 +313,12 @@ class View2HTMLGenerator implements IGenerator {
 		<div class="form-group">
 			«createPropertyLabel(elm,isMandatory)»
 			«IF (elm as Text).long»
-			<textarea class="form-control" rows="4" id="«elm.elementID»" name="«elm.property.name»"
-			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «createCondition(elm.condition, className)» >
+			<textarea class="form-control" rows="4" id="«elm.elementID»" name="«getName(elm.property.name)»"
+			data-ng-model="new«getName(clazz.name)».«getName(elm.property.name)»" data-ng-pattern="/«elm.format»/" «createCondition(elm.condition, className)» >
 			</textarea>
 			«ELSE»
-			<input type="text" class="form-control" id="«elm.elementID»" name="«elm.property.name»" 
-			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «IF isMandatory»required«ENDIF» data-ng-pattern="/«elm.format»/" «createCondition(elm.condition, className)» />
+			<input type="text" class="form-control" id="«elm.elementID»" name="«getName(elm.property.name)»" 
+			data-ng-model="new«getName(clazz.name)».«getName(elm.property.name)»" «IF isMandatory»required«ENDIF» data-ng-pattern="/«elm.format»/" «createCondition(elm.condition, className)» />
 			«ENDIF»
 			«createErrorSpan(view, elm, isMandatory)»
 		</div>
@@ -327,7 +327,7 @@ class View2HTMLGenerator implements IGenerator {
 		<div class="form-group">
 			«createPropertyLabel(elm, isMandatory)»
 			<select data-ng-option class="form-control" id="«elm.elementID»"
-			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «IF isMandatory»required«ENDIF» «createCondition(elm.condition, className)» >
+			data-ng-model="new«getName(clazz.name)».«getName(elm.property.name)»" «IF isMandatory»required«ENDIF» «createCondition(elm.condition, className)» >
 				<option value="" disabled selected>Select your option</option>
 				«FOR opt : (elm as Selection).selectionItems»
 				«IF opt instanceof EnumerationLiteralItem»
@@ -348,21 +348,21 @@ class View2HTMLGenerator implements IGenerator {
 					<div class="form-group">
 						«createPropertyLabel(elm, isMandatory)»
 						«IF elm.property.type.name == "Date" »
-						<!--pickers for properties with datatype "Date":-->
+«««						<!--pickers for properties with datatype "Date-":-->
 						<div class="input-group date" id="picker«elm.elementID»" style="calendar">
 						«ELSEIF elm.property.type.name == "Time" »
-						<!--pickers for properties with datatype "Time":-->
+«««						<!--pickers for properties with datatype "Time-":-->
 						<div class='input-group date' id='picker«elm.elementID»' style='time'>
 						«ENDIF»
 							<input type="text" class="form-control" id="«elm.elementID»" name="«elm.property.name»"
-							data-ng-model="new«getName(clazz.name)».«elm.property.name»" data-ng-pattern="/«elm.format»/"
+							data-ng-model="new«getName(clazz.name)».«getName(elm.property.name)»" data-ng-pattern="/«elm.format»/"
 							«createCondition(elm.condition, className)» />
 							<span class="input-group-addon">
 								«IF elm.property.type.name == "Date" »
-								<!--pickers for properties with datatype “Date”:-->
+«««									<!--pickers for properties with datatype “Date”:-->
 								<span class="glyphicon glyphicon-calendar"></span>
 								«ELSEIF elm.property.type.name == "Time"»
-								<!--pickers for properties with datatype “Time”:-->
+«««									<!--pickers for properties with datatype “Time”:-->
 								<span class="glyphicon glyphicon-time"></span>
 								«ENDIF»
 							</span>
@@ -395,7 +395,7 @@ class View2HTMLGenerator implements IGenerator {
 				<ul id="«elm.elementID»">
 					<li data-ng-repeat="«className» in «className»s">
 					{{ «className».«clazz.id.name» }}
-					<!--add links here-->
+«««					<!--add links here-->
 					«FOR lnk : elm.link»
 					«createLink(lnk)»
 					«ENDFOR»
@@ -427,7 +427,12 @@ class View2HTMLGenerator implements IGenerator {
 							<td>{{ «className».«col.property.name» }}</td>
 							«ENDFOR»
 							<td>
-							<!--add links here-->
+«««							<!--add links here-->
+
+							«FOR lnk : elm.link»
+							«createLink(lnk)»
+							«ENDFOR»
+
 						</tr>
 					</tbody>
 				</table>
@@ -505,14 +510,14 @@ class View2HTMLGenerator implements IGenerator {
 		}
 		//TODO: check lab4.pdf not clear what should be used in element "elm.property.name" or "elm.label" ...
 		'''
-		<span class="«viewname»Span" style="color:red" data-ng-show="«viewname»Form.«elm.property.name».$dirty && «viewname»Form.«elm.property.name».$invalid">
+		<span class="«viewname»Span" style="color:red" data-ng-show="«viewname»Form.«getName(elm.property.name)».$dirty && «viewname»Form.«getName(elm.property.name)».$invalid">
 		«IF isMandatory»
 «««		//only for mandatory property elements:
-		<span data-ng-show="«viewname»Form.«elm.property.name».$error.required">Input is mandatory.</span>
+		<span data-ng-show="«viewname»Form.«getName(elm.property.name)».$error.required">Input is mandatory.</span>
 		«ENDIF»
 		«IF isTextOrDate && !format.isNullOrEmpty »
 «««		//only for text view elements or date time pickers defining a format strings
-		<span data-ng-show="«viewname»Form.«elm.property.name».$error.pattern"> Input doesn't match expected pattern.</span>
+		<span data-ng-show="«viewname»Form.«getName(elm.property.name)».$error.pattern"> Input doesn't match expected pattern.</span>
 		«ENDIF»
 		</span>
 		'''
