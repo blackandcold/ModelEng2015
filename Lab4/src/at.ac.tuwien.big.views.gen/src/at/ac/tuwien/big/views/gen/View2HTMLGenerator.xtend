@@ -30,6 +30,11 @@ import at.ac.tuwien.big.views.Type
 import java.util.Properties
 import at.ac.tuwien.big.views.Property
 import at.ac.tuwien.big.views.Link
+import at.ac.tuwien.big.views.ComparisonCondition
+import at.ac.tuwien.big.views.CompositeCondition
+import at.ac.tuwien.big.views.ComparisonConditionType
+import at.ac.tuwien.big.views.impl.ComparisonConditionImpl
+import org.eclipse.emf.ecore.EObject
 
 class View2HTMLGenerator implements IGenerator {
 	
@@ -111,6 +116,17 @@ class View2HTMLGenerator implements IGenerator {
 	def removeWhiteSpace(String st){
 		st.replaceAll("\\W", "")
 	}
+
+	def getConditionType(String st){
+		var ret = getName(st)
+		switch ret {
+			case 'enable' : ret = 'enabled'
+			case 'disable' : ret = 'disabled'
+			
+		}
+		return ret
+	}
+
 
 	def generateNavigation(ViewModel model){
 
@@ -249,13 +265,16 @@ class View2HTMLGenerator implements IGenerator {
 	}
 	
 	def createElementGroup(ClassOperationView view, ElementGroup group) {
+		val clazz = view.class_
+		val className = getName(clazz.name)
+		
 		return '''
 «««		<!-- for views with vertical layout: -->
 		«IF view.layout.alignment == LayoutStyle.VERTICAL»
-		<div class="elementgroup" «createCondition(group.condition)» >
+		<div class="elementgroup" «createCondition(group.condition, className)» >
 		«ELSE»
 «««		<!-- for views with horizontal layout: -->
-		<div class="elementgroup col-sm-6" «createCondition(group.condition)» >
+		<div class="elementgroup col-sm-6" «createCondition(group.condition, className)» >
 		«ENDIF»
 			<h4>«group.header»</h4>
 			<div class="panel-body">
@@ -285,6 +304,8 @@ class View2HTMLGenerator implements IGenerator {
 	
 	def createPropertyElement(PropertyElement elm, ClassOperationView view){
 		val clazz = view.class_
+		val className = getName(clazz.name)
+		
 		val isMandatory = elm.property.lowerBound == 1 && elm.property.upperBound == 1
 		'''
 «««		<!-- PropertyElement -->
@@ -293,11 +314,11 @@ class View2HTMLGenerator implements IGenerator {
 			«createPropertyLabel(elm,isMandatory)»
 			«IF (elm as Text).long»
 			<textarea class="form-control" rows="4" id="«elm.elementID»" name="«elm.property.name»"
-			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «createCondition(elm.condition)» >
+			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «createCondition(elm.condition, className)» >
 			</textarea>
 			«ELSE»
 			<input type="text" class="form-control" id="«elm.elementID»" name="«elm.property.name»" 
-			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «IF isMandatory»required«ENDIF» data-ng-pattern="/«elm.format»/" «createCondition(elm.condition)» />
+			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «IF isMandatory»required«ENDIF» data-ng-pattern="/«elm.format»/" «createCondition(elm.condition, className)» />
 			«ENDIF»
 			«createErrorSpan(view, elm, isMandatory)»
 		</div>
@@ -306,7 +327,7 @@ class View2HTMLGenerator implements IGenerator {
 		<div class="form-group">
 			«createPropertyLabel(elm, isMandatory)»
 			<select data-ng-option class="form-control" id="«elm.elementID»"
-			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «IF isMandatory»required«ENDIF» «createCondition(elm.condition)» >
+			data-ng-model="new«getName(clazz.name)».«elm.property.name»" «IF isMandatory»required«ENDIF» «createCondition(elm.condition, className)» >
 				<option value="" disabled selected>Select your option</option>
 				«FOR opt : (elm as Selection).selectionItems»
 				«IF opt instanceof EnumerationLiteralItem»
@@ -335,7 +356,7 @@ class View2HTMLGenerator implements IGenerator {
 						«ENDIF»
 							<input type="text" class="form-control" id="«elm.elementID»" name="«elm.property.name»"
 							data-ng-model="new«getName(clazz.name)».«elm.property.name»" data-ng-pattern="/«elm.format»/"
-							«createCondition(elm.condition)» />
+							«createCondition(elm.condition, className)» />
 							<span class="input-group-addon">
 								«IF elm.property.type.name == "Date" »
 								<!--pickers for properties with datatype “Date”:-->
@@ -369,7 +390,7 @@ class View2HTMLGenerator implements IGenerator {
 «««		<!-- AssociationElement -->
 		«IF elm instanceof at.ac.tuwien.big.views.List»
 		<div class="form-group">
-			<div «createCondition(elm.condition)» >
+			<div «createCondition(elm.condition, className)» >
 				<h5>«elm.label»</h5>
 				<ul id="«elm.elementID»">
 					<li data-ng-repeat="«className» in «className»s">
@@ -389,7 +410,7 @@ class View2HTMLGenerator implements IGenerator {
 		«ELSEIF elm instanceof Table»
 		«val table = elm as Table»
 		<div class="form-group">
-			<div «createCondition(elm.condition)» >
+			<div «createCondition(elm.condition, className)» >
 				<h5>«elm.label»</h5>
 				<table class="table table-striped" id="«elm.elementID»">
 					<thead>
@@ -423,9 +444,52 @@ class View2HTMLGenerator implements IGenerator {
 	/*
 	 * TODO
 	 */
-	def createCondition(Condition condition) {
-		''' add-condition '''
+	def createCondition(Condition condition, String viewClassName) {
+
+		if (condition != null) {
+	
+		'''
+		 «IF condition instanceof ComparisonCondition» 
+		 data-ng-«getConditionType((condition as ComparisonCondition).type.toString)»="«createComparisonCondition(condition as ComparisonCondition, viewClassName)»"
+		 «ELSEIF condition instanceof CompositeCondition»
+		 data-ng-«getConditionType((condition as CompositeCondition).type.toString)»="«createCompositeCondition(condition as CompositeCondition, viewClassName)»"
+		 «ENDIF»
+		 '''
+		 
+		 }
 	}
+
+	def createComparisonCondition(ComparisonCondition condition, String className) {
+		var type = ""
+		
+		switch condition.comparisonType.toString {
+			case 'Equal' : type = "=="
+			case 'Greater' : type = ">"
+			case 'Less' : type = "<"
+			default : type = ""
+		}
+
+	'''new«className».«getName(condition.property.label)» «type» '«condition.comparisonValue»'
+	'''
+
+	}
+	
+	def createCompositeCondition(CompositeCondition condition, String viewClassName) {
+		var type = ""
+		
+		switch condition.compositionType.toString {
+			case 'And' : type = "&&"
+			case 'Or' : type = "||"
+			default : type = ""
+		}
+		
+		val condition1 = condition.composedConditions.get(0) as ComparisonCondition
+		val condition2 = condition.composedConditions.get(1) as ComparisonCondition
+
+	'''«createComparisonCondition(condition1, viewClassName)» «type» «createComparisonCondition(condition2, viewClassName)»'''
+
+	}
+	
 	
 	/*
 	 * TODO
